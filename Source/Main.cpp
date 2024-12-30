@@ -3,7 +3,6 @@
 
 #include "StepperApp.h"
 
-#if 0
 class apcStepper : public juce::JUCEApplication
 {
 public:
@@ -34,4 +33,3 @@ private:
 };
 
 START_JUCE_APPLICATION(apcStepper)
-#endif
