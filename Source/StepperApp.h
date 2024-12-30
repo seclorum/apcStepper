@@ -1,5 +1,3 @@
-
-// !J! Just include all the JUCE things.  Makes it easier to navigate... but slower to build
 #include <juce_analytics/juce_analytics.h>
 #include <juce_animation/juce_animation.h>
 #include <juce_audio_basics/juce_audio_basics.h>
@@ -25,11 +23,7 @@
 #include <juce_video/juce_video.h>
 
 
-// A rudimentary dialog, just to get things started.
-// Derived from the EncounterLauncher project...
-class StepperDialog : public juce::Component,
-                       public juce::Button::Listener,
-                       public juce::MouseListener
+class StepperDialog : public juce::Component, public juce::Button::Listener
 {
 public:
     StepperDialog()
@@ -43,29 +37,16 @@ public:
         quitButton.setButtonText("Quit");
         quitButton.addListener(this);
 
-#if 0
-        addAndMakeVisible(homepageLink);
-        homepageLink.setText("Homepage", juce::NotificationType::dontSendNotification);
-        homepageLink.setColour(juce::Label::textColourId, juce::Colours::blue);
-        homepageLink.addMouseListener(this, true);
-
-        addAndMakeVisible(manualLink);
-        manualLink.setText("Manual", juce::NotificationType::dontSendNotification);
-        manualLink.setColour(juce::Label::textColourId, juce::Colours::blue);
-        manualLink.addMouseListener(this, true);
-
-        addAndMakeVisible(supportLink);
-        supportLink.setText("Support", juce::NotificationType::dontSendNotification);
-        supportLink.setColour(juce::Label::textColourId, juce::Colours::blue);
-        supportLink.addMouseListener(this, true);
-#endif
-
         // Remember last position and settings
         loadSettings();
     }
 
     ~StepperDialog() override
     {
+        // Remove listeners when the component is destroyed to avoid dangling references
+        launchStopButton.removeListener(this);
+        quitButton.removeListener(this);
+
         saveSettings();
     }
 
@@ -80,11 +61,6 @@ public:
 
         launchStopButton.setBounds(area.removeFromTop(40));
         quitButton.setBounds(area.removeFromTop(40).withTrimmedTop(10));
-#if 0
-        homepageLink.setBounds(area.removeFromTop(20).withTrimmedTop(10));
-        manualLink.setBounds(area.removeFromTop(20).withTrimmedTop(5));
-        supportLink.setBounds(area.removeFromTop(20).withTrimmedTop(5));
-#endif
     }
 
     void buttonClicked(juce::Button* button) override
@@ -99,39 +75,27 @@ public:
         }
     }
 
-    void mouseUp(const juce::MouseEvent& event) override
-    {
-
-#if 0
-        if (event.eventComponent == &homepageLink)
-        {
-            juce::URL("http://gamehomepage.com").launchInDefaultBrowser();
-        }
-        else if (event.eventComponent == &manualLink)
-        {
-            juce::URL("http://gamemanual.com").launchInDefaultBrowser();
-        }
-        else if (event.eventComponent == &supportLink)
-        {
-            juce::URL("mailto:support@game.com").launchInDefaultBrowser();
-        }
-#endif
-
-    }
-
 private:
     juce::TextButton launchStopButton;
     juce::TextButton quitButton;
-#if 0
-    juce::Label homepageLink;
-    juce::Label manualLink;
-    juce::Label supportLink;
-#endif
+
+    juce::ApplicationProperties appProperties;
 
     void loadSettings()
     {
-        auto* appProperties = juce::ApplicationProperties::getInstance();
-        auto lastPosition = appProperties->getUserSettings()->getValue("lastWindowBounds", "");
+        juce::PropertiesFile::Options opt;
+
+        opt.applicationName = "apcStepper";
+        opt.commonToAllUsers = false;
+        opt.doNotSave = false;
+        opt.filenameSuffix = ".props";
+        opt.ignoreCaseOfKeyNames = false;
+        opt.storageFormat = juce::PropertiesFile::StorageFormat::storeAsXML;
+        opt.osxLibrarySubFolder = "Application Support";
+
+        appProperties.setStorageParameters(opt);
+
+        auto lastPosition = appProperties.getUserSettings()->getValue("lastWindowBounds", "");
 
         if (!lastPosition.isEmpty())
         {
@@ -146,16 +110,18 @@ private:
 
     void saveSettings()
     {
-        auto* appProperties = juce::ApplicationProperties::getInstance();
-        appProperties->getUserSettings()->setValue("lastWindowBounds", getBounds().toString());
+        appProperties.getUserSettings()->setValue("lastWindowBounds", getBounds().toString());
+        appProperties.saveIfNeeded();
+        appProperties.closeFiles();
     }
 };
 
 class StepperApplication : public juce::JUCEApplication
 {
 public:
-    const juce::String getApplicationName() override { return "Stepper"; }
-    const juce::String getApplicationVersion() override { return "1.0.0"; }
+
+    const juce::String getApplicationName() override { return "apcStepper"; }
+    const juce::String getApplicationVersion() override  { return "1.0.0"; }
 
     void initialise(const juce::String&) override
     {
@@ -164,7 +130,7 @@ public:
 
     void shutdown() override
     {
-        mainWindow = nullptr;
+        mainWindow.reset();  // Properly reset the main window to ensure memory is freed
     }
 
 private:
@@ -172,11 +138,11 @@ private:
     {
     public:
         MainWindow(const juce::String& name, juce::Component* c, JUCEApplication& app)
-            : DocumentWindow(name,
-                             juce::Desktop::getInstance().getDefaultLookAndFeel()
-                                 .findColour(ResizableWindow::backgroundColourId),
-                             allButtons),
-              appRef(app)
+                : DocumentWindow(name,
+                                 juce::Desktop::getInstance().getDefaultLookAndFeel()
+                                         .findColour(ResizableWindow::backgroundColourId),
+                                 allButtons),
+                  appRef(app)
         {
             setUsingNativeTitleBar(true);
             setContentOwned(c, true);
@@ -198,4 +164,3 @@ private:
 
 // This macro generates the main() routine that launches the app.
 START_JUCE_APPLICATION(StepperApplication)
-
