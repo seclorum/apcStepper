@@ -23,39 +23,145 @@
 #include <juce_product_unlocking/juce_product_unlocking.h>
 #include <juce_video/juce_video.h>
 
-#include "MainComponent.h"
 
-#include "StepperApp.h"
-
-#if 0
-class apcStepper : public juce::JUCEApplication
+class StepperDialog : public juce::Component, public juce::Button::Listener
 {
 public:
-    const juce::String getApplicationName() override       { return "apcStepper"; }
-    const juce::String getApplicationVersion() override    { return "1.0"; }
-    void initialise(const juce::String&) override          { mainWindow.reset(new MainWindow()); }
-    void shutdown() override                               { mainWindow = nullptr; }
+    StepperDialog()
+    {
+        // Initialize buttons and labels
+        addAndMakeVisible(launchStopButton);
+        launchStopButton.setButtonText("Launch/Stop");
+        launchStopButton.addListener(this);
+
+        addAndMakeVisible(quitButton);
+        quitButton.setButtonText("Quit");
+        quitButton.addListener(this);
+
+        // Remember last position and settings
+        loadSettings();
+    }
+
+    ~StepperDialog() override
+    {
+        // Remove listeners when the component is destroyed to avoid dangling references
+        launchStopButton.removeListener(this);
+        quitButton.removeListener(this);
+
+        saveSettings();
+    }
+
+    void paint(juce::Graphics& g) override
+    {
+        g.fillAll(juce::Colours::white);
+    }
+
+    void resized() override
+    {
+        auto area = getLocalBounds().reduced(10);
+
+        launchStopButton.setBounds(area.removeFromTop(40));
+        quitButton.setBounds(area.removeFromTop(40).withTrimmedTop(10));
+    }
+
+    void buttonClicked(juce::Button* button) override
+    {
+        if (button == &launchStopButton)
+        {
+            // Handle launch/stop action
+        }
+        else if (button == &quitButton)
+        {
+            juce::JUCEApplication::getInstance()->systemRequestedQuit();
+        }
+    }
+
+private:
+    juce::TextButton launchStopButton;
+    juce::TextButton quitButton;
+
+    juce::ApplicationProperties appProperties;
+
+    void loadSettings()
+    {
+        juce::PropertiesFile::Options opt;
+
+        opt.applicationName = "apcStepper";
+        opt.commonToAllUsers = false;
+        opt.doNotSave = false;
+        opt.filenameSuffix = ".props";
+        opt.ignoreCaseOfKeyNames = false;
+        opt.storageFormat = juce::PropertiesFile::StorageFormat::storeAsXML;
+        opt.osxLibrarySubFolder = "Application Support";
+
+        appProperties.setStorageParameters(opt);
+
+        auto lastPosition = appProperties.getUserSettings()->getValue("lastWindowBounds", "");
+
+        if (!lastPosition.isEmpty())
+        {
+            auto bounds = juce::Rectangle<int>::fromString(lastPosition);
+            setBounds(bounds);
+        }
+        else
+        {
+            centreWithSize(400, 300);
+        }
+    }
+
+    void saveSettings()
+    {
+        appProperties.getUserSettings()->setValue("lastWindowBounds", getBounds().toString());
+        appProperties.saveIfNeeded();
+        appProperties.closeFiles();
+    }
+};
+
+class StepperApplication : public juce::JUCEApplication
+{
+public:
+
+    const juce::String getApplicationName() override { return "apcStepper"; }
+    const juce::String getApplicationVersion() override  { return "1.0.0"; }
+
+    void initialise(const juce::String&) override
+    {
+        mainWindow = std::make_unique<MainWindow>("Stepper", new StepperDialog(), *this);
+    }
+
+    void shutdown() override
+    {
+        mainWindow.reset();  // Properly reset the main window to ensure memory is freed
+    }
 
 private:
     class MainWindow : public juce::DocumentWindow
     {
     public:
-        MainWindow() : DocumentWindow("apcStepper",
-                                      juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
-                                      DocumentWindow::allButtons)
+        MainWindow(const juce::String& name, juce::Component* c, JUCEApplication& app)
+                : DocumentWindow(name,
+                                 juce::Desktop::getInstance().getDefaultLookAndFeel()
+                                         .findColour(ResizableWindow::backgroundColourId),
+                                 allButtons),
+                  appRef(app)
         {
             setUsingNativeTitleBar(true);
-            setContentOwned(new MainComponent(), true);
-            setResizable(true, false);
-            setCentrePosition(600, 400);
+            setContentOwned(c, true);
+            centreWithSize(getWidth(), getHeight());
             setVisible(true);
         }
 
-        void closeButtonPressed() override { juce::JUCEApplication::getInstance()->systemRequestedQuit(); }
+        void closeButtonPressed() override
+        {
+            appRef.systemRequestedQuit();
+        }
+
+    private:
+        JUCEApplication& appRef;
     };
 
     std::unique_ptr<MainWindow> mainWindow;
 };
 
-START_JUCE_APPLICATION(apcStepper)
-#endif
+// This macro generates the main() routine that launches the app.
+START_JUCE_APPLICATION(StepperApplication)

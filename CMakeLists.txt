@@ -32,9 +32,7 @@ juce_add_gui_app(
 # Add source files
 target_sources(apcStepper
   PRIVATE
-    Source/StepperApp.h
     Source/Main.cpp
-    Source/MainComponent.cpp
 )
 
 # Link JUCE module
