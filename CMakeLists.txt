@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 # !J! modules/JUCE should be a git submodule, already checked-out
-add_subdirectory(modules/JUCE)
+add_subdirectory(modules/tracktion_engine)
 # .. otherwise use either of these:
 # Declare the JUCE library
 #include(FetchContent)
