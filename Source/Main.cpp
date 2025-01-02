@@ -365,6 +365,7 @@ private:
         // This is called on the MIDI thread
         const ScopedLock sl (midiMonitorLock);
         incomingMessages.add (message);
+        sendToOutputs(message);
         triggerAsyncUpdate();
     }
 
@@ -388,9 +389,28 @@ private:
 
     void sendToOutputs (const MidiMessage& msg)
     {
+
+            // Get the raw data and size
+            const uint8_t* rawData = msg.getRawData();
+            int dataSize = msg.getRawDataSize();
+
+            // Create a modifiable copy of the original data
+            std::vector<uint8_t> modifiedData(rawData, rawData + dataSize);
+
+            // Example: Modify the velocity (3rd byte) if it's a note-on message
+            if ((modifiedData[0] & 0xF0) == 0x90) // Check if it's a note-on message
+            {
+                modifiedData[2] = 60; // Set velocity to maximum
+            }
+
+            // Create a new MidiMessage from the modified data
+            juce::MidiMessage newMessage(modifiedData.data(), dataSize);
+
+            // Debug the new message
+
         for (auto midiOutput : midiOutputs)
             if (midiOutput->outDevice != nullptr)
-                midiOutput->outDevice->sendMessageNow (msg);
+                midiOutput->outDevice->sendMessageNow (newMessage);
     }
 
     //==============================================================================
