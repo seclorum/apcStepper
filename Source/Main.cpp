@@ -173,6 +173,7 @@ public:
         MidiMessage m (MidiMessage::noteOn (midiChannel, midiNoteNumber, velocity));
         m.setTimeStamp (Time::getMillisecondCounterHiRes() * 0.001);
         sendToOutputs (m);
+
     }
 
     void handleNoteOff (MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override
@@ -390,17 +391,17 @@ private:
     void sendToOutputs (const MidiMessage& msg)
     {
 
-            // Get the raw data and size
+            // Get the raw data and sizelib
             const uint8_t* rawData = msg.getRawData();
             int dataSize = msg.getRawDataSize();
 
             // Create a modifiable copy of the original data
             std::vector<uint8_t> modifiedData(rawData, rawData + dataSize);
-
             // Example: Modify the velocity (3rd byte) if it's a note-on message
             if ((modifiedData[0] & 0xF0) == 0x90) // Check if it's a note-on message
             {
-                modifiedData[2] = 60; // Set velocity to maximum
+                //modifiedData[1] = 26;
+                modifiedData[2] = 72; ///0 = off 1=dunkelblau 2=hellblaus 3 =blau 4=lila turkis 5/6 = red 8=white 9 = yellow
             }
 
             // Create a new MidiMessage from the modified data
