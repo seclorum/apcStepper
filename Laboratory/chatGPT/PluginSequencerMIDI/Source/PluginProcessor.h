@@ -92,16 +92,21 @@ class BasicAudioProcessorEditor : public juce::AudioProcessorEditor
 public:
     BasicAudioProcessorEditor(BasicAudioProcessor& p) : juce::AudioProcessorEditor(&p), processor(p)
     {
-        setSize(400, 300);
+        setSize(600, 400);
 
-        // Example GUI with dynamic array
-
-        for (int i = 0; i < 5; ++i)
+        // Create 8x12 grid of toggle buttons
+        for (int row = 0; row < 12; ++row)
         {
-            auto button = std::make_unique<juce::TextButton>("Button " + juce::String(i));
-            button->onClick = [i] { juce::Logger::writeToLog("Button " + juce::String(i) + " clicked"); };
-            addAndMakeVisible(*button);
-            buttons.push_back(std::move(button));
+            for (int col = 0; col < 8; ++col)
+            {
+                auto button = std::make_unique<juce::ToggleButton>("Button R" + juce::String(row) + " C" + juce::String(col));
+                button->setBounds(50 + col * 60, 50 + row * 30, 50, 20);
+                button->onClick = [this, row, col]() {
+                    toggleGridState(row, col);
+                };
+                addAndMakeVisible(*button);
+                gridButtons.push_back(std::move(button));
+            }
         }
     }
 
@@ -114,16 +119,17 @@ public:
 
     void resized() override
     {
-        int buttonHeight = 30;
-        for (size_t i = 0; i < buttons.size(); ++i)
-        {
-            buttons[i]->setBounds(10, 10 + i * (buttonHeight + 5), getWidth() - 20, buttonHeight);
-        }
+        // Adjust layout dynamically if needed
     }
 
 private:
+    void toggleGridState(int row, int col)
+    {
+        processor.midiGrid[col][row] = !processor.midiGrid[col][row];
+    }
+
     BasicAudioProcessor& processor;
-    std::vector<std::unique_ptr<juce::TextButton>> buttons;
+    std::vector<std::unique_ptr<juce::ToggleButton>> gridButtons;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BasicAudioProcessorEditor)
 };
@@ -133,5 +139,4 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new BasicAudioProcessor();
 }
-
 
