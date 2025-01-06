@@ -9,6 +9,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 # Explicitly exclude LV2 build product
 set(JUCE_ENABLE_LV2 FALSE)
 
+# Explicitly exclude Unity Engine build product
+set(JUCE_ENABLE_UNITY FALSE)
+
+
 # !J! modules/tracktion_engine should be a git submodule, already checked-out
 # .. otherwise use either of these:
 # option A: Declare local repo, i.e. add_subdirectory(modules/tracktion_engine)
