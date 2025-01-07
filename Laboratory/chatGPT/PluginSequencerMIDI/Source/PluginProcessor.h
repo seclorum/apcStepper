@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <juce_audio_basics/juce_audio_basics.h>
 
 //=============================================================================
 class BasicAudioProcessor : public juce::AudioProcessor
@@ -23,6 +24,33 @@ public:
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override
     {
         buffer.clear();
+
+        // Active Column MIDI output
+        for (int row = 0; row < 24; ++row)
+        {
+            bool columnActive = false;
+
+            for (int column = 0; column < 16; ++column)
+            {
+                int adjustedRow = (row + scrollOffset) % 24;
+                int adjustedColumn = (column + pageOffset * 8) % 16;
+
+                if (midiGrid[adjustedRow][adjustedColumn])
+                {
+                    columnActive = true;
+                }
+            }
+
+            if (columnActive)
+            {
+                auto message = juce::MidiMessage::noteOn(1, mapColumnToNoteForLightning(column), (juce::uint8)127);
+                message.setTimeStamp(0);
+                midiMessages.addEvent(message, 0);
+
+                auto noteOff = juce::MidiMessage::noteOff(1, mapRowToNoteForLightning(row));
+                midiMessages.addEvent(noteOff, 10);
+            }
+        }
 
         // Process incoming MIDI messages
         for (const auto metadata : midiMessages)
@@ -145,6 +173,11 @@ private:
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
         };
         return rowToNote[row + column * 24]; // Adjust for 24 rows
+    }
+
+    int mapColumnToNoteForLightning(int column)
+    {
+        return 60 + column; // Map columns to MIDI notes starting at middle C // Map rows to MIDI notes (starting at middle C)
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BasicAudioProcessor)
