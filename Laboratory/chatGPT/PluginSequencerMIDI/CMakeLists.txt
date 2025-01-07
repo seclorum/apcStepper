@@ -28,15 +28,15 @@ FetchContent_MakeAvailable(tracktion_engine)
 # Add the plugin target
 juce_add_plugin(
     PluginSequecerMIDI
-    COMPANY_NAME "YourCompanyName"
+    COMPANY_NAME "enabled.io"
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT TRUE
     NEEDS_MIDI_OUTPUT TRUE
     IS_MIDI_EFFECT TRUE
     EDITOR_WANTS_KEYBOARD_FOCUS TRUE
     COPY_PLUGIN_AFTER_BUILD TRUE
-    PLUGIN_MANUFACTURER_CODE Juce
-    PLUGIN_CODE Demo
+    PLUGIN_MANUFACTURER_CODE "enabled.io"
+    PLUGIN_CODE "enabled.io"
 )
 
 # Add source files
@@ -46,6 +46,7 @@ target_sources(PluginSequecerMIDI PRIVATE
 
 # Include JUCE and Tracktion Engine
 target_link_libraries(PluginSequecerMIDI PRIVATE
+    juce::juce_gui_basics
     juce::juce_audio_utils
     tracktion_engine
 )
