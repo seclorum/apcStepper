@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <map>
 
-//==============================================================================
+//=============================================================================
 class BasicAudioProcessor : public juce::AudioProcessor
 {
 public:
@@ -14,6 +14,8 @@ public:
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
     {
         midiGrid.fill(false); // Initialize the MIDI grid
+        scrollOffset = 0; // Initialize scroll offset
+        pageOffset = 0; // Initialize page offset
     }
 
     void releaseResources() override {}
@@ -29,8 +31,8 @@ public:
             if (message.isNoteOnOrOff())
             {
                 int note = message.getNoteNumber();
-                int row = mapNoteToRow(note);
-                int column = mapNoteToColumn(note);
+                int row = (mapNoteToRow(note) + scrollOffset) % 24; // Adjust for 24 rows (2 octaves)
+                int column = (mapNoteToColumn(note) + pageOffset * 8) % 16; // Adjust for 16 columns (2 pages)
 
                 if (row >= 0 && column >= 0)
                 {
@@ -43,23 +45,45 @@ public:
         }
 
         // Generate MIDI output from the grid
-        for (int column = 0; column < 8; ++column)
+        for (int column = 0; column < 16; ++column) // Iterate over all 16 columns
         {
-            for (int row = 0; row < 12; ++row)
+            for (int row = 0; row < 24; ++row) // Iterate over all 24 rows
             {
-                if (midiGrid[column][row])
+                int adjustedColumn = column;
+                int adjustedRow = (row + scrollOffset) % 24;
+                if (midiGrid[adjustedColumn][adjustedRow])
                 {
-                    auto message = juce::MidiMessage::noteOn(1, mapRowColumnToNote(row, column), (juce::uint8)127);
+                    auto message = juce::MidiMessage::noteOn(1, mapRowColumnToNote(adjustedRow, adjustedColumn), (juce::uint8)127);
                     message.setTimeStamp((double)column);
-                    midiMessages.addEvent(message, (int)(column * (buffer.getNumSamples() / 8.0)));
+                    midiMessages.addEvent(message, (int)(column * (buffer.getNumSamples() / 16.0)));
 
                     // Add note-off for the same note later
-                    auto noteOff = juce::MidiMessage::noteOff(1, mapRowColumnToNote(row, column));
+                    auto noteOff = juce::MidiMessage::noteOff(1, mapRowColumnToNote(adjustedRow, adjustedColumn));
                     noteOff.setTimeStamp((double)(column + 1));
-                    midiMessages.addEvent(noteOff, (int)((column + 1) * (buffer.getNumSamples() / 8.0)));
+                    midiMessages.addEvent(noteOff, (int)((column + 1) * (buffer.getNumSamples() / 16.0)));
                 }
             }
         }
+    }
+
+    void scrollGridUp()
+    {
+        scrollOffset = std::max(0, scrollOffset - 1);
+    }
+
+    void scrollGridDown()
+    {
+        scrollOffset = std::min(23, scrollOffset + 1); // Adjust for 24 rows
+    }
+
+    void jumpPageLeft()
+    {
+        pageOffset = std::max(0, pageOffset - 1);
+    }
+
+    void jumpPageRight()
+    {
+        pageOffset = std::min(1, pageOffset + 1);
     }
 
     juce::AudioProcessorEditor* createEditor() override { return new BasicAudioProcessorEditor(*this); }
@@ -82,7 +106,9 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override {}
 
 private:
-    std::array<std::array<bool, 12>, 8> midiGrid; // Grid for 8 steps and 12 notes
+    std::array<std::array<bool, 24>, 16> midiGrid; // Grid for 16 steps (2 pages) and 24 rows (2 octaves)
+    int scrollOffset = 0; // Scroll offset for rows
+    int pageOffset = 0;  // Page offset for columns
 
     int mapNoteToRow(int note)
     {
@@ -118,7 +144,7 @@ private:
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
         };
-        return rowToNote[row + column * 12];
+        return rowToNote[row + column * 24]; // Adjust for 24 rows
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BasicAudioProcessor)
@@ -130,21 +156,45 @@ class BasicAudioProcessorEditor : public juce::AudioProcessorEditor
 public:
     BasicAudioProcessorEditor(BasicAudioProcessor& p) : juce::AudioProcessorEditor(&p), processor(p)
     {
-        setSize(600, 400);
+        setSize(800, 600); // Adjust size for larger grid
 
-        // Create 8x12 grid of toggle buttons
-        for (int row = 0; row < 12; ++row)
+        // Create 16x24 grid of toggle buttons
+        for (int row = 0; row < 24; ++row)
         {
-            for (int col = 0; col < 8; ++col)
+            for (int col = 0; col < 16; ++col)
             {
                 auto button = std::make_unique<juce::ToggleButton>("Button R" + juce::String(row) + " C" + juce::String(col));
-                button->setBounds(50 + col * 60, 50 + row * 30, 50, 20);
+                button->setBounds(50 + col * 40, 50 + row * 20, 30, 15);
                 button->onClick = [this, row, col]() {
                     toggleGridState(row, col);
                 };
                 addAndMakeVisible(*button);
                 gridButtons.push_back(std::move(button));
             }
+        }
+
+        // Add track buttons
+        for (int i = 0; i < 8; ++i)
+        {
+            auto trackButton = std::make_unique<juce::TextButton>("Track Button " + juce::String(i + 1));
+            trackButton->setBounds(10, 50 + i * 40, 100, 30);
+            trackButton->onClick = [this, i]() {
+                handleTrackButtonPress(i);
+            };
+            addAndMakeVisible(*trackButton);
+            trackButtons.push_back(std::move(trackButton));
+        }
+
+        // Add scene launch buttons
+        for (int i = 0; i < 8; ++i)
+        {
+            auto sceneButton = std::make_unique<juce::TextButton>("Scene Launch " + juce::String(i + 1));
+            sceneButton->setBounds(50 + i * 60, 500, 100, 30);
+            sceneButton->onClick = [this, i]() {
+                handleSceneButtonPress(i);
+            };
+            addAndMakeVisible(*sceneButton);
+            sceneButtons.push_back(std::move(sceneButton));
         }
     }
 
@@ -163,11 +213,28 @@ public:
 private:
     void toggleGridState(int row, int col)
     {
-        processor.midiGrid[col][row] = !processor.midiGrid[col][row];
+        int adjustedCol = (col + processor.pageOffset * 8) % 16;
+        int adjustedRow = (row + processor.scrollOffset) % 24;
+        processor.midiGrid[adjustedCol][adjustedRow] = !processor.midiGrid[adjustedCol][adjustedRow];
+    }
+
+    void handleTrackButtonPress(int index)
+    {
+        if (index == 4) processor.scrollGridUp();
+        else if (index == 5) processor.scrollGridDown();
+        else if (index == 6) processor.jumpPageLeft();
+        else if (index == 7) processor.jumpPageRight();
+    }
+
+    void handleSceneButtonPress(int index)
+    {
+        juce::Logger::writeToLog("Scene Launch " + juce::String(index + 1) + " pressed");
     }
 
     BasicAudioProcessor& processor;
     std::vector<std::unique_ptr<juce::ToggleButton>> gridButtons;
+    std::vector<std::unique_ptr<juce::TextButton>> trackButtons;
+    std::vector<std::unique_ptr<juce::TextButton>> sceneButtons;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BasicAudioProcessorEditor)
 };
