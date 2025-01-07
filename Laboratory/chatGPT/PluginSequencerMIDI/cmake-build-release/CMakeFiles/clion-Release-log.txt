@@ -1,0 +1,629 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI -B /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release
+-- The C compiler identification is AppleClang 16.0.0.16000026
+-- The CXX compiler identification is AppleClang 16.0.0.16000026
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring juceaide
+-- Building juceaide
+CMake Error at cmake-build-release/_deps/juce-src/extras/Build/juceaide/CMakeLists.txt:141 (message):
+  Failed to build juceaide
+
+  ninja: warning: bad deps log signature or version; starting over
+
+  [0/2] Re-checking globbed directories...
+
+  [1/11] Building CXX object
+  CMakeFiles/juce_lv2_helper.dir/modules/juce_audio_plugin_client/LV2/juce_LV2TurtleDumpProgram.cpp.o
+
+
+  [2/11] Linking CXX executable juce_lv2_helper
+
+  [3/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_data_structures/juce_data_structures.mm.o
+
+
+  [4/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/Main.cpp.o
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/extras/Build/juceaide/Main.cpp:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/extras/Build/juce_build_tools/juce_build_tools.h:56:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.h:379:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:225:31:
+  warning: identifier '_px' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    225 | constexpr Grid::Px operator"" _px (long double px)          { return Grid::Px { px }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_px
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:226:31:
+  warning: identifier '_px' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    226 | constexpr Grid::Px operator"" _px (unsigned long long px)   { return Grid::Px { px }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_px
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:227:31:
+  warning: identifier '_fr' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    227 | constexpr Grid::Fr operator"" _fr (unsigned long long fr)   { return Grid::Fr { fr }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_fr
+
+  3 warnings generated.
+
+  [5/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/juce_build_tools/juce_build_tools.cpp.o
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/extras/Build/juce_build_tools/juce_build_tools.cpp:35:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/extras/Build/juce_build_tools/juce_build_tools.h:56:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.h:379:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:225:31:
+  warning: identifier '_px' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    225 | constexpr Grid::Px operator"" _px (long double px)          { return Grid::Px { px }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_px
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:226:31:
+  warning: identifier '_px' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    226 | constexpr Grid::Px operator"" _px (unsigned long long px)   { return Grid::Px { px }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_px
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:227:31:
+  warning: identifier '_fr' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    227 | constexpr Grid::Fr operator"" _fr (unsigned long long fr)   { return Grid::Fr { fr }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_fr
+
+  3 warnings generated.
+
+  [6/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_events/juce_events.mm.o
+
+
+  [7/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_core/juce_core.mm.o
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/juce_core.mm:23:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/juce_core.cpp:178:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:496:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    496 | constexpr var::VariantType var::Instance::attributesVoid;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:497:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    497 | constexpr var::VariantType var::Instance::attributesUndefined;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:498:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    498 | constexpr var::VariantType var::Instance::attributesInt;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:499:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    499 | constexpr var::VariantType var::Instance::attributesInt64;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:500:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    500 | constexpr var::VariantType var::Instance::attributesBool;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:501:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    501 | constexpr var::VariantType var::Instance::attributesDouble;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:502:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    502 | constexpr var::VariantType var::Instance::attributesMethod;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:503:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    503 | constexpr var::VariantType var::Instance::attributesArray;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:504:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    504 | constexpr var::VariantType var::Instance::attributesString;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:505:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    505 | constexpr var::VariantType var::Instance::attributesBinary;
+        |                                           ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_core/containers/juce_Variant.cpp:506:43:
+  warning: out-of-line definition of constexpr static data member is
+  redundant in C++17 and is deprecated
+  [-Wdeprecated-redundant-constexpr-static-def]
+
+    506 | constexpr var::VariantType var::Instance::attributesObject;
+        |                                           ^
+
+  11 warnings generated.
+
+  [8/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_graphics/juce_graphics.mm.o
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_graphics/juce_graphics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_graphics/juce_graphics.cpp:147:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_graphics/native/juce_mac_Fonts.mm:625:38:
+  warning: 'CTFontManagerRegisterGraphicsFont' is deprecated: first
+  deprecated in macOS 15 - Use CTFontManagerCreateFontDescriptorsFromData or
+  CTFontManagerRegisterFontsForURL [-Wdeprecated-declarations]
+
+    625 |                 canBeUsedForLayout = CTFontManagerRegisterGraphicsFont (fontRef, nullptr);
+        |                                      ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h:216:6:
+  note: 'CTFontManagerRegisterGraphicsFont' has been explicitly marked
+  deprecated here
+
+    216 | bool CTFontManagerRegisterGraphicsFont(
+        |      ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_graphics/juce_graphics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_graphics/juce_graphics.cpp:147:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_graphics/native/juce_mac_Fonts.mm:670:21:
+  warning: 'CTFontManagerUnregisterGraphicsFont' is deprecated: first
+  deprecated in macOS 15 - Use the API corresponding to the one used to
+  register the font [-Wdeprecated-declarations]
+
+    670 |                     CTFontManagerUnregisterGraphicsFont (fontRef, nullptr);
+        |                     ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h:233:6:
+  note: 'CTFontManagerUnregisterGraphicsFont' has been explicitly marked
+  deprecated here
+
+    233 | bool CTFontManagerUnregisterGraphicsFont(
+        |      ^
+
+  2 warnings generated.
+
+  [9/11] Building CXX object
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_gui_basics/juce_gui_basics.mm.o
+
+
+  FAILED:
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_gui_basics/juce_gui_basics.mm.o
+
+
+  /Library/Developer/CommandLineTools/usr/bin/c++ -DDEBUG=1
+  -DJUCE_DISABLE_JUCE_VERSION_PRINTING=1
+  -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1
+  -DJUCE_MODULE_AVAILABLE_juce_build_tools=1
+  -DJUCE_MODULE_AVAILABLE_juce_core=1
+  -DJUCE_MODULE_AVAILABLE_juce_data_structures=1
+  -DJUCE_MODULE_AVAILABLE_juce_events=1
+  -DJUCE_MODULE_AVAILABLE_juce_graphics=1
+  -DJUCE_MODULE_AVAILABLE_juce_gui_basics=1 -DJUCE_STANDALONE_APPLICATION=1
+  -DJUCE_USE_CURL=0 -D_DEBUG=1
+  -I/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-build/tools/extras/Build/juceaide/juceaide_artefacts/JuceLibraryCode
+  -I/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/extras/Build
+  -I/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules
+  -std=c++17 -arch arm64 -isysroot
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
+  -g -O0 -Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing
+  -Wuninitialized -Wunused-parameter -Wconversion -Wsign-compare
+  -Wint-conversion -Wconditional-uninitialized -Wconstant-conversion
+  -Wsign-conversion -Wbool-conversion -Wextra-semi -Wunreachable-code
+  -Wcast-align -Wshift-sign-overflow -Wmissing-prototypes
+  -Wnullable-to-nonnull-conversion -Wno-ignored-qualifiers -Wswitch-enum
+  -Wpedantic -Wdeprecated -Wzero-as-null-pointer-constant
+  -Wunused-private-field -Woverloaded-virtual -Wreorder
+  -Winconsistent-missing-destructor-override -MD -MT
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_gui_basics/juce_gui_basics.mm.o
+  -MF
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_gui_basics/juce_gui_basics.mm.o.d
+  -o
+  extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_gui_basics/juce_gui_basics.mm.o
+  -c
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:46:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.h:379:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:225:31:
+  warning: identifier '_px' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    225 | constexpr Grid::Px operator"" _px (long double px)          { return Grid::Px { px }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_px
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:226:31:
+  warning: identifier '_px' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    226 | constexpr Grid::Px operator"" _px (unsigned long long px)   { return Grid::Px { px }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_px
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/layout/juce_Grid.h:227:31:
+  warning: identifier '_fr' preceded by whitespace in a literal operator
+  declaration is deprecated [-Wdeprecated-literal-operator]
+
+    227 | constexpr Grid::Fr operator"" _fr (unsigned long long fr)   { return Grid::Fr { fr }; }
+        |                    ~~~~~~~~~~~^~~
+        |                    operator""_fr
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:110:35:
+  warning: 'CVDisplayLinkCreateWithCGDisplay' is deprecated: first deprecated
+  in macOS 15.0 - use NSView.displayLink(target:selector:),
+  NSWindow.displayLink(target:selector:), or
+  NSScreen.displayLink(target:selector:) [-Wdeprecated-declarations]
+
+    110 |               const auto result = CVDisplayLinkCreateWithCGDisplay (display, &ptr);
+        |                                   ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:89:20:
+  note: 'CVDisplayLinkCreateWithCGDisplay' has been explicitly marked
+  deprecated here
+
+     89 | CV_EXPORT CVReturn CVDisplayLinkCreateWithCGDisplay(
+        |                    ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:128:37:
+  warning: 'CVDisplayLinkSetOutputCallback' is deprecated: first deprecated
+  in macOS 15.0 - use NSView.displayLink(target:selector:),
+  NSWindow.displayLink(target:selector:), or
+  NSScreen.displayLink(target:selector:) [-Wdeprecated-declarations]
+
+    128 |         const auto callbackResult = CVDisplayLinkSetOutputCallback (link.get(), callback, this);
+        |                                     ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:143:20:
+  note: 'CVDisplayLinkSetOutputCallback' has been explicitly marked
+  deprecated here
+
+    143 | CV_EXPORT CVReturn CVDisplayLinkSetOutputCallback( CVDisplayLinkRef CV_NONNULL displayLink, CVDisplayLinkOutputCallback CV_NULLABLE callback, void * CV_NULLABLE userInfo );
+        |                    ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:131:34:
+  warning: 'CVDisplayLinkStart' is deprecated: first deprecated in macOS 15.0
+  - use NSView.displayLink(target:selector:),
+  NSWindow.displayLink(target:selector:), or
+  NSScreen.displayLink(target:selector:) [-Wdeprecated-declarations]
+
+    131 |         const auto startResult = CVDisplayLinkStart (link.get());
+        |                                  ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:164:20:
+  note: 'CVDisplayLinkStart' has been explicitly marked deprecated here
+
+    164 | CV_EXPORT CVReturn CVDisplayLinkStart( CVDisplayLinkRef CV_NONNULL displayLink );
+        |                    ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:138:13:
+  warning: 'CVDisplayLinkStop' is deprecated: first deprecated in macOS 15.0
+  - use NSView.displayLink(target:selector:),
+  NSWindow.displayLink(target:selector:), or
+  NSScreen.displayLink(target:selector:) [-Wdeprecated-declarations]
+
+    138 |             CVDisplayLinkStop (link.get());
+        |             ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:173:20:
+  note: 'CVDisplayLinkStop' has been explicitly marked deprecated here
+
+    173 | CV_EXPORT CVReturn CVDisplayLinkStop( CVDisplayLinkRef CV_NONNULL displayLink );
+        |                    ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:145:48:
+  warning: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' is deprecated:
+  first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:),
+  NSWindow.displayLink(target:selector:), or
+  NSScreen.displayLink(target:selector:) [-Wdeprecated-declarations]
+
+    145 |         const auto nominalVideoRefreshPeriod = CVDisplayLinkGetNominalOutputVideoRefreshPeriod (link.get());
+        |                                                ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:182:18:
+  note: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' has been explicitly
+  marked deprecated here
+
+    182 | CV_EXPORT CVTime CVDisplayLinkGetNominalOutputVideoRefreshPeriod( CVDisplayLinkRef CV_NONNULL displayLink );
+        |                  ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:159:17:
+  warning: 'CVDisplayLinkRelease' is deprecated: first deprecated in macOS
+  15.0 - use NSView.displayLink(target:selector:),
+  NSWindow.displayLink(target:selector:), or
+  NSScreen.displayLink(target:selector:) [-Wdeprecated-declarations]
+
+    159 |                 CVDisplayLinkRelease (ptr);
+        |                 ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:249:16:
+  note: 'CVDisplayLinkRelease' has been explicitly marked deprecated here
+
+    249 | CV_EXPORT void CVDisplayLinkRelease( CV_RELEASES_ARGUMENT CVDisplayLinkRef CV_NULLABLE displayLink );
+        |                ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:304:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:277:47:
+  warning: declaration shadows a local variable [-Wshadow-uncaptured-local]
+
+    277 |                 result.emplace_back (screen, [callbacks = std::move (callbacks)]
+        |                                               ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_PerScreenDisplayLinks.h:270:46:
+  note: previous declaration is here
+
+    270 |                 std::vector<RefreshCallback> callbacks;
+        |                                              ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:306:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_Windowing.mm:370:73:
+  warning: implicit conversion from nullable pointer 'NSEvent * _Nullable' to
+  non-nullable pointer type 'NSEvent * _Nonnull'
+  [-Wnullable-to-nonnull-conversion]
+
+    370 |                                                                  event: event
+        |                                                                         ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_Windowing.mm:425:61:
+  warning: implicit conversion from nullable pointer 'NSEvent * _Nullable' to
+  non-nullable pointer type 'NSEvent * _Nonnull'
+  [-Wnullable-to-nonnull-conversion]
+
+    425 |                                                      event: event
+        |                                                             ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_Windowing.mm:698:33:
+  error: 'CGWindowListCreateImage' is unavailable: obsoleted in macOS 15.0 -
+  Please use ScreenCaptureKit instead.
+
+    698 |         CGImageRef screenShot = CGWindowListCreateImage (CGRectNull,
+        |                                 ^
+
+  
+  /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGWindow.h:271:33:
+  note: 'CGWindowListCreateImage' has been explicitly marked unavailable here
+
+    271 | CG_EXTERN CGImageRef __nullable CGWindowListCreateImage(CGRect screenBounds,
+        |                                 ^
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.mm:26:
+
+
+  In file included from
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp:307:
+
+
+
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_MainMenu.mm:469:22:
+  warning: declaration shadows a static data member of
+  'juce::JuceMainMenuHandler' [-Wshadow]
+
+    469 |         static auto* instance = validatorClass.createInstance();
+        |                      ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_MainMenu.mm:347:33:
+  note: previous declaration is here
+
+    347 |     static JuceMainMenuHandler* instance;
+        |                                 ^
+
+  
+  /Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-release/_deps/juce-src/modules/juce_gui_basics/native/juce_mac_MainMenu.mm:518:36:
+  warning: implicit conversion from nullable pointer 'NSMenuItem * _Nullable'
+  to non-nullable pointer type 'NSMenuItem * _Nonnull'
+  [-Wnullable-to-nonnull-conversion]
+
+    518 |             [parentMenu removeItem:menuItem];
+        |                                    ^
+
+  14 warnings and 1 error generated.
+
+  ninja: build stopped: subcommand failed.
+
+
+
+-- Configuring incomplete, errors occurred!

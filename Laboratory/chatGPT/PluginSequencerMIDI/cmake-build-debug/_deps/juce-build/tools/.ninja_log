@@ -1,0 +1,10 @@
+# ninja log v6
+0	27	1736262002592382890	/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/cmake.verify_globs	ca0eb45d891f9b52
+28	54	1736262002619604701	CMakeFiles/juce_lv2_helper.dir/modules/juce_audio_plugin_client/LV2/juce_LV2TurtleDumpProgram.cpp.o	352f403212b8d10e
+54	84	1736262002645956344	juce_lv2_helper	68c4dc9553fa5d2b
+28	584	1736262002620524662	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_data_structures/juce_data_structures.mm.o	98122ad7300e6851
+28	845	1736262002619961868	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/juce_build_tools/juce_build_tools.cpp.o	7ff26aa16ee7d189
+28	871	1736262002619847160	extras/Build/juceaide/CMakeFiles/juceaide.dir/Main.cpp.o	104c74480d6f67fe
+28	967	1736262002620259994	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_events/juce_events.mm.o	144963e2936c855a
+28	2100	1736262002620425536	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_core/juce_core.mm.o	8ca7bd3041527ffa
+28	2227	1736262002620163744	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_graphics/juce_graphics.mm.o	dd3e8b42c1e78b90
