@@ -1,15 +1,18 @@
-// Include JUCE headers
 #include <JuceHeader.h>
 #include <vector>
 #include <algorithm>
 #include <map>
-#include <juce_audio_basics/juce_audio_basics.h>
+#include <ableton/Link.hpp>
 
 //=============================================================================
 class BasicAudioProcessor : public juce::AudioProcessor
 {
 public:
-    BasicAudioProcessor() {}
+    BasicAudioProcessor() : link(120.0) // Initialize Ableton Link with default BPM
+    {
+        link.enable(true); // Enable Link
+    }
+
     ~BasicAudioProcessor() override {}
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -25,70 +28,28 @@ public:
     {
         buffer.clear();
 
-        // Active Column MIDI output
-        for (int row = 0; row < 24; ++row)
+        // Sync with Ableton Link
+        auto timeline = link.captureAppTimeline();
+        auto quantum = 4.0; // Bars per cycle
+        auto phase = timeline.phaseAtTime(link.clock().micros(), quantum);
+        auto beats = timeline.beatsAtTime(link.clock().micros(), quantum);
+
+        // Output MIDI messages based on the current Link phase
+        for (int column = 0; column < 16; ++column)
         {
-            bool columnActive = false;
-
-            for (int column = 0; column < 16; ++column)
-            {
-                int adjustedRow = (row + scrollOffset) % 24;
-                int adjustedColumn = (column + pageOffset * 8) % 16;
-
-                if (midiGrid[adjustedRow][adjustedColumn])
-                {
-                    columnActive = true;
-                }
-            }
-
-            if (columnActive)
-            {
-                auto message = juce::MidiMessage::noteOn(1, mapColumnToNoteForLightning(column), (juce::uint8)127);
-                message.setTimeStamp(0);
-                midiMessages.addEvent(message, 0);
-
-                auto noteOff = juce::MidiMessage::noteOff(1, mapRowToNoteForLightning(row));
-                midiMessages.addEvent(noteOff, 10);
-            }
-        }
-
-        // Process incoming MIDI messages
-        for (const auto metadata : midiMessages)
-        {
-            const auto message = metadata.getMessage();
-            if (message.isNoteOnOrOff())
-            {
-                int note = message.getNoteNumber();
-                int row = (mapNoteToRow(note) + scrollOffset) % 24; // Adjust for 24 rows (2 octaves)
-                int column = (mapNoteToColumn(note) + pageOffset * 8) % 16; // Adjust for 16 columns (2 pages)
-
-                if (row >= 0 && column >= 0)
-                {
-                    if (message.isNoteOn())
-                        midiGrid[column][row] = true;
-                    else if (message.isNoteOff())
-                        midiGrid[column][row] = false;
-                }
-            }
-        }
-
-        // Generate MIDI output from the grid
-        for (int column = 0; column < 16; ++column) // Iterate over all 16 columns
-        {
-            for (int row = 0; row < 24; ++row) // Iterate over all 24 rows
+            for (int row = 0; row < 24; ++row)
             {
                 int adjustedColumn = column;
                 int adjustedRow = (row + scrollOffset) % 24;
-                if (midiGrid[adjustedColumn][adjustedRow])
+
+                if (midiGrid[adjustedColumn][adjustedRow] && static_cast<int>(beats) % 16 == column)
                 {
                     auto message = juce::MidiMessage::noteOn(1, mapRowColumnToNote(adjustedRow, adjustedColumn), (juce::uint8)127);
-                    message.setTimeStamp((double)column);
-                    midiMessages.addEvent(message, (int)(column * (buffer.getNumSamples() / 16.0)));
+                    message.setTimeStamp(phase);
+                    midiMessages.addEvent(message, 0);
 
-                    // Add note-off for the same note later
                     auto noteOff = juce::MidiMessage::noteOff(1, mapRowColumnToNote(adjustedRow, adjustedColumn));
-                    noteOff.setTimeStamp((double)(column + 1));
-                    midiMessages.addEvent(noteOff, (int)((column + 1) * (buffer.getNumSamples() / 16.0)));
+                    midiMessages.addEvent(noteOff, 10);
                 }
             }
         }
@@ -134,6 +95,7 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override {}
 
 private:
+    ableton::Link link;
     std::array<std::array<bool, 24>, 16> midiGrid; // Grid for 16 steps (2 pages) and 24 rows (2 octaves)
     int scrollOffset = 0; // Scroll offset for rows
     int pageOffset = 0;  // Page offset for columns
@@ -173,11 +135,6 @@ private:
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
         };
         return rowToNote[row + column * 24]; // Adjust for 24 rows
-    }
-
-    int mapColumnToNoteForLightning(int column)
-    {
-        return 60 + column; // Map columns to MIDI notes starting at middle C // Map rows to MIDI notes (starting at middle C)
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BasicAudioProcessor)
