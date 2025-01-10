@@ -1,3 +1,0 @@
-/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir
-/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/edit_cache.dir
-/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/rebuild_cache.dir
