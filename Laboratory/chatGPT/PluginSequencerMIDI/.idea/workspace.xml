@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Release" ENABLED="true" CONFIG_NAME="Release" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="281a5182-0896-40e5-8cfb-1e5a2050a971" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PluginSequencerMIDI.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PluginProcessor.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/3.31.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/3.31.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Export/5748570a9df4d816050333fed8cb462b/LV2_HELPER-debug.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Export/5748570a9df4d816050333fed8cb462b/LV2_HELPER.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Progress/1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Progress/2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Progress/5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/Progress/count.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/compiler_depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/JUCEConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/JUCEConfigVersion.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/JUCEExportConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/JUCEToolsExport.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/compiler_depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/extras/Build/juceaide/juceaide_artefacts/JuceLibraryCode/Debug/Defs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/juce_lv2_helper" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/modules/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/modules/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/modules/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-build/tools/modules/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-src" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/3.31.3/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/CMakeRuleHashes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate-complete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/Labels.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/Labels.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-configure" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-done" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-gitclone-lastrun.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-gitinfo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-install" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-mkdir" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-patch-info.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-update-info.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-cfgcmd.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-gitclone.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-gitupdate.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-mkdirs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/cache-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/toolchains-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/.ninja_deps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/.ninja_log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/3.31.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Export/5748570a9df4d816050333fed8cb462b/LV2_HELPER-debug.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Export/5748570a9df4d816050333fed8cb462b/LV2_HELPER.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Progress/1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Progress/2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Progress/3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Progress/4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Progress/5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/Progress/count.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/juce_lv2_helper.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/CMakeFiles/rules.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/JUCEConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/JUCEConfigVersion.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/JUCEExportConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/JUCEToolsExport.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/build.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/juceaide.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/extras/Build/juceaide/juceaide_artefacts/JuceLibraryCode/Debug/Defs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/juce_lv2_helper" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/modules/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/modules/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/modules/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-build/tools/modules/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-src" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/.ninja_log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/3.31.3/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/CMakeRuleHashes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate-complete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/Labels.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/Labels.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeFiles/rules.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/build.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-configure" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-done" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-gitclone-lastrun.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-gitinfo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-install" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-mkdir" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-patch-info.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-update-info.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-cfgcmd.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-gitclone.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-gitupdate.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-mkdirs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/.cmake/api/v1/query/cache-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/.cmake/api/v1/query/toolchains-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/clion-Release-log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/clion-environment.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/.ninja_deps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/.ninja_log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/Export/5748570a9df4d816050333fed8cb462b/LV2_HELPER-debug.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/Export/5748570a9df4d816050333fed8cb462b/LV2_HELPER.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/VerifyGlobs.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/cmake.verify_globs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/CMakeFiles/rules.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/JUCEConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/JUCEConfigVersion.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/JUCEExportConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/JUCEToolsExport.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/build.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/extras/Build/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/extras/Build/juceaide/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/extras/Build/juceaide/juceaide_artefacts/JuceLibraryCode/Debug/Defs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/juce_lv2_helper" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-build/tools/modules/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-src" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/.ninja_log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/3.30.5/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/juce-populate-complete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/Labels.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/juce-populate.dir/Labels.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeFiles/rules.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/build.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-configure" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-done" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-gitclone-lastrun.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-gitinfo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-install" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-mkdir" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-patch-info.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/src/juce-populate-stamp/juce-populate-update-info.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-cfgcmd.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-gitclone.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-gitupdate.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/_deps/juce-subbuild/juce-populate-prefix/tmp/juce-populate-mkdirs.cmake" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2024" />
+    <option name="minorVersion" value="3.1.1" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2rH9myVc94FDXSlvKFsVUTOfhb4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/tompeakwalcher/Documents/develop/apcStepper/Laboratory/chatGPT/PluginSequencerMIDI",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="281a5182-0896-40e5-8cfb-1e5a2050a971" name="Changes" comment="" />
+      <created>1736205295605</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736205295605</updated>
+      <workItem from="1736205296659" duration="12047000" />
+      <workItem from="1736522387323" duration="8000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
+  </component>
+</project>
