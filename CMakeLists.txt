@@ -1,5 +1,31 @@
 cmake_minimum_required(VERSION 3.15)
 
+# Get the current Git commit hash
+execute_process(
+    COMMAND git rev-parse --short HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Get the latest Git tag
+execute_process(
+    COMMAND git describe --tags --abbrev=0
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Check the hostname and set AAX_SDK_PATH if it matches "abc-jv.local"
+execute_process(
+		COMMAND uname -n
+		OUTPUT_VARIABLE HOSTNAME
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+
+
+
 project(apcStepper VERSION 1.0)
 
 # JUCE Setup
