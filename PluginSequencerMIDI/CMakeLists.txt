@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(PluginSequecerMIDI VERSION 1.0.0)
+project(PluginSequencerMIDI VERSION 1.0.0)
 set(VERBOSE)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,7 +28,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(tracktion_engine)
 
 juce_add_plugin(
-        PluginSequecerMIDI
+        PluginSequencerMIDI
         COMPANY_NAME "enabled.io"
         IS_SYNTH FALSE
         NEEDS_MIDI_INPUT TRUE
@@ -41,7 +41,61 @@ juce_add_plugin(
         FORMATS AU VST3 Standalone
 )
 
-target_link_libraries(PluginSequecerMIDI PRIVATE
+
+# Sets the minimum macOS version
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	message("Building on MacOS (Darwin)")
+    set(CMAKE_XCODE_GENERATE_SCHEME “TRUE”)
+	# Configures universal binaries in CI
+    set(CMAKE_OSX_ARCHITECTURES arm64 x86_64 )
+	set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum version of the target platform" FORCE)
+	target_link_options(PluginSequencerMIDI INTERFACE -Wl )
+	if(CMAKE_OSX_DEPLOYMENT_TARGET)
+		message("The minimum macOS version is set to " $CACHE{CMAKE_OSX_DEPLOYMENT_TARGET}.)
+	endif()
+else ()
+	message("Building on Windows")
+	set(FORMATS VST3)
+endif ()
+
+
+# C++20, please
+# Use cxx_std_23 for C++23 (as of CMake v 3.20)
+target_compile_features(PluginSequencerMIDI INTERFACE cxx_std_20)
+
+
+# This is where you can set preprocessor definitions for JUCE and your plugin
+target_compile_definitions(PluginSequencerMIDI
+    INTERFACE
+
+    # JUCE_WEB_BROWSER and JUCE_USE_CURL off by default
+    JUCE_WEB_BROWSER=0  # If you set this to 1, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_plugin` call
+    JUCE_USE_CURL=0     # If you set this to 1, add `NEEDS_CURL TRUE` to the `juce_add_plugin` call
+    JUCE_VST3_CAN_REPLACE_VST2=0
+    JUCE_MODAL_LOOPS_PERMITTED=1
+
+    # Uncomment if you are paying for a an Indie/Pro license or releasing under GPLv3
+    # JUCE_DISPLAY_SPLASH_SCREEN=0
+
+    # lets the app known if we're Debug or Release
+    CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+    VERSION="${CURRENT_VERSION}"
+
+    # Add compile definitions to pass the Git hash and tag as preprocessor macros
+    BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
+    BUILD_TAG="${GIT_TAG}"
+
+	# Enable this to profile
+	# PERFETTO=1
+
+    # JucePlugin_Name is for some reason doesn't use the nicer PRODUCT_NAME
+    PRODUCT_NAME_WITHOUT_VERSION="apcStepper"
+)
+
+
+
+
+target_link_libraries(PluginSequencerMIDI PRIVATE
         tracktion::tracktion_core
         tracktion::tracktion_engine
         tracktion::tracktion_graph
@@ -63,7 +117,7 @@ target_link_libraries(PluginSequecerMIDI PRIVATE
 )
 
 
-target_sources(PluginSequecerMIDI PRIVATE
+target_sources(PluginSequencerMIDI PRIVATE
 #        ${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.h
 #        ${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginEditor.cpp
