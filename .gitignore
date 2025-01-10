@@ -24,4 +24,4 @@ cmake-build-release/**
 PluginSequencerMIDI/build/**
 PluginSequencerMIDI/cmake-build-debug/**
 PluginSequencerMIDI/cmake-build-release/**
-
+**/*.DS_Store
