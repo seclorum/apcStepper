@@ -1,0 +1,1368 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "PluginSequecerMIDI_artefacts/Release/libPluginSequecerMIDI_SharedCode.a"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"juce_add_plugin",
+			"target_link_libraries",
+			"_juce_configure_plugin_targets",
+			"target_compile_definitions",
+			"_juce_add_plugin_definitions",
+			"target_include_directories",
+			"_juce_initialise_target",
+			"target_sources"
+		],
+		"files" : 
+		[
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake",
+			"CMakeLists.txt",
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEModuleSupport.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 30,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 2178,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 44,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 2181,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 1489,
+				"parent" : 4
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1516,
+				"parent" : 4
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1535,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1507,
+				"parent" : 4
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 313,
+				"parent" : 8
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 2180,
+				"parent" : 1
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 2099,
+				"parent" : 17
+			},
+			{
+				"command" : 8,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-O3 -DNDEBUG -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=10.13 -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-O3"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-flto"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshadow-all"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshorten-64-to-32"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wstrict-aliasing"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wuninitialized"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wunused-parameter"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wconversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wsign-compare"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wint-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wconditional-uninitialized"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wconstant-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wsign-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wbool-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wextra-semi"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wunreachable-code"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wcast-align"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshift-sign-overflow"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wmissing-prototypes"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wnullable-to-nonnull-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wno-ignored-qualifiers"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wswitch-enum"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wdeprecated"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wfloat-equal"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wmissing-field-initializers"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wzero-as-null-pointer-constant"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wunused-private-field"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Woverloaded-virtual"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wreorder"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Winconsistent-missing-destructor-override"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_basics=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_devices=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_formats=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_processors=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_utils=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_core=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_data_structures=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_dsp=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_events=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_graphics=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_gui_basics=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_gui_extra=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_opengl=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_osc=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_tracktion_core=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_tracktion_engine=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_tracktion_graph=1"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "JUCE_SHARED_CODE=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXCategory=65536"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXDisableBypass=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXDisableMultiMono=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXIdentifier=com.enabled.io.PluginSequecerMIDI"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXProductId=JucePlugin_PluginCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARACompatibleArchiveIDs=\"\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARAContentTypes=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARADocumentArchiveID=\"com.enabled.io.PluginSequecerMIDI.aradocumentarchive.1\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARAFactoryID=\"com.enabled.io.PluginSequecerMIDI.arafactory.1.0.0\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARATransformationFlags=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUExportPrefix=PluginSequecerMIDIAU"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUExportPrefixQuoted=\"PluginSequecerMIDIAU\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUMainType='aumi'"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUSubType=JucePlugin_PluginCode"
+				},
+				{
+					"backtrace" : 9,
+					"define" : "JucePlugin_Build_AAX=0"
+				},
+				{
+					"backtrace" : 10,
+					"define" : "JucePlugin_Build_AU=1"
+				},
+				{
+					"backtrace" : 11,
+					"define" : "JucePlugin_Build_AUv3=0"
+				},
+				{
+					"backtrace" : 12,
+					"define" : "JucePlugin_Build_LV2=0"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "JucePlugin_Build_Standalone=1"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "JucePlugin_Build_Unity=0"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "JucePlugin_Build_VST3=1"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "JucePlugin_Build_VST=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_CFBundleIdentifier=com.enabled.io.PluginSequecerMIDI"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Desc=\"PluginSequecerMIDI\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_EditorRequiresKeyboardFocus=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Enable_ARA=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_IsMidiEffect=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_IsSynth=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Manufacturer=\"enabled.io\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ManufacturerCode=0x454e494f"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ManufacturerEmail=\"\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ManufacturerWebsite=\"\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Name=\"PluginSequecerMIDI\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_PluginCode=0x53455131"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ProducesMidiOutput=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTCategory=kPlugCategEffect"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTNumMidiInputs=16"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTNumMidiOutputs=16"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTUniqueID=JucePlugin_PluginCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Version=1.0.0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VersionCode=0x10000"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VersionString=\"1.0.0\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Vst3Category=\"Fx\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_WantsMidiInput=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "NDEBUG=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "_NDEBUG=1"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 18,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-release/PluginSequecerMIDI_artefacts/JuceLibraryCode"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/VST3_SDK"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/lv2"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/serd"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/sord"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/sord/src"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/sratom"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/lilv"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/lilv/src"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					5,
+					3
+				],
+				"standard" : "20"
+			},
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-O3 -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=10.13 -fPIC -fvisibility=hidden -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-O3"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-flto"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshadow-all"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshorten-64-to-32"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wstrict-aliasing"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wuninitialized"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wunused-parameter"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wconversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wsign-compare"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wint-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wconditional-uninitialized"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wconstant-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wsign-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wbool-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wextra-semi"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wunreachable-code"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wcast-align"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshift-sign-overflow"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wmissing-prototypes"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wnullable-to-nonnull-conversion"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wno-ignored-qualifiers"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wswitch-enum"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wdeprecated"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wfloat-equal"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wmissing-field-initializers"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_basics=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_devices=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_formats=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_processors=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_audio_utils=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_core=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_data_structures=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_dsp=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_events=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_graphics=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_gui_basics=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_gui_extra=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_opengl=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_juce_osc=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_tracktion_core=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_tracktion_engine=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "JUCE_MODULE_AVAILABLE_tracktion_graph=1"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "JUCE_SHARED_CODE=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXCategory=65536"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXDisableBypass=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXDisableMultiMono=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXIdentifier=com.enabled.io.PluginSequecerMIDI"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AAXProductId=JucePlugin_PluginCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARACompatibleArchiveIDs=\"\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARAContentTypes=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARADocumentArchiveID=\"com.enabled.io.PluginSequecerMIDI.aradocumentarchive.1\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARAFactoryID=\"com.enabled.io.PluginSequecerMIDI.arafactory.1.0.0\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ARATransformationFlags=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUExportPrefix=PluginSequecerMIDIAU"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUExportPrefixQuoted=\"PluginSequecerMIDIAU\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUMainType='aumi'"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_AUSubType=JucePlugin_PluginCode"
+				},
+				{
+					"backtrace" : 9,
+					"define" : "JucePlugin_Build_AAX=0"
+				},
+				{
+					"backtrace" : 10,
+					"define" : "JucePlugin_Build_AU=1"
+				},
+				{
+					"backtrace" : 11,
+					"define" : "JucePlugin_Build_AUv3=0"
+				},
+				{
+					"backtrace" : 12,
+					"define" : "JucePlugin_Build_LV2=0"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "JucePlugin_Build_Standalone=1"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "JucePlugin_Build_Unity=0"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "JucePlugin_Build_VST3=1"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "JucePlugin_Build_VST=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_CFBundleIdentifier=com.enabled.io.PluginSequecerMIDI"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Desc=\"PluginSequecerMIDI\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_EditorRequiresKeyboardFocus=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Enable_ARA=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_IsMidiEffect=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_IsSynth=0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Manufacturer=\"enabled.io\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ManufacturerCode=0x454e494f"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ManufacturerEmail=\"\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ManufacturerWebsite=\"\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Name=\"PluginSequecerMIDI\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_PluginCode=0x53455131"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_ProducesMidiOutput=1"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTCategory=kPlugCategEffect"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTNumMidiInputs=16"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTNumMidiOutputs=16"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VSTUniqueID=JucePlugin_PluginCode"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Version=1.0.0"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VersionCode=0x10000"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_VersionString=\"1.0.0\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_Vst3Category=\"Fx\""
+				},
+				{
+					"backtrace" : 7,
+					"define" : "JucePlugin_WantsMidiInput=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "NDEBUG=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "_NDEBUG=1"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 18,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-release/PluginSequecerMIDI_artefacts/JuceLibraryCode"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/VST3_SDK"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/lv2"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/serd"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/sord"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/sord/src"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/sratom"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/lilv"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/format_types/LV2_SDK/lilv/src"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				7
+			]
+		}
+	],
+	"folder" : 
+	{
+		"name" : "PluginSequecerMIDI"
+	},
+	"id" : "PluginSequecerMIDI::@6890427a1f51a3e7e1df",
+	"name" : "PluginSequecerMIDI",
+	"nameOnDisk" : "libPluginSequecerMIDI_SharedCode.a",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 19,
+			"path" : "Source/PluginProcessor.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/juce_audio_processors_ara.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_processors/juce_audio_processors.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_gui_extra/juce_gui_extra.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_gui_basics/juce_gui_basics.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_graphics/juce_graphics_Harfbuzz.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_graphics/juce_graphics_Sheenbidi.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_graphics/juce_graphics.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_events/juce_events.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_core/juce_core_CompilationTime.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_core/juce_core.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_data_structures/juce_data_structures.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_basics/juce_audio_basics.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_core/tracktion_core.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_formats/juce_audio_formats.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_airwindows_1.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_airwindows_2.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_airwindows_3.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_audio_files.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_model_1.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_model_2.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_playback.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_plugins.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_timestretch.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine/tracktion_engine_utils.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_devices/juce_audio_devices.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_audio_utils/juce_audio_utils.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_dsp/juce_dsp.mm",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_osc/juce_osc.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_graph/tracktion_graph.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/modules/juce_opengl/juce_opengl.mm",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

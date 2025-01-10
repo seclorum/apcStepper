@@ -1,0 +1,170 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "_deps/tracktion_engine-build/examples/DemoRunner/libDemoRunnerBinaryData.a"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"juce_add_binary_data",
+			"target_compile_features",
+			"target_sources"
+		],
+		"files" : 
+		[
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake",
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/examples/DemoRunner/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 39,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 447,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 490,
+				"parent" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 488,
+				"parent" : 1
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=10.13 -fPIC -fcolor-diagnostics"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					3
+				],
+				"standard" : "20"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4
+			]
+		}
+	],
+	"id" : "DemoRunnerBinaryData::@6cfcaa3c64c68873b456",
+	"name" : "DemoRunnerBinaryData",
+	"nameOnDisk" : "libDemoRunnerBinaryData.a",
+	"paths" : 
+	{
+		"build" : "_deps/tracktion_engine-build/examples/DemoRunner",
+		"source" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/examples/DemoRunner"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				5
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				6
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData1.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData2.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData3.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData4.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData5.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/_deps/tracktion_engine-build/examples/DemoRunner/juce_binarydata_DemoRunnerBinaryData/JuceLibraryCode/BinaryData1.cpp.rule",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

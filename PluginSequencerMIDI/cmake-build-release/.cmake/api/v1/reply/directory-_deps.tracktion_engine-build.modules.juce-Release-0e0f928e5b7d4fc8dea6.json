@@ -1,0 +1,60 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 160,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/JUCE-8.0.4",
+			"paths" : 
+			[
+				"cmake-build-release/_deps/tracktion_engine-build/modules/juce/JUCEConfigVersion.cmake",
+				"cmake-build-release/_deps/tracktion_engine-build/modules/juce/JUCEConfig.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCECheckAtomic.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEHelperTargets.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEModuleSupport.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JuceLV2Defines.h.in",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/LaunchScreen.storyboard",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/PIPAudioProcessor.cpp.in",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/PIPAudioProcessorWithARA.cpp.in",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/PIPComponent.cpp.in",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/PIPConsole.cpp.in",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/RecentFilesMenuTemplate.nib",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/UnityPluginGUIScript.cs.in",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/checkBundleSigning.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/copyDir.cmake",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/juce_runtime_arch_detection.cpp",
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/juce_LinuxSubprocessHelper.cpp"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "_deps/tracktion_engine-build/modules/juce",
+		"source" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce"
+	}
+}

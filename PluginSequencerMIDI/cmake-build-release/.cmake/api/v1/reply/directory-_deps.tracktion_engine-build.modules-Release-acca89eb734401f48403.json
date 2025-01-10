@@ -1,0 +1,102 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install",
+			"juce_add_module",
+			"juce_add_modules"
+		],
+		"files" : 
+		[
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEModuleSupport.cmake",
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 24,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 686,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 673,
+				"parent" : 2
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 686,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 673,
+				"parent" : 4
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 686,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 673,
+				"parent" : 6
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 3,
+			"component" : "Unspecified",
+			"destination" : "include/JUCE-/modules",
+			"paths" : 
+			[
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_core"
+			],
+			"type" : "directory"
+		},
+		{
+			"backtrace" : 5,
+			"component" : "Unspecified",
+			"destination" : "include/JUCE-/modules",
+			"paths" : 
+			[
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_engine"
+			],
+			"type" : "directory"
+		},
+		{
+			"backtrace" : 7,
+			"component" : "Unspecified",
+			"destination" : "include/JUCE-/modules",
+			"paths" : 
+			[
+				"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/tracktion_graph"
+			],
+			"type" : "directory"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "_deps/tracktion_engine-build/modules",
+		"source" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules"
+	}
+}

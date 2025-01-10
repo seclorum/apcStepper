@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/CMakeFiles/tracktion_engine-populate"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/CMakeFiles/tracktion_engine-populate.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/CMakeFiles/tracktion_engine-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-build.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-download.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-install.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-test.rule"
+		},
+		{
+			"file" : "/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug/_deps/tracktion_engine-subbuild/tracktion_engine-populate-prefix/src/tracktion_engine-populate-stamp/tracktion_engine-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"tracktion_engine-populate"
+		],
+		"name" : "tracktion_engine-populate"
+	}
+}

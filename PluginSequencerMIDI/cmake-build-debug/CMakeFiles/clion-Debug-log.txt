@@ -1,0 +1,46 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S /Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI -B /Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug
+-- The C compiler identification is AppleClang 16.0.0.16000026
+-- The CXX compiler identification is AppleClang 16.0.0.16000026
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Target architectures: 
+-- Deployment target: 
+-- macOS RPATH enabled: ON
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+Adding Benchmarks to the tracktion project
+-- Not building with VST2
+Adding TestRunner to the tracktion project
+-- Not building with VST2
+Adding DemoRunner to the tracktion project
+-- Not building with VST2
+Adding EngineInPluginDemo to the tracktion project
+-- Not building with VST2
+CMake Warning at /Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake:1337 (message):
+  LV2URI should be well-formed with an 'http' or 'urn' prefix.  Check the
+  LV2URI argument to juce_add_plugin.
+Call Stack (most recent call first):
+  /Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake:1451 (_juce_set_plugin_target_properties)
+  /Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake:1588 (_juce_link_plugin_wrapper)
+  /Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake:2181 (_juce_configure_plugin_targets)
+  /Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake:2312 (juce_add_plugin)
+  /Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/examples/EngineInPluginDemo/CMakeLists.txt:34 (juce_add_pip)
+
+
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Configuring done (11.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-debug

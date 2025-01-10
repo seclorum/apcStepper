@@ -1,0 +1,162 @@
+{
+	"backtrace" : 4,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"_juce_configure_plugin_targets",
+			"juce_add_plugin",
+			"juce_add_pip",
+			"add_dependencies",
+			"_juce_link_plugin_wrapper"
+		],
+		"files" : 
+		[
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/modules/juce/extras/Build/CMake/JUCEUtils.cmake",
+			"/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/examples/EngineInPluginDemo/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 34,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 2312,
+				"parent" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 2181,
+				"parent" : 2
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 1584,
+				"parent" : 3
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1588,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1443,
+				"parent" : 5
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1588,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1443,
+				"parent" : 7
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1588,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1443,
+				"parent" : 9
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1588,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1443,
+				"parent" : 11
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1588,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1443,
+				"parent" : 13
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1588,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1443,
+				"parent" : 15
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 6,
+			"id" : "EngineInPluginDemo_Standalone::@e12aca8380c2f0b7d653"
+		},
+		{
+			"backtrace" : 8,
+			"id" : "EngineInPluginDemo_AU::@e12aca8380c2f0b7d653"
+		},
+		{
+			"backtrace" : 10,
+			"id" : "EngineInPluginDemo_LV2::@e12aca8380c2f0b7d653"
+		},
+		{
+			"backtrace" : 12,
+			"id" : "EngineInPluginDemo_Unity::@e12aca8380c2f0b7d653"
+		},
+		{
+			"backtrace" : 14,
+			"id" : "EngineInPluginDemo_VST3::@e12aca8380c2f0b7d653"
+		},
+		{
+			"backtrace" : 16,
+			"id" : "EngineInPluginDemo_AAX::@e12aca8380c2f0b7d653"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "EngineInPluginDemo"
+	},
+	"id" : "EngineInPluginDemo_All::@e12aca8380c2f0b7d653",
+	"name" : "EngineInPluginDemo_All",
+	"paths" : 
+	{
+		"build" : "_deps/tracktion_engine-build/examples/EngineInPluginDemo",
+		"source" : "/Users/tompeakwalcher/Documents/develop/apcStepper/modules/tracktion_engine/examples/EngineInPluginDemo"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

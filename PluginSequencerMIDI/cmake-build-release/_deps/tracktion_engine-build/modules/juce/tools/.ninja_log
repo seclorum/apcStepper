@@ -1,0 +1,13 @@
+# ninja log v6
+0	33	1736522135888332499	/Users/tompeakwalcher/Documents/develop/apcStepper/PluginSequencerMIDI/cmake-build-release/_deps/tracktion_engine-build/modules/juce/tools/CMakeFiles/cmake.verify_globs	b4391e701694084e
+47	104	1736522135935413048	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_core/juce_core_CompilationTime.cpp.o	2752614ec1e8b2f5
+42	230	1736522135934115791	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_graphics/juce_graphics_Sheenbidi.c.o	9e342a681f7f6fa5
+49	1201	1736522135936928348	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_data_structures/juce_data_structures.mm.o	febe5528c76692ef
+38	1524	1736522135929703142	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/juce_build_tools/juce_build_tools.cpp.o	14e52fefc69bb128
+38	1600	1736522135925612870	extras/Build/juceaide/CMakeFiles/juceaide.dir/Main.cpp.o	7dd3fbb3703670b1
+46	1702	1736522135934354001	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_events/juce_events.mm.o	a69bbc8507226d37
+49	2757	1736522135936804014	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_core/juce_core.mm.o	bced64dcec62be2
+46	4333	1736522135934259708	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_graphics/juce_graphics.mm.o	3c28989f529a7b76
+42	4514	1736522135930189395	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o	5d63cb8ad18cf652
+42	8804	1736522135930006435	extras/Build/juceaide/CMakeFiles/juceaide.dir/__/__/__/modules/juce_gui_basics/juce_gui_basics.mm.o	682820c52fd23d86
+8804	8927	1736522144691993672	extras/Build/juceaide/juceaide_artefacts/Debug/juceaide	f70c5dad3c64848c
