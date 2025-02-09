@@ -33,7 +33,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	#		message("The minimum macOS version is set to " $CACHE{CMAKE_OSX_DEPLOYMENT_TARGET}.)
 	#	endif()
 #	set(CMAKE_MACOSX_RPATH ON)
-#	message(STATUS "macOS RPATH enabled: ${CMAKE_MACOSX_RPATH}")
+	#	message(STATUS "macOS RPATH enabled: ${CMAKE_MACOSX_RPATH}")
 	# set(CMAKE_XCODE_GENERATE_SCHEME “TRUE”)
 	# set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum version of the target platform" FORCE)
 else ()
@@ -41,10 +41,12 @@ else ()
 	set(FORMATS VST3)
 endif ()
 
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR is: ${CMAKE_CURRENT_SOURCE_DIR}")
+
 target_sources(PluginSequencerMIDI PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessorEditor.h
 		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.h
-		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessorEditor.h
 )
 
 

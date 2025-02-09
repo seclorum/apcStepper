@@ -30,6 +30,8 @@
 #include <map>
 // #include <ableton/Link.hpp>
 
+#include "PluginProcessor.h"
+
 //==============================================================================
 class apcSequencerProcessorEditor : public juce::AudioProcessorEditor
 {

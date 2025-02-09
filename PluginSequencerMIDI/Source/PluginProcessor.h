@@ -29,13 +29,18 @@
 #include <vector>
 #include <map>
 
+//#include <ableton/Link.hpp>
+
+
+#include "PluginProcessorEditor.h"
+
 //=============================================================================
 class apcSequencerProcessor : public juce::AudioProcessor
 {
 public:
-    apcSequencerProcessor() : link(120.0) // Initialize Ableton Link with default BPM
+    apcSequencerProcessor() //: link(120.0) // Initialize Ableton Link with default BPM
     {
-        link.enable(true); // Enable Link
+//        link.enable(true); // Enable Link
     }
 
     ~apcSequencerProcessor() override {}
@@ -58,15 +63,16 @@ public:
     {
         buffer.clear();
 
+#if 0 // COMMENT OUT UNTIL ABLETON IS INTEGRATED
+
         // Sync with Ableton Link
-        auto timeline = link.captureAppTimeline();
+  //      auto timeline = link.captureAppTimeline();
         auto quantum = 4.0; // Bars per cycle
         auto phase = timeline.phaseAtTime(link.clock().micros(), quantum);
         auto beats = timeline.beatsAtTime(link.clock().micros(), quantum);
 
         // Output MIDI messages based on the current Link phase
-        for (int column = 0; column < 16; ++column)
-        {
+        for (int column = 0; column < 16; ++column) {
             for (int row = 0; row < 24; ++row)
             {
                 int adjustedColumn = column;
@@ -87,6 +93,8 @@ public:
                 }
             }
         }
+#endif
+
     }
 
     void scrollGridUp()
@@ -109,7 +117,7 @@ public:
         pageOffset = std::min(1, pageOffset + 1);
     }
 
-    juce::AudioProcessorEditor* createEditor() override { return new apcSequencerProcessorEditor(*this); }
+    //juce::AudioProcessorEditor* createEditor() override { return new apcSequencerProcessorEditor(*this); }
     bool hasEditor() const override { return true; }
 
     const juce::String getName() const override { return "apcSequencerPlugin"; }
@@ -129,7 +137,7 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override {}
 
 private:
-    ableton::Link link;
+    //ableton::Link link;
     std::array<std::array<bool, 24>, 16> midiGrid; // Grid for 16 steps and 24 rows
     int scrollOffset = 0; // Scroll offset for rows
     int pageOffset = 0;  // Page offset for columns
