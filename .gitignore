@@ -25,7 +25,9 @@ cmake-build-release/**
 PluginSequencerMIDI/build/**
 PluginSequencerMIDI/cmake-build-debug/**
 PluginSequencerMIDI/cmake-build-release/**
+PluginSequencerMIDI/modules
 PluginSequencerMIDI/modules/
 PluginSequencerMIDI/modules/**
 **/*.DS_Store
 modules/**
+modules
