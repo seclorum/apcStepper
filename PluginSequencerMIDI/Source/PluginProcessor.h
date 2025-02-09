@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-#include <ableton/Link.hpp>
+// #include <ableton/Link.hpp>
 
 //=============================================================================
 class apcSequencerProcessor : public juce::AudioProcessor
@@ -15,18 +15,14 @@ public:
 
     ~apcSequencerProcessor() override {}
 
-
-
-    //==============================================================================
-    AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-    {
-        return new apcSequencerProcessor();
-    }
-
-
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
     {
-        midiGrid.fill(false); // Initialize the MIDI grid
+        // Corrected: Properly initialize the MIDI grid
+        for (auto& row : midiGrid)
+        {
+            row.fill(false);
+        }
+
         scrollOffset = 0; // Initialize scroll offset
         pageOffset = 0; // Initialize page offset
     }
@@ -51,7 +47,11 @@ public:
                 int adjustedColumn = column;
                 int adjustedRow = (row + scrollOffset) % 24;
 
-                if (midiGrid[adjustedColumn][adjustedRow] && static_cast<int>(beats) % 16 == column)
+                // Fixed: Check for valid array index boundaries
+                if (adjustedColumn >= 0 && adjustedColumn < 16 &&
+                    adjustedRow >= 0 && adjustedRow < 24 &&
+                    midiGrid[adjustedColumn][adjustedRow] &&
+                    static_cast<int>(beats) % 16 == column)
                 {
                     auto message = juce::MidiMessage::noteOn(1, mapRowColumnToNote(adjustedRow, adjustedColumn), (juce::uint8)127);
                     message.setTimeStamp(phase);
@@ -84,7 +84,7 @@ public:
         pageOffset = std::min(1, pageOffset + 1);
     }
 
-    juce::AudioProcessorEditor* createEditor() override { return new BasicAudioProcessorEditor(*this); }
+    juce::AudioProcessorEditor* createEditor() override { return new apcSequencerProcessorEditor(*this); }
     bool hasEditor() const override { return true; }
 
     const juce::String getName() const override { return "apcSequencerPlugin"; }
@@ -105,45 +105,13 @@ public:
 
 private:
     ableton::Link link;
-    std::array<std::array<bool, 24>, 16> midiGrid; // Grid for 16 steps (2 pages) and 24 rows (2 octaves)
+    std::array<std::array<bool, 24>, 16> midiGrid; // Grid for 16 steps and 24 rows
     int scrollOffset = 0; // Scroll offset for rows
     int pageOffset = 0;  // Page offset for columns
 
-    int mapNoteToRow(int note)
-    {
-        static std::map<int, int> noteToRowMap = {
-            {0x38, 0}, {0x39, 1}, {0x3A, 2}, {0x3B, 3}, {0x3C, 4}, {0x3D, 5}, {0x3E, 6}, {0x3F, 7},
-            {0x30, 0}, {0x31, 1}, {0x32, 2}, {0x33, 3}, {0x34, 4}, {0x35, 5}, {0x36, 6}, {0x37, 7},
-            {0x28, 0}, {0x29, 1}, {0x2A, 2}, {0x2B, 3}, {0x2C, 4}, {0x2D, 5}, {0x2E, 6}, {0x2F, 7},
-            {0x20, 0}, {0x21, 1}, {0x22, 2}, {0x23, 3}, {0x24, 4}, {0x25, 5}, {0x26, 6}, {0x27, 7},
-            {0x18, 0}, {0x19, 1}, {0x1A, 2}, {0x1B, 3}, {0x1C, 4}, {0x1D, 5}, {0x1E, 6}, {0x1F, 7},
-            {0x10, 0}, {0x11, 1}, {0x12, 2}, {0x13, 3}, {0x14, 4}, {0x15, 5}, {0x16, 6}, {0x17, 7},
-            {0x08, 0}, {0x09, 1}, {0x0A, 2}, {0x0B, 3}, {0x0C, 4}, {0x0D, 5}, {0x0E, 6}, {0x0F, 7},
-            {0x00, 0}, {0x01, 1}, {0x02, 2}, {0x03, 3}, {0x04, 4}, {0x05, 5}, {0x06, 6}, {0x07, 7}
-        };
-
-        auto it = noteToRowMap.find(note);
-        return (it != noteToRowMap.end()) ? it->second : -1;
-    }
-
-    int mapNoteToColumn(int note)
-    {
-        return (note >= 0x30) ? (note / 0x30) % 8 : (note / 0x08) % 8;
-    }
-
     int mapRowColumnToNote(int row, int column)
     {
-        static std::vector<int> rowToNote = {
-            0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
-            0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
-            0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
-            0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
-            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
-        };
-        return rowToNote[row + column * 24]; // Adjust for 24 rows
+        return 36 + (row + column * 24); // Adjust for MIDI note mapping
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcSequencerProcessor)
@@ -238,3 +206,8 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcSequencerProcessorEditor)
 };
 
+//==============================================================================
+AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new apcSequencerProcessor();
+}
