@@ -15,6 +15,15 @@ public:
 
     ~apcSequencerProcessor() override {}
 
+
+
+    //==============================================================================
+    AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+    {
+        return new apcSequencerProcessor();
+    }
+
+
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
     {
         midiGrid.fill(false); // Initialize the MIDI grid
@@ -229,8 +238,3 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcSequencerProcessorEditor)
 };
 
-//==============================================================================
-AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-    return new apcSequencerProcessor();
-}
