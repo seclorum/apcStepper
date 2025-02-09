@@ -34,18 +34,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(JUCE_ENABLE_LV2 FALSE)
 set(JUCE_ENABLE_UNITY FALSE)
 
-include(FetchContent)
-
-
-# JUCE is included in tracktion_engine as a module ..
-FetchContent_Declare(
-		tracktion_engine
-		SOURCE_DIR ${CMAKE_SOURCE_DIR}/modules/tracktion_engine
-		# Point to local module
-)
-
-FetchContent_MakeAvailable(tracktion_engine)
-
+add_subdirectory(modules/juce)
+add_subdirectory(modules/)
 
 # Add executable target
 juce_add_gui_app(

@@ -16,16 +16,11 @@ message(STATUS "Deployment target: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
 set(CMAKE_MACOSX_RPATH ON)
 message(STATUS "macOS RPATH enabled: ${CMAKE_MACOSX_RPATH}")
 
-include(FetchContent)
-include(FetchContent)
 
-FetchContent_Declare(
-        tracktion_engine
-        SOURCE_DIR ${CMAKE_SOURCE_DIR}/../modules/tracktion_engine
-        # Point to local module
-)
+add_subdirectory(modules/juce)
+add_subdirectory(modules/)
 
-FetchContent_MakeAvailable(tracktion_engine)
+hContent_MakeAvailable(tracktion_engine)
 
 juce_add_plugin(
         PluginSequencerMIDI
