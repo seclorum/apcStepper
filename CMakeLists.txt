@@ -36,6 +36,8 @@ set(JUCE_ENABLE_UNITY FALSE)
 
 include(FetchContent)
 
+
+# JUCE is included in tracktion_engine as a module ..
 FetchContent_Declare(
 		tracktion_engine
 		SOURCE_DIR ${CMAKE_SOURCE_DIR}/modules/tracktion_engine
