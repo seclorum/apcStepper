@@ -41,6 +41,12 @@ else ()
 	set(FORMATS VST3)
 endif ()
 
+target_sources(PluginSequencerMIDI PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessorEditor.h
+)
+
 
 # This is where you can set preprocessor definitions for JUCE and your plugin
 target_compile_definitions(PluginSequencerMIDI
@@ -89,7 +95,3 @@ target_link_libraries(PluginSequencerMIDI PRIVATE
 )
 
 
-target_sources(PluginSequencerMIDI PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessor.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/Source/PluginProcessorEditor.h
-)
