@@ -1,32 +1,6 @@
+set(VERBOSE)
+
 cmake_minimum_required(VERSION 3.15)
-
-# Get the current Git commit hash
-execute_process(
-    COMMAND git rev-parse --short HEAD
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_COMMIT_HASH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-# Get the latest Git tag
-execute_process(
-    COMMAND git describe --tags --abbrev=0
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_TAG
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-# Check the hostname and set AAX_SDK_PATH if it matches "abc-jv.local"
-execute_process(
-		COMMAND uname -n
-		OUTPUT_VARIABLE HOSTNAME
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-
-
-
-project(apcStepper VERSION 1.0)
 
 # JUCE Setup
 set(CMAKE_CXX_STANDARD 17)
@@ -34,37 +8,122 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(JUCE_ENABLE_LV2 FALSE)
 set(JUCE_ENABLE_UNITY FALSE)
 
+# Add JUCE modules
 add_subdirectory(modules/juce)
 add_subdirectory(modules/)
 
-# Add executable target
+# Message to verify source directory
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+
+# Get the current Git commit hash (avoid errors if not in Git repo)
+execute_process(
+		COMMAND git rev-parse --short HEAD
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_COMMIT_HASH
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		ERROR_QUIET
+)
+
+# Get the latest Git tag (avoid errors if not in Git repo)
+execute_process(
+		COMMAND git describe --tags --abbrev=0
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_TAG
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		ERROR_QUIET
+)
+
+# Check the hostname and set AAX_SDK_PATH if needed
+execute_process(
+		COMMAND uname -n
+		OUTPUT_VARIABLE HOSTNAME
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Create a single variable for shared JUCE modules
+set(JUCE_MODULES
+		juce::juce_audio_basics
+		juce::juce_audio_devices
+		juce::juce_audio_formats
+		juce::juce_audio_processors
+		juce::juce_audio_utils
+		juce::juce_core
+		juce::juce_dsp
+		juce::juce_events
+		juce::juce_graphics
+		juce::juce_gui_basics
+		juce::juce_gui_extra
+		juce::juce_opengl
+		juce::juce_recommended_config_flags
+		juce::juce_recommended_lto_flags
+		juce::juce_recommended_warning_flags
+)
+
+# ==============================================================================
+# APPLICATION: apcStepper
+# ==============================================================================
+project(apcStepper VERSION 1.0)
+
 juce_add_gui_app(
-  apcStepper
-  PRODUCT_NAME "apcStepper"
+		apcStepper
+		PRODUCT_NAME "apcStepper"
 )
 
-# Add source files
-target_sources(apcStepper
-  PRIVATE
-    Source/Main.cpp
+# Automatically add all application source files
+file(GLOB_RECURSE APP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h)
+
+target_sources(apcStepper PRIVATE ${APP_SOURCE_FILES})
+
+# Link JUCE modules
+target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES})
+
+# ==============================================================================
+# PLUGIN: PluginSequencerMIDI
+# ==============================================================================
+project(PluginSequencerMIDI VERSION 1.0.0)
+
+set(FORMATS Standalone AU VST3 AUv3)
+
+juce_add_plugin(
+		PluginSequencerMIDI
+		COMPANY_NAME "enabled.io"
+		IS_SYNTH FALSE
+		NEEDS_MIDI_INPUT TRUE
+		NEEDS_MIDI_OUTPUT TRUE
+		IS_MIDI_EFFECT TRUE
+		EDITOR_WANTS_KEYBOARD_FOCUS TRUE
+		COPY_PLUGIN_AFTER_BUILD TRUE
+		PLUGIN_MANUFACTURER_CODE ENIO
+		PLUGIN_CODE SEQ1
+		FORMATS ${FORMATS}
 )
 
-# Link tracktion_engine module
-target_link_libraries(apcStepper
-  PRIVATE
-	juce_audio_basics
-	juce_audio_devices
-	juce_audio_formats
-	juce_audio_processors
-	juce_audio_utils
-	juce_core
-	juce_dsp
-	juce_events
-	juce_graphics
-	juce_gui_basics
-	juce_gui_extra
-	juce_opengl
-    juce::juce_recommended_config_flags
-    juce::juce_recommended_lto_flags
-    juce::juce_recommended_warning_flags
+# Automatically add all plugin source files
+file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
+
+target_sources(PluginSequencerMIDI PRIVATE ${PLUGIN_SOURCE_FILES})
+
+# Set plugin compile definitions
+target_compile_definitions(PluginSequencerMIDI
+		INTERFACE
+		JUCE_WEB_BROWSER=0  # If enabled, add `NEEDS_WEB_BROWSER TRUE` to `juce_add_plugin`
+		JUCE_USE_CURL=0     # If enabled, add `NEEDS_CURL TRUE` to `juce_add_plugin`
+		JUCE_VST3_CAN_REPLACE_VST2=0
+		JUCE_MODAL_LOOPS_PERMITTED=1
+		CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+		VERSION="${PROJECT_VERSION}"
+		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
+		BUILD_TAG="${GIT_TAG}"
+		PRODUCT_NAME_WITHOUT_VERSION="apcStepper"
 )
+
+# Link JUCE modules
+target_link_libraries(PluginSequencerMIDI PRIVATE ${JUCE_MODULES})
+
+
+# Set macOS architectures for universal binary (Apple Silicon + Intel)
+if (APPLE)
+	message("Building on macOS (Darwin)")
+	target_link_options(PluginSequencerMIDI INTERFACE -Wl)
+	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
+endif()

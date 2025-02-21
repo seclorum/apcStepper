@@ -2,7 +2,7 @@
 // Created by Tom Peak Walcher on 21.02.25.
 //
 
-#include "ProcessorEditor.h"
+#include "PluginEditor.h"
 #include "PluginProcessor.h"
 
 apcSequencerProcessorEditor::apcSequencerProcessorEditor(apcSequencerProcessor& p)

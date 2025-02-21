@@ -1,5 +1,5 @@
 #include "PluginProcessor.h"
-#include "ProcessorEditor.h"
+#include "PluginEditor.h"
 
 apcSequencerProcessor::apcSequencerProcessor() = default;
 apcSequencerProcessor::~apcSequencerProcessor() = default;
@@ -38,3 +38,10 @@ int apcSequencerProcessor::mapRowColumnToNote(int row, int column)
 {
     return 36 + (row + column * 24);
 }
+
+// This function is required for JUCE plugins!
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new apcSequencerProcessor();
+}
+
