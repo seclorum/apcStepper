@@ -78,21 +78,21 @@ target_sources(apcStepper PRIVATE ${APP_SOURCE_FILES})
 target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES})
 
 # ==============================================================================
-# PLUGIN: PluginSequencerMIDI
+# PLUGIN: apcSequencer
 # ==============================================================================
-project(PluginSequencerMIDI VERSION 1.0.0)
+project(apcSequencer VERSION 1.0.0)
 
 set(FORMATS Standalone AU VST3 AUv3)
 
 juce_add_plugin(
-		PluginSequencerMIDI
+		apcSequencer
 		COMPANY_NAME "enabled.io"
 		IS_SYNTH FALSE
 		NEEDS_MIDI_INPUT TRUE
 		NEEDS_MIDI_OUTPUT TRUE
 		IS_MIDI_EFFECT TRUE
 		EDITOR_WANTS_KEYBOARD_FOCUS TRUE
-		COPY_PLUGIN_AFTER_BUILD TRUE
+		COPY_PLUGIN_AFTER_BUILD ON
 		PLUGIN_MANUFACTURER_CODE ENIO
 		PLUGIN_CODE SEQ1
 		FORMATS ${FORMATS}
@@ -101,10 +101,10 @@ juce_add_plugin(
 # Automatically add all plugin source files
 file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
 
-target_sources(PluginSequencerMIDI PRIVATE ${PLUGIN_SOURCE_FILES})
+target_sources(apcSequencer PRIVATE ${PLUGIN_SOURCE_FILES})
 
 # Set plugin compile definitions
-target_compile_definitions(PluginSequencerMIDI
+target_compile_definitions(apcSequencer
 		INTERFACE
 		JUCE_WEB_BROWSER=0  # If enabled, add `NEEDS_WEB_BROWSER TRUE` to `juce_add_plugin`
 		JUCE_USE_CURL=0     # If enabled, add `NEEDS_CURL TRUE` to `juce_add_plugin`
@@ -118,12 +118,12 @@ target_compile_definitions(PluginSequencerMIDI
 )
 
 # Link JUCE modules
-target_link_libraries(PluginSequencerMIDI PRIVATE ${JUCE_MODULES})
+target_link_libraries(apcSequencer PRIVATE ${JUCE_MODULES})
 
 
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if (APPLE)
 	message("Building on macOS (Darwin)")
-	target_link_options(PluginSequencerMIDI INTERFACE -Wl)
+	target_link_options(apcSequencer INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
 endif()
