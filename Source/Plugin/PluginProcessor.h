@@ -55,6 +55,9 @@ public:
     bool isMidiEffect() const override { return true; }
     double getTailLengthSeconds() const override { return 0.0; }
 
+    bool isBusesLayoutSupported(const BusesLayout& layouts) const;
+
+
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
     void setCurrentProgram(int index) override {}

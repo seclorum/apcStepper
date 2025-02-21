@@ -1,7 +1,15 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-apcSequencerProcessor::apcSequencerProcessor() = default;
+
+apcSequencerProcessor::apcSequencerProcessor()
+    : juce::AudioProcessor(BusesProperties()
+        .withOutput("MIDI Out", juce::AudioChannelSet::disabled(), true))  // ✅ No audio processing
+{
+}
+
+
+
 apcSequencerProcessor::~apcSequencerProcessor() = default;
 
 void apcSequencerProcessor::prepareToPlay(double, int)
@@ -38,6 +46,12 @@ int apcSequencerProcessor::mapRowColumnToNote(int row, int column)
 {
     return 36 + (row + column * 24);
 }
+
+bool apcSequencerProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+{
+    return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled();
+}
+
 
 // This function is required for JUCE plugins!
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
