@@ -2,12 +2,17 @@
 #include "PluginEditor.h"
 
 
+
+apcSequencerProcessor::apcSequencerProcessor() = default;
+
+// !J!  TODO: figure out bus layout
+#if 0
 apcSequencerProcessor::apcSequencerProcessor()
     : juce::AudioProcessor(BusesProperties()
         .withOutput("MIDI Out", juce::AudioChannelSet::disabled(), true))  // ✅ No audio processing
 {
 }
-
+#endif
 
 
 apcSequencerProcessor::~apcSequencerProcessor() = default;
