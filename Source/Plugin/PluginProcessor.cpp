@@ -2,7 +2,6 @@
 #include "PluginEditor.h"
 
 
-
 apcSequencerProcessor::apcSequencerProcessor() = default;
 
 // !J!  TODO: figure out bus layout
