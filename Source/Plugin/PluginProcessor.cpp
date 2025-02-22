@@ -39,7 +39,6 @@ void apcSequencerProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     auto quantum = 4.0; // Bars per cycle
     auto phase = timeline.phaseAtTime(link.clock().micros(), quantum);
     auto beats = timeline.beatsAtTime(link.clock().micros(), quantum);
-#endif
 
     // Output MIDI messages based on the current Link phase
     for (int column = 0; column < 16; ++column)
@@ -63,6 +62,7 @@ void apcSequencerProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 //                midiMessages.addEvent(noteOff, 10);
             }
         }
+#endif
 
 }
 
