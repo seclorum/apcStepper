@@ -1,3 +1,19 @@
+/***
+Example MIDI Processing plugin.
+
+Best Practices Followed:
+
+Minimal Audio Processing: The plugin disables audio channels since it only processes MIDI.
+
+Efficient MIDI Buffer Handling: A new MidiBuffer is used to store modified events before swapping.
+
+Safe MIDI Event Processing: The loop iterates over events and modifies them appropriately.
+
+Avoiding Unnecessary Allocation: MIDI messages are processed in-place without excessive copying.
+
+Proper JUCE Plugin Lifecycle Handling: Implements necessary overrides while keeping unnecessary ones minimal.
+
+***/
 #include <juce_audio_processors/juce_audio_processors.h>
 
 class MidiProcessor : public juce::AudioProcessor {
