@@ -1,5 +1,5 @@
-#include "PluginProcessor.h"
-#include "PluginEditor.h"
+#include "apcSequencerProcessor.h"
+#include "apcSequencerProcessorEditor.h"
 
 
 apcSequencerProcessor::apcSequencerProcessor() = default;

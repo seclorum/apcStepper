@@ -29,7 +29,45 @@
 #include <vector>
 #include <memory>
 
+#include "MIDIArpeggiatorEditor.h"
+
 class apcSequencerProcessor;
+class apcSequencerProcessorEditor;
+
+using namespace juce;
+
+//==============================================================================
+class apcAboutBox final : public Component
+{
+public:
+    apcAboutBox() {
+        setOpaque (true);
+        addAndMakeVisible (aboutLabel);
+    }
+
+private:
+    Label aboutLabel{{},{"Hello this is Jay and Tom!"}};
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (apcAboutBox)
+
+};
+
+
+//==============================================================================
+struct DemoTabbedComponent final : public TabbedComponent
+{
+    DemoTabbedComponent (bool isRunningComponentTransformsDemo)
+        : TabbedComponent (TabbedButtonBar::TabsAtTop)
+    {
+        auto colour = juce::Colour::fromRGB(128, 0, 128);
+
+        // addTab ("Tables",      colour, new apcSequencerProcessorEditor(),                          true);
+//        addTab ("Arpeggiator", colour, new MIDIArpeggiatorEditor(),                          true);
+        addTab ("About", colour, new apcAboutBox(),true);
+    }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoTabbedComponent)
+};
+
 
 class apcSequencerProcessorEditor : public juce::AudioProcessorEditor
 {
@@ -41,14 +79,11 @@ public:
     void resized() override;
 
 private:
-    void toggleGridState(int row, int col);
-    void handleTrackButtonPress(int index);
-    void handleSceneButtonPress(int index);
-
     apcSequencerProcessor& processor;
-    std::vector<std::unique_ptr<juce::ToggleButton>> gridButtons;
-    std::vector<std::unique_ptr<juce::TextButton>> trackButtons;
-    std::vector<std::unique_ptr<juce::TextButton>> sceneButtons;
+
+
+    DemoTabbedComponent apcTabs = new DemoTabbedComponent(true);
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcSequencerProcessorEditor)
 };

@@ -16,11 +16,13 @@ MIDIArpeggiatorEditor::MIDIArpeggiatorEditor(MIDIArpeggiatorProcessor& p)
 	addAndMakeVisible(arpToggleButton);
 
 	arpToggleButton.setButtonText("Enable Arp");
+
 	arpToggleButton.onClick = [this]() {
 		bool arpEnabled = !audioProcessor.isArpeggiatorEnabled();
 		audioProcessor.setArpeggiatorEnabled(arpEnabled);
 		arpToggleButton.setButtonText(arpEnabled ? "Disable Arp" : "Enable Arp");
 	};
+
 }
 
 MIDIArpeggiatorEditor::~MIDIArpeggiatorEditor() {
