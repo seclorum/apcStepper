@@ -1,12 +1,12 @@
-#include "apcSequencerProcessor.h"
-#include "apcSequencerProcessorEditor.h"
+#include "apcStepperMainProcessor.h"
+#include "apcStepperMainEditor.h"
 
 
-apcSequencerProcessor::apcSequencerProcessor() = default;
+apcStepperMainProcessor::apcStepperMainProcessor() = default;
 
 // !J!  TODO: figure out bus layout
 #if 0
-apcSequencerProcessor::apcSequencerProcessor()
+apcStepperMainProcessor::apcStepperMainProcessor()
     : juce::AudioProcessor(BusesProperties()
         .withOutput("MIDI Out", juce::AudioChannelSet::disabled(), true))  // ✅ No audio processing
 {
@@ -14,9 +14,9 @@ apcSequencerProcessor::apcSequencerProcessor()
 #endif
 
 
-apcSequencerProcessor::~apcSequencerProcessor() = default;
+apcStepperMainProcessor::~apcStepperMainProcessor() = default;
 
-void apcSequencerProcessor::prepareToPlay(double, int)
+void apcStepperMainProcessor::prepareToPlay(double, int)
 {
     for (auto& row : midiGrid)
     {
@@ -26,9 +26,9 @@ void apcSequencerProcessor::prepareToPlay(double, int)
     pageOffset = 0;
 }
 
-void apcSequencerProcessor::releaseResources() {}
+void apcStepperMainProcessor::releaseResources() {}
 
-void apcSequencerProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
+void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
 {
     buffer.clear();
 
@@ -65,25 +65,25 @@ void apcSequencerProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 
 }
 
-void apcSequencerProcessor::scrollGridUp() { scrollOffset = std::max(0, scrollOffset - 1); }
-void apcSequencerProcessor::scrollGridDown() { scrollOffset = std::min(23, scrollOffset + 1); }
-void apcSequencerProcessor::jumpPageLeft() { pageOffset = std::max(0, pageOffset - 1); }
-void apcSequencerProcessor::jumpPageRight() { pageOffset = std::min(1, pageOffset + 1); }
+void apcStepperMainProcessor::scrollGridUp() { scrollOffset = std::max(0, scrollOffset - 1); }
+void apcStepperMainProcessor::scrollGridDown() { scrollOffset = std::min(23, scrollOffset + 1); }
+void apcStepperMainProcessor::jumpPageLeft() { pageOffset = std::max(0, pageOffset - 1); }
+void apcStepperMainProcessor::jumpPageRight() { pageOffset = std::min(1, pageOffset + 1); }
 
-juce::AudioProcessorEditor* apcSequencerProcessor::createEditor()
+juce::AudioProcessorEditor* apcStepperMainProcessor::createEditor()
 {
-    return new apcSequencerProcessorEditor(*this);
+    return new apcStepperMainEditor(*this);
 }
 
-void apcSequencerProcessor::getStateInformation(juce::MemoryBlock&) {}
-void apcSequencerProcessor::setStateInformation(const void*, int) {}
+void apcStepperMainProcessor::getStateInformation(juce::MemoryBlock&) {}
+void apcStepperMainProcessor::setStateInformation(const void*, int) {}
 
-int apcSequencerProcessor::mapRowColumnToNote(int row, int column)
+int apcStepperMainProcessor::mapRowColumnToNote(int row, int column)
 {
     return 36 + (row + column * 24);
 }
 
-bool apcSequencerProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
     return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled();
 }
@@ -92,6 +92,6 @@ bool apcSequencerProcessor::isBusesLayoutSupported(const BusesLayout& layouts) c
 // This function is required for JUCE plugins!
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new apcSequencerProcessor();
+    return new apcStepperMainProcessor();
 }
 

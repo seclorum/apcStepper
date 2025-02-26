@@ -10,7 +10,6 @@ set(JUCE_ENABLE_UNITY FALSE)
 
 # Add JUCE modules
 add_subdirectory(modules/juce)
-add_subdirectory(modules/)
 add_subdirectory(modules/melatonin_inspector)
 
 # Message to verify source directory

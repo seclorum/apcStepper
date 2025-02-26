@@ -29,13 +29,13 @@
 #include "melatonin_inspector/melatonin_inspector.h"
 
 // Forward declaration to avoid circular dependency
-class apcSequencerProcessorEditor;
+class apcStepperMainEditor;
 
-class apcSequencerProcessor : public juce::AudioProcessor
+class apcStepperMainProcessor : public juce::AudioProcessor
 {
 public:
-    apcSequencerProcessor();
-    ~apcSequencerProcessor() override;
+    apcStepperMainProcessor();
+    ~apcStepperMainProcessor() override;
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -75,5 +75,5 @@ public:
 private:
     int mapRowColumnToNote(int row, int column);
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcSequencerProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainProcessor)
 };
