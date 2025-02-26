@@ -28,6 +28,7 @@ apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
     }
 
     setSize(800, 600); // Ensure editor has a set size
+    setResizable(true, true );
 
 }
 
