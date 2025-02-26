@@ -32,6 +32,8 @@
 #ifndef APCSTEPPER_APCSTEPPERGRID_H
 #define APCSTEPPER_APCSTEPPERGRID_H
 
+class apcStepperMainProcessor;
+
 class apcStepperGrid : public juce::AudioProcessorEditor
 {
 public:
