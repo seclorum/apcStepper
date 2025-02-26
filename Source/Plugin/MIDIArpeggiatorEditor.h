@@ -31,6 +31,7 @@
 
 #include <array>
 
+
 class MIDIArpeggiatorProcessor;
 
 class MIDIArpeggiatorEditor : public juce::AudioProcessorEditor, public juce::MidiKeyboardStateListener {
@@ -44,6 +45,8 @@ public:
 	void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float) override;
 
 private:
+
+
 	MIDIArpeggiatorProcessor& audioProcessor;
 	juce::MidiKeyboardState keyboardState;
 	juce::MidiKeyboardComponent keyboardComponent;

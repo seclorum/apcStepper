@@ -5,26 +5,27 @@
 #include "apcSequencerProcessorEditor.h"
 #include "apcSequencerProcessor.h"
 
-
 class apcStepperGrid : public juce::AudioProcessorEditor
 {
-
 public:
     // Constructor: initializes the editor and attaches UI components to processor parameters.
-    apcStepperGrid (apcSequencerProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    apcStepperGrid(apcSequencerProcessor& p)
+        : AudioProcessorEditor(&p), processor(p)
     {
-            // Create 16x24 grid of toggle buttons
-            for (int row = 0; row < 24; ++row)
+        setSize(800, 600); // Ensure the editor has a defined size
+
+        // Create 16x24 grid of toggle buttons
+        for (int row = 0; row < 24; ++row)
+        {
+            for (int col = 0; col < 16; ++col)
             {
-                for (int col = 0; col < 16; ++col)
-                {
-                    auto button = std::make_unique<juce::ToggleButton>("Button R" + juce::String(row) + " C" + juce::String(col));
-                    button->setBounds(50 + col * 40, 50 + row * 20, 30, 15);
-                    button->onClick = [this, row, col]() { toggleGridState(row, col); };
-                    addAndMakeVisible(*button);
-                    gridButtons.push_back(std::move(button));
-                }
+                auto button = std::make_unique<juce::ToggleButton>(
+                    "Button R" + juce::String(row) + " C" + juce::String(col));
+                button->setBounds(50 + col * 40, 50 + row * 20, 30, 15);
+                button->onClick = [this, row, col]() { toggleGridState(row, col); };
+                addAndMakeVisible(*button);
+                gridButtons.push_back(std::move(button));
+            }
         }
 
         // Add track buttons
@@ -48,7 +49,6 @@ public:
         }
     }
 
-
     void toggleGridState(int row, int col)
     {
         int adjustedCol = (col + processor.pageOffset * 8) % 16;
@@ -60,10 +60,18 @@ public:
     {
         switch (index)
         {
-            case 4: processor.scrollGridUp(); break;
-            case 5: processor.scrollGridDown(); break;
-            case 6: processor.jumpPageLeft(); break;
-            case 7: processor.jumpPageRight(); break;
+        case 4:
+            processor.scrollGridUp();
+            break;
+        case 5:
+            processor.scrollGridDown();
+            break;
+        case 6:
+            processor.jumpPageLeft();
+            break;
+        case 7:
+            processor.jumpPageRight();
+            break;
         }
     }
 
@@ -72,7 +80,6 @@ public:
         juce::Logger::writeToLog("Scene Launch " + juce::String(index + 1) + " pressed");
     }
 
-
 private:
     apcSequencerProcessor& processor;
 
@@ -80,16 +87,30 @@ private:
     std::vector<std::unique_ptr<juce::TextButton>> trackButtons;
     std::vector<std::unique_ptr<juce::TextButton>> sceneButtons;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (apcStepperGrid)
-
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperGrid)
 };
 
 apcSequencerProcessorEditor::apcSequencerProcessorEditor(apcSequencerProcessor& p)
     : juce::AudioProcessorEditor(p), processor(p)
 {
-    setSize(800, 600);
 
-    addAndMakeVisible(apcTabs);
+    inspector.setVisible(true);
+    inspector.toggle(true);
+
+    // Create TabbedComponent safely
+    tabbedComponent = std::make_unique<TabbedComponent>(TabbedButtonBar::TabsAtTop);
+    jassert(tabbedComponent != nullptr);
+
+
+    if (tabbedComponent)
+    {
+        // Use smart pointer to ensure safe memory management
+    tabbedComponent->addTab("Main", juce::Colours::lightblue, new apcAboutBox(), true);
+    tabbedComponent->addTab("apcStepper", juce::Colours::blue, new apcStepperGrid(processor), true);
+        addAndMakeVisible(tabbedComponent.get());
+    }
+
+    setSize(800, 600); // Ensure editor has a set size
 
 }
 
@@ -97,10 +118,11 @@ apcSequencerProcessorEditor::~apcSequencerProcessorEditor() = default;
 
 void apcSequencerProcessorEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+    g.fillAll(juce::Colours::green); // Ensure background is white
 }
 
 void apcSequencerProcessorEditor::resized()
 {
-    // Adjust layout dynamically if needed
+    if (tabbedComponent)
+        tabbedComponent->setBounds(getLocalBounds()); // Use getLocalBounds() instead of getBounds()
 }

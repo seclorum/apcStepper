@@ -26,6 +26,7 @@
 #include <juce_video/juce_video.h>
 
 #include <array>
+#include "melatonin_inspector/melatonin_inspector.h"
 
 // Forward declaration to avoid circular dependency
 class apcSequencerProcessorEditor;

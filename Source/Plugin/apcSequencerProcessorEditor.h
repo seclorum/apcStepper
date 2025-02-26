@@ -30,45 +30,41 @@
 #include <memory>
 
 #include "MIDIArpeggiatorEditor.h"
+#include "melatonin_inspector/melatonin_inspector.h"
 
+// Forward declarations to avoid unnecessary includes
 class apcSequencerProcessor;
 class apcSequencerProcessorEditor;
 
 using namespace juce;
 
 //==============================================================================
+// Simple About Box Component
 class apcAboutBox final : public Component
 {
 public:
-    apcAboutBox() {
-        setOpaque (true);
-        addAndMakeVisible (aboutLabel);
+    apcAboutBox()
+    {
+        addAndMakeVisible(aboutLabel);
+    }
+
+    void paint(Graphics& g) override {
+        g.fillAll(juce::Colours::orange); // Ensure background is white
+    }
+
+    void resized() override
+    {
+        aboutLabel.setBounds(getLocalBounds().reduced(10));
     }
 
 private:
-    Label aboutLabel{{},{"Hello this is Jay and Tom!"}};
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (apcAboutBox)
+    Label aboutLabel{{}, {"Hello, this is Jay and Tom!"}};
 
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcAboutBox)
 };
-
 
 //==============================================================================
-struct DemoTabbedComponent final : public TabbedComponent
-{
-    DemoTabbedComponent (bool isRunningComponentTransformsDemo)
-        : TabbedComponent (TabbedButtonBar::TabsAtTop)
-    {
-        auto colour = juce::Colour::fromRGB(128, 0, 128);
-
-        // addTab ("Tables",      colour, new apcSequencerProcessorEditor(),                          true);
-//        addTab ("Arpeggiator", colour, new MIDIArpeggiatorEditor(),                          true);
-        addTab ("About", colour, new apcAboutBox(),true);
-    }
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoTabbedComponent)
-};
-
-
+// Editor for the APC Sequencer Processor
 class apcSequencerProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
@@ -81,9 +77,11 @@ public:
 private:
     apcSequencerProcessor& processor;
 
+    // Melatonin Inspector for debugging
+    melatonin::Inspector inspector{ *this };
 
-    DemoTabbedComponent apcTabs = new DemoTabbedComponent(true);
-
+    // Tabbed UI Component
+    std::unique_ptr<TabbedComponent> tabbedComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcSequencerProcessorEditor)
 };

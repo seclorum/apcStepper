@@ -11,6 +11,7 @@ set(JUCE_ENABLE_UNITY FALSE)
 # Add JUCE modules
 add_subdirectory(modules/juce)
 add_subdirectory(modules/)
+add_subdirectory(modules/melatonin_inspector)
 
 # Message to verify source directory
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -57,6 +58,7 @@ set(JUCE_MODULES
 		juce::juce_recommended_config_flags
 		juce::juce_recommended_lto_flags
 		juce::juce_recommended_warning_flags
+		melatonin_inspector
 )
 
 # ==============================================================================
@@ -83,6 +85,8 @@ target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES})
 project(apcSequencer VERSION 1.0.0)
 
 set(FORMATS Standalone AU VST3 AUv3)
+
+
 
 juce_add_plugin(
 		apcSequencer
