@@ -29,5 +29,3 @@ apcSequencer/modules
 apcSequencer/modules/
 apcSequencer/modules/**
 **/*.DS_Store
-modules/**
-modules
