@@ -53,7 +53,7 @@ public:
             g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit, 1.0f);
 
         }
-        g.setColour(juce::Colours::white);
+        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::lightgreys);
         g.drawRect(getLocalBounds(), 2);
     }
 
