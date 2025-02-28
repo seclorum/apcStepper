@@ -29,93 +29,92 @@
 #include <juce_video/juce_video.h>
 
 
-#ifndef APCSTEPPER_APCSTEPPERGRID_H
+#define APCSTEPPER_APCSTEPPERGRID_H
 #define APCSTEPPER_APCSTEPPERGRID_H
 
 class apcStepperMainProcessor;
 
-class apcStepperGrid : public juce::AudioProcessorEditor
+#include <juce_gui_basics/juce_gui_basics.h>
+class ToggleSquare : public juce::Component
 {
 public:
-    // Constructor: initializes the editor and attaches UI components to processor parameters.
-    apcStepperGrid(apcStepperMainProcessor& p)
-            : AudioProcessorEditor(&p), processor(p)
+    ToggleSquare()
     {
-        setSize(800, 600); // Ensure the editor has a defined size
-
-        // Create 16x24 grid of toggle buttons
-        for (int row = 0; row < 24; ++row)
-        {
-            for (int col = 0; col < 16; ++col)
-            {
-                auto button = std::make_unique<juce::ToggleButton>(
-                        "Button R" + juce::String(row) + " C" + juce::String(col));
-                button->setBounds(50 + col * 40, 50 + row * 20, 30, 15);
-                button->onClick = [this, row, col]() { toggleGridState(row, col); };
-                addAndMakeVisible(*button);
-                gridButtons.push_back(std::move(button));
-            }
-        }
-
-        // Add track buttons
-        for (int i = 0; i < 8; ++i)
-        {
-            auto trackButton = std::make_unique<juce::TextButton>("Track Button " + juce::String(i + 1));
-            trackButton->setBounds(10, 50 + i * 40, 100, 30);
-            trackButton->onClick = [this, i]() { handleTrackButtonPress(i); };
-            addAndMakeVisible(*trackButton);
-            trackButtons.push_back(std::move(trackButton));
-        }
-
-        // Add scene launch buttons
-        for (int i = 0; i < 8; ++i)
-        {
-            auto sceneButton = std::make_unique<juce::TextButton>("Scene Launch " + juce::String(i + 1));
-            sceneButton->setBounds(50 + i * 60, 500, 100, 30);
-            sceneButton->onClick = [this, i]() { handleSceneButtonPress(i); };
-            addAndMakeVisible(*sceneButton);
-            sceneButtons.push_back(std::move(sceneButton));
-        }
+        setOpaque(true);
+        setColour(toggleColourId, juce::Colours::grey);
     }
 
-    void toggleGridState(int row, int col)
+    void mouseDown(const juce::MouseEvent&) override
     {
-        int adjustedCol = (col + processor.pageOffset * 8) % 16;
-        int adjustedRow = (row + processor.scrollOffset) % 24;
-        processor.midiGrid[adjustedCol][adjustedRow] = !processor.midiGrid[adjustedCol][adjustedRow];
+        isToggled = !isToggled;
+        setColour(toggleColourId, isToggled ? juce::Colours::red : juce::Colours::grey);
+        repaint();
     }
 
-    void handleTrackButtonPress(int index)
+    void paint(juce::Graphics& g) override
     {
-        switch (index)
-        {
-            case 4:
-                processor.scrollGridUp();
-                break;
-            case 5:
-                processor.scrollGridDown();
-                break;
-            case 6:
-                processor.jumpPageLeft();
-                break;
-            case 7:
-                processor.jumpPageRight();
-                break;
-        }
+        g.fillAll(findColour(toggleColourId));
+        g.setColour(juce::Colours::white);
+        g.drawRect(getLocalBounds(), 2);
     }
 
-    void handleSceneButtonPress(int index)
-    {
-        juce::Logger::writeToLog("Scene Launch " + juce::String(index + 1) + " pressed");
-    }
 
 private:
-    apcStepperMainProcessor& processor;
+    bool isToggled = false;
 
-    std::vector<std::unique_ptr<juce::ToggleButton>> gridButtons;
-    std::vector<std::unique_ptr<juce::TextButton>> trackButtons;
-    std::vector<std::unique_ptr<juce::TextButton>> sceneButtons;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperGrid)
+    enum ColourIds
+    {
+        toggleColourId = 0x20001000
+    };
 };
-#endif //APCSTEPPER_APCSTEPPERGRID_H
+
+class apcStepperGrid : public juce::AudioProcessorEditor {
+public:
+    static constexpr int rows = 8;
+    static constexpr int cols = 8;
+    static constexpr int padding = 5;
+    // Constructor: initializes the editor and attaches UI components to processor parameters.
+    apcStepperGrid(apcStepperMainProcessor &p)
+    : AudioProcessorEditor(&p), processor(p) {
+        for (int i = 0; i < rows * cols; ++i)
+        {
+            auto square = std::make_unique<ToggleSquare>();
+            addAndMakeVisible(*square);
+            squares.add(std::move(square));
+        }
+    }
+
+
+    void resized() override
+    {
+        float cellSize = juce::jmin(getWidth() / cols, getHeight() / rows);
+
+        juce::FlexBox flexBox;
+        flexBox.flexDirection = juce::FlexBox::Direction::column;
+        flexBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+        flexBox.alignItems = juce::FlexBox::AlignItems::stretch;
+
+        for (int row = 0; row < rows; ++row)
+        {
+            juce::FlexBox rowBox;
+            rowBox.flexDirection = juce::FlexBox::Direction::row;
+            rowBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+            rowBox.alignItems = juce::FlexBox::AlignItems::stretch;
+
+            for (int col = 0; col < cols; ++col)
+            {
+                int index = row * cols + col;
+                squares[index]->setBounds(col * cellSize, row * cellSize, cellSize, cellSize);
+                rowBox.items.add(juce::FlexItem(*squares[index]).withWidth(cellSize).withHeight(cellSize).withFlex(1));
+            }
+
+            flexBox.items.add(juce::FlexItem(rowBox).withWidth(getWidth()).withHeight(cellSize));
+        }
+
+        flexBox.performLayout(getLocalBounds().toFloat());
+    }
+    
+private:
+    apcStepperMainProcessor &processor;
+    juce::OwnedArray<ToggleSquare> squares;
+};
