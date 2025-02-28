@@ -37,8 +37,8 @@ class apcStepperMainProcessor;
 class ToggleSquare : public juce::TextButton
 {
 public:
-    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour)
-        : juce::TextButton(""), initialColour(initialColour), toggleColour(toggleColour)
+    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const juce::Image& image)
+        : juce::TextButton(""), initialColour(initialColour), toggleColour(toggleColour), buttonImage(image)
     {
         setOpaque(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
@@ -48,7 +48,12 @@ public:
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override
     {
         g.fillAll(findColour(juce::TextButton::buttonColourId));
-        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::lightgrey);
+        if (!buttonImage.isNull())
+        {
+            g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit, 1.0f);
+
+        }
+        g.setColour(juce::Colours::white);
         g.drawRect(getLocalBounds(), 2);
     }
 
@@ -61,8 +66,8 @@ public:
 private:
     juce::Colour initialColour;
     juce::Colour toggleColour;
+    juce::Image buttonImage;
 };
-
 class apcStepperGrid : public juce::AudioProcessorEditor {
 public:
     static constexpr int rows = 8;
@@ -77,11 +82,23 @@ public:
             juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::grey
         };
 
+        // Load image from Assets folder
+        juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
+                                    .getParentDirectory()
+                                    .getChildFile("Assets/shadow.png");
+
+
+        juce::Image buttonImage;
+        if (imageFile.existsAsFile())
+        {
+            buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
+        }
+
         for (int row = 0; row < rows; ++row)
         {
             for (int col = 0; col < cols; ++col)
             {
-                auto square = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colour(rowColours[row % rowColours.size()]));
+                auto square = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colour(rowColours[row % rowColours.size()]),buttonImage);
 
 
                 addAndMakeVisible(*square);
