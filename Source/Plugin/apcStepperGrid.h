@@ -53,7 +53,7 @@ public:
             g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit, 1.0f);
 
         }
-        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::lightgrey);
+        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::darkgrey);
         g.drawRect(getLocalBounds(), 2);
     }
 
@@ -104,7 +104,7 @@ public:
         {
             for (int col = 0; col < cols; ++col)
             {
-                auto square = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colour(rowColours[row % rowColours.size()]),buttonImage);
+                auto square = std::make_unique<ToggleSquare>(juce::Colours::lightgrey, juce::Colour(rowColours[row % rowColours.size()]),buttonImage);
 
 
                 addAndMakeVisible(*square);
