@@ -91,7 +91,7 @@ public:
         juce::Image buttonImage;
         if (imageFile.existsAsFile())
         {
-            buttonImage = juce::ImageFileFormat::loadFrom(imageFile);q
+            buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
         }
 
         for (int row = 0; row < rows; ++row)
