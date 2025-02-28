@@ -1,32 +1,0 @@
-Last login: Wed Feb 19 01:56:33 on console
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro ~ % [K[?2004hccd Documents[1m/[0m[0m [?2004l
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro Documents % [K[?2004hmmkr´dir´´       dir wrk[?2004l
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro Documents % [K[?2004hccd wrk[?2004l
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro wrk % [K[?2004hggit clone [7mssh://git@bitbucket.wrk.at/tools[7m/[7mdoorunlocker.git[27m[K[A[31C[27ms[27ms[27mh[27m:[27m/[27m/[27mg[27mi[27mt[27m@[27mb[27mi[27mt[27mb[27mu[27mc[27mk[27me[27mt[27m.[27mw[27mr[27mk[27m.[27ma[27mt[27m/[27mt[27mo[27mo[27ml[27ms/[27md[27mo[27mo[27mr[27mu[27mn[27ml[27mo[27mc[27mk[27me[27mr[27m.[27mg[27mi[27mt[?2004l
-Cloning into 'doorunlocker'...
-The authenticity of host 'bitbucket.wrk.at (193.105.181.17)' can't be established.
-RSA key fingerprint is SHA256:+QIQjm7Gq5kYQ75JgMBkt9Czpl1GI8CR2KYsi4XmeLE.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? y+ 
-Please type 'yes', 'no' or the fingerprint: yes
-Warning: Permanently added 'bitbucket.wrk.at' (RSA) to the list of known hosts.
-git@bitbucket.wrk.at: Permission denied (publickey).
-fatal: Could not read from remote repository.
-
-Please make sure you have the correct access rights
-and the repository exists.
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro wrk % [K[?2004hgit clone ssh://git@bitbucket.wrk.at/tools/doorunlocker.git[K[?2004l
-Cloning into 'doorunlocker'...
-git@bitbucket.wrk.at: Permission denied (publickey).
-fatal: Could not read from remote repository.
-
-Please make sure you have the correct access rights
-and the repository exists.
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro wrk % [K[?2004hgit clone ssh://git@bitbucket.wrk.at/tools/doorunlocker.git[K[?2004l
-Cloning into 'doorunlocker'...
-git@bitbucket.wrk.at: Permission denied (publickey).
-fatal: Could not read from remote repository.
-
-Please make sure you have the correct access rights
-and the repository exists.
-[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro wrk % [K[?2004h
