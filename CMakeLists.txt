@@ -12,6 +12,15 @@ set(JUCE_ENABLE_UNITY FALSE)
 add_subdirectory(modules/juce)
 add_subdirectory(modules/melatonin_inspector)
 
+set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
+
+# Define the destination directory in the build folder
+set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/apcSequencer_artefacts/Debug/Standalone/Assets")
+set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/apcSequencer_artefacts/Release/Standalone/Assets")
+
+
+
+
 # Message to verify source directory
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
@@ -122,8 +131,18 @@ target_compile_definitions(apcSequencer
 
 # Link JUCE modules
 target_link_libraries(apcSequencer PRIVATE ${JUCE_MODULES})
+# Define the source Assets directory
+
+# Copy assets to the build directory
 
 
+add_custom_command(TARGET apcSequencer POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${ASSETS_SOURCE_DIR} ${ASSETS_DEST_DEBUG}
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${ASSETS_SOURCE_DIR} ${ASSETS_DEST_RELEASE}
+		COMMENT "Copying Assets folder to Debug and Release directories..."
+)
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if (APPLE)
 	message("Building on macOS (Darwin)")
