@@ -34,40 +34,39 @@
 
 class apcStepperMainProcessor;
 
-#include <juce_gui_basics/juce_gui_basics.h>
 class ToggleSquare : public juce::Component
 {
-public:
-    ToggleSquare()
+    public:
+    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour)
+        : initialColour(initialColour), toggleColour(toggleColour)
     {
         setOpaque(true);
-        setColour(toggleColourId, juce::Colours::grey);
+        setColour(toggleColourId, initialColour);
     }
 
     void mouseDown(const juce::MouseEvent&) override
     {
         isToggled = !isToggled;
-        setColour(toggleColourId, isToggled ? juce::Colours::red : juce::Colours::grey);
+        setColour(toggleColourId, isToggled ? toggleColour : initialColour);
         repaint();
     }
 
     void paint(juce::Graphics& g) override
     {
-        g.fillAll(findColour(toggleColourId));
+        g.fillAll(isToggled ? toggleColour : initialColour);
         g.setColour(juce::Colours::white);
         g.drawRect(getLocalBounds(), 2);
     }
-
-
-private:
+    private:
     bool isToggled = false;
+    juce::Colour initialColour;
+    juce::Colour toggleColour;
 
     enum ColourIds
     {
         toggleColourId = 0x20001000
     };
 };
-
 class apcStepperGrid : public juce::AudioProcessorEditor {
 public:
     static constexpr int rows = 8;
@@ -76,18 +75,29 @@ public:
     // Constructor: initializes the editor and attaches UI components to processor parameters.
     apcStepperGrid(apcStepperMainProcessor &p)
     : AudioProcessorEditor(&p), processor(p) {
-        for (int i = 0; i < rows * cols; ++i)
+
+        juce::Array<juce::Colour> rowColours = {
+            juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
+            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::grey
+        };
+
+        for (int row = 0; row < rows; ++row)
         {
-            auto square = std::make_unique<ToggleSquare>();
-            addAndMakeVisible(*square);
-            squares.add(std::move(square));
+            for (int col = 0; col < cols; ++col)
+            {
+                auto square = std::make_unique<ToggleSquare>(juce::Colours::grey, rowColours.getReference(row % rowColours.size()));
+
+                addAndMakeVisible(*square);
+                squares.add(std::move(square));
+            }
         }
     }
 
-
     void resized() override
     {
-        float cellSize = juce::jmin(getWidth() / cols, getHeight() / rows);
+        float cellWidth = static_cast<float>(getWidth()) / cols;
+        float cellHeight = static_cast<float>(getHeight()) / rows;
+        float squareSize = juce::jmin(cellWidth, cellHeight) - 2 * padding;
 
         juce::FlexBox flexBox;
         flexBox.flexDirection = juce::FlexBox::Direction::column;
@@ -100,20 +110,26 @@ public:
             rowBox.flexDirection = juce::FlexBox::Direction::row;
             rowBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
             rowBox.alignItems = juce::FlexBox::AlignItems::stretch;
+            rowBox.items.ensureStorageAllocated(cols);
 
             for (int col = 0; col < cols; ++col)
             {
                 int index = row * cols + col;
-                squares[index]->setBounds(col * cellSize, row * cellSize, cellSize, cellSize);
-                rowBox.items.add(juce::FlexItem(*squares[index]).withWidth(cellSize).withHeight(cellSize).withFlex(1));
+                squares[index]->setBounds(
+                    col * cellWidth + padding,
+                    row * cellHeight + padding,
+                    squareSize,
+                    squareSize);
+                rowBox.items.add(juce::FlexItem(*squares[index]).withWidth(squareSize).withHeight(squareSize));
             }
 
-            flexBox.items.add(juce::FlexItem(rowBox).withWidth(getWidth()).withHeight(cellSize));
+            flexBox.items.add(juce::FlexItem(rowBox).withWidth(getWidth()).withHeight(cellHeight));
         }
 
         flexBox.performLayout(getLocalBounds().toFloat());
     }
-    
+
+
 private:
     apcStepperMainProcessor &processor;
     juce::OwnedArray<ToggleSquare> squares;
