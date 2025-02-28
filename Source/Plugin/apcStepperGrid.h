@@ -53,7 +53,7 @@ public:
             g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit, 1.0f);
 
         }
-        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::lightgreys);
+        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::lightgrey);
         g.drawRect(getLocalBounds(), 2);
     }
 
@@ -85,7 +85,7 @@ public:
         // Load image from Assets folder
         juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
                                     .getParentDirectory()
-                                    .getChildFile("Assets/shadow.png");
+                                    .getChildFile("./Assets/shadow.png");
 
 
         juce::Image buttonImage;
