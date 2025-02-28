@@ -79,7 +79,7 @@ public:
 
         juce::Array<juce::Colour> rowColours = {
             juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
-            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::grey
+            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::pink
         };
 
         // Load image from Assets folder
@@ -91,7 +91,7 @@ public:
         juce::Image buttonImage;
         if (imageFile.existsAsFile())
         {
-            buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
+            buttonImage = juce::ImageFileFormat::loadFrom(imageFile);q
         }
 
         for (int row = 0; row < rows; ++row)
