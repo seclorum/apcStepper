@@ -84,9 +84,15 @@ public:
 
         // Load image from Assets folder
         juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
-                                    .getParentDirectory()
-                                    .getChildFile("./Assets/shadow.png");
+                                     .getParentDirectory()
+                                     .getChildFile("Assets/shadow.png");
 
+        DBG("Looking for image at: " + imageFile.getFullPathName());
+
+        if (!imageFile.existsAsFile())
+        {
+            DBG("ERROR: Image file not found!");
+        }
 
         juce::Image buttonImage;
         if (imageFile.existsAsFile())
