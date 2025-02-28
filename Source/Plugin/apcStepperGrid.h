@@ -34,39 +34,35 @@
 
 class apcStepperMainProcessor;
 
-class ToggleSquare : public juce::Component
+class ToggleSquare : public juce::TextButton
 {
-    public:
+public:
     ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour)
-        : initialColour(initialColour), toggleColour(toggleColour)
+        : juce::TextButton(""), initialColour(initialColour), toggleColour(toggleColour)
     {
         setOpaque(true);
-        setColour(toggleColourId, initialColour);
+        setColour(juce::TextButton::buttonColourId, initialColour);
+        setClickingTogglesState(true);
     }
 
-    void mouseDown(const juce::MouseEvent&) override
+    void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override
     {
-        isToggled = !isToggled;
-        setColour(toggleColourId, isToggled ? toggleColour : initialColour);
+        g.fillAll(findColour(juce::TextButton::buttonColourId));
+        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::lightgrey);
+        g.drawRect(getLocalBounds(), 2);
+    }
+
+    void clicked() override
+    {
+        setColour(juce::TextButton::buttonColourId, getToggleState() ? toggleColour : initialColour);
         repaint();
     }
 
-    void paint(juce::Graphics& g) override
-    {
-        g.fillAll(isToggled ? toggleColour : initialColour);
-        g.setColour(juce::Colours::white);
-        g.drawRect(getLocalBounds(), 2);
-    }
-    private:
-    bool isToggled = false;
+private:
     juce::Colour initialColour;
     juce::Colour toggleColour;
-
-    enum ColourIds
-    {
-        toggleColourId = 0x20001000
-    };
 };
+
 class apcStepperGrid : public juce::AudioProcessorEditor {
 public:
     static constexpr int rows = 8;
@@ -85,7 +81,8 @@ public:
         {
             for (int col = 0; col < cols; ++col)
             {
-                auto square = std::make_unique<ToggleSquare>(juce::Colours::grey, rowColours.getReference(row % rowColours.size()));
+                auto square = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colour(rowColours[row % rowColours.size()]));
+
 
                 addAndMakeVisible(*square);
                 squares.add(std::move(square));
