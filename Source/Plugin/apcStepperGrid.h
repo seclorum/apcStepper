@@ -71,10 +71,10 @@ public:
 
     DownPanel() {
         containerFlex.flexDirection = juce::FlexBox::Direction::row;
-        containerFlex.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+        containerFlex.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         containerFlex.alignItems = juce::FlexBox::AlignItems::stretch;
 
-        columnFlexes.resize(cols+1); // Initialize the vector
+        columnFlexes.resize(cols); // Initialize the vector
 
         for (int i = 0; i < cols; ++i) {
             auto columnButton = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colours::blue, juce::Image());
@@ -88,16 +88,16 @@ public:
             addAndMakeVisible(sliders[i]);
 
             columnFlexes[i].flexDirection = juce::FlexBox::Direction::column;
-            columnFlexes[i].justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
-            columnFlexes[i].alignItems = juce::FlexBox::AlignItems::stretch;
+            columnFlexes[i].justifyContent = juce::FlexBox::JustifyContent::center;
+            columnFlexes[i].alignItems = juce::FlexBox::AlignItems::center;
 
             columnFlexes[i].items.add(juce::FlexItem(*columnButtons[i]).withFlex(1).withWidth(20));
             columnFlexes[i].items.add(juce::FlexItem(*sliders[i]).withFlex(3).withWidth(20));
             //columnButtons[i]->setSize(30, 30);
             //sliders[i]->setSize(20, 100);
 
-            containerFlex.items.ensureStorageAllocated(cols+1);
-            containerFlex.items.add(juce::FlexItem(columnFlexes[i]).withFlex(1));
+            containerFlex.items.ensureStorageAllocated(cols);
+            containerFlex.items.add(juce::FlexItem(columnFlexes[i]).withFlex(1).withWidth(20));
         }
         DBG("DownPanel Constructed");
         DBG("Column Buttons size: " + juce::String(columnButtons.size()));
@@ -231,15 +231,15 @@ void resized() override {
 
     // Set up main layout properties
     mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
-    mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+    mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
     mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
 
         containerFlex.flexDirection = juce::FlexBox::Direction::column;
-        containerFlex.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;  // Ensure full width
+        containerFlex.justifyContent = juce::FlexBox::JustifyContent::flexStart;  // Ensure full width
         containerFlex.alignItems = juce::FlexBox::AlignItems::stretch;
     containerDownFlex.flexDirection = juce::FlexBox::Direction::row;
-    containerDownFlex.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;  // Ensure full width
+    containerDownFlex.justifyContent = juce::FlexBox::JustifyContent::center;  // Ensure full width
     containerDownFlex.alignItems = juce::FlexBox::AlignItems::stretch;
 
     juce::FlexBox rightPanel;
@@ -259,12 +259,14 @@ void resized() override {
     // Add grid and rightPanel to mainFlexBox
     mainFlexBox.items.add(juce::FlexItem(grid).withFlex(4));  // Grid takes up most space
     mainFlexBox.items.add(juce::FlexItem(rightPanel).withFlex(1));  // Right panel takes less space
+    containerDownFlex.items.add(juce::FlexItem(downPanel).withFlex(4));  // Right panel takes less space
+    containerDownFlex.items.add(juce::FlexItem(emptySpace).withFlex(1));  // Right panel takes less space
 
     // Add everything to containerFlex
-    containerFlex.items.add(juce::FlexItem(mainFlexBox).withFlex(4));
-    containerFlex.items.add(juce::FlexItem(downPanel).withFlex(1));
+    containerFlex.items.add(juce::FlexItem(mainFlexBox).withFlex(3));
+    containerFlex.items.add(juce::FlexItem(containerDownFlex).withFlex(1));
     // Perform Layouts
-    containerFlex.performLayout(mainBounds);// Ensure full height for DownPanel
+    containerFlex.performLayout(getLocalBounds().toFloat());// Ensure full height for DownPanel
 }
 
 private:
