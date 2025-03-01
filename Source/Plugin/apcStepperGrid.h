@@ -170,23 +170,29 @@ public:
         for (int i = 0; i < rows; ++i)
         {
             auto rowButton = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colours::blue, juce::Image());
-            auto columnButton = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colours::red, juce::Image());
-
+            rowButtons.add(std::move(rowButton));
+        }
+        for (int i = 0; i < cols; ++i)
+        {
+            auto columnButton = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colours::blue, juce::Image());
             auto slider = std::make_unique<juce::Slider>();
 
             slider->setSliderStyle(juce::Slider::LinearVertical);
             slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-            sliders.add(std::move(slider));
-            rowButtons.add(std::move(rowButton));
-            columnButtons.add(std::move(columnButton));
-        }
 
+            sliders.add(std::move(slider));
+            columnButtons.add(std::move(columnButton));
+
+            // ✅ Allocate downPanel for each column
+            downPanels.add(std::make_unique<juce::FlexBox>());
+        }
         for (auto *btn : rowButtons)
             addAndMakeVisible(btn);
         for (auto *btn : columnButtons)
             addAndMakeVisible(btn);
         for (auto *slider : sliders)
             addAndMakeVisible(slider);
+
     }
 
     void resized() override
@@ -217,24 +223,34 @@ public:
             rightPanel.items.add(juce::FlexItem(*rowButtons[i]).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
         }
 
-        for (int i = 0; i < cols; ++i) {
-            juce::FlexBox downPanel;
-            downPanel.flexDirection = juce::FlexBox::Direction::row;
-            downPanel.justifyContent = juce::FlexBox::JustifyContent::flexStart;
-            downPanel.alignItems = juce::FlexBox::AlignItems::stretch;
-            downPanel.items.add(juce::FlexItem(*columnButtons[i]).withMaxHeight(true).withMaxWidth(true));
-            downPanel.items.add(juce::FlexItem(*sliders[i]).withFlex(3).withMaxHeight(true).withMaxWidth(true));
+        for (int i = 0; i < cols; ++i)
+        {
+            // Create a vertical flexbox for each column
+            juce::FlexBox columnFlexBox;
+            columnFlexBox.flexDirection = juce::FlexBox::Direction::column; // Stack items vertically
+            columnFlexBox.justifyContent = juce::FlexBox::JustifyContent::center; // Center items
+            columnFlexBox.alignItems = juce::FlexBox::AlignItems::center;
 
-            containerDownFlex.items.add(juce::FlexItem(downPanel).withFlex(1)); //Added margin
+            // Add button at the top
+            columnFlexBox.items.add(juce::FlexItem(*columnButtons[i]).withFlex(1));
+
+            // Add slider below the button
+            columnFlexBox.items.add(juce::FlexItem(*sliders[i]).withFlex(3)); // More space for slider
+
+            // Add this vertical column to the horizontal row container
+            containerDownFlex.items.add(juce::FlexItem(columnFlexBox).withFlex(1).withMaxWidth(true).withMinHeight(100));
 
         }
+
+
+        // Ensure containerDownFlex gets enough space
 
         //containerDownFlex.items.add(juce::FlexItem(emptySpace).withFlex(1));
         mainFlexBox.items.add(juce::FlexItem(grid).withFlex(4));
         mainFlexBox.items.add(juce::FlexItem(rightPanel).withFlex(1));
 
         containerFlex.items.add(juce::FlexItem(mainFlexBox).withFlex(4));
-        containerFlex.items.add(juce::FlexItem(containerDownFlex).withFlex(1).withMinHeight(100));
+        containerFlex.items.add(juce::FlexItem(containerDownFlex).withFlex(1).withMinHeight(100).withMaxWidth(true));
         //containerDownFlex.setBorder(juce::BorderSize<int>(1)); //debug
 
         containerFlex.performLayout(bounds.toFloat());
@@ -245,5 +261,6 @@ private:
     juce::OwnedArray<ToggleSquare> rowButtons;
     juce::OwnedArray<ToggleSquare> columnButtons;
     juce::OwnedArray<juce::Slider> sliders;
+    juce::OwnedArray<juce::FlexBox> downPanels;
     juce::Component emptySpace;
 };
