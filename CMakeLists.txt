@@ -110,6 +110,7 @@ juce_add_plugin(
 		FORMATS ${FORMATS}
 )
 
+
 # Automatically add all plugin source files
 file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
 
@@ -129,20 +130,18 @@ target_compile_definitions(apcSequencer
 		PRODUCT_NAME_WITHOUT_VERSION="apcStepper"
 )
 
-# Link JUCE modules
-target_link_libraries(apcSequencer PRIVATE ${JUCE_MODULES})
-# Define the source Assets directory
 
-# Copy assets to the build directory
-
-
-add_custom_command(TARGET apcSequencer POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		${ASSETS_SOURCE_DIR} ${ASSETS_DEST_DEBUG}
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		${ASSETS_SOURCE_DIR} ${ASSETS_DEST_RELEASE}
-		COMMENT "Copying Assets folder to Debug and Release directories..."
+juce_add_binary_data(Assets
+		SOURCES
+		Assets/octopous.jpg
 )
+
+
+# Link JUCE modules
+target_link_libraries(apcSequencer PRIVATE ${JUCE_MODULES} Assets)
+
+
+
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if (APPLE)
 	message("Building on macOS (Darwin)")
