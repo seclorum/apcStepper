@@ -22,7 +22,7 @@ apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
     if (tabbedComponent)
     {
         // Use smart pointer to ensure safe memory management
-        tabbedComponent->addTab("apcStepper", juce::Colours::blue, new apcStepperGrid(processor), true);
+        tabbedComponent->addTab("apcStepper", juce::Colours::darkgrey, new apcControlPanel(processor), true);
         tabbedComponent->addTab("About", juce::Colours::lightblue, new apcAboutBox(), true);
         addAndMakeVisible(tabbedComponent.get());
     }
