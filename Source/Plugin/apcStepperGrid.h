@@ -81,7 +81,8 @@ public:
             slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
             containerFlex.items.add(juce::FlexItem(*columnButton).withFlex(1));
             containerFlex.items.add(juce::FlexItem(*slider).withFlex(3));
-
+            columnButton->setBounds(getLocalBounds());
+            slider->setBounds(getLocalBounds());
             addAndMakeVisible(*columnButton);
             addAndMakeVisible(*slider);
         }
