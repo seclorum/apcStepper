@@ -133,7 +133,8 @@ target_compile_definitions(apcSequencer
 
 juce_add_binary_data(Assets
 		SOURCES
-		Assets/octopous.jpg
+		Assets/cuttlefish.jpg
+		Assets/shadow.png
 )
 
 

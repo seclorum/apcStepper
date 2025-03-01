@@ -28,6 +28,7 @@
 #include <juce_product_unlocking/juce_product_unlocking.h>
 #include <juce_video/juce_video.h>
 
+#include "BinaryData.h"
 
 #define APCSTEPPER_APCSTEPPERGRID_H
 #define APCSTEPPER_APCSTEPPERGRID_H
@@ -128,7 +129,8 @@ public:
             juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
             juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::pink
         };
-
+        auto* imageData = BinaryData::shadow_png;
+        auto imageSize = BinaryData::shadow_pngSize;
         // Load image from Assets folder
         // juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
         //         .getParentDirectory()
