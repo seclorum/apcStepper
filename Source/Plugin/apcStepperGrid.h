@@ -70,47 +70,50 @@ public:
     static constexpr int padding = 8;
 
     DownPanel() {
-        containerFlex.flexDirection = juce::FlexBox::Direction::column;
-        containerFlex.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+        containerFlex.flexDirection = juce::FlexBox::Direction::row;
+        containerFlex.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         containerFlex.alignItems = juce::FlexBox::AlignItems::stretch;
+
+        columnFlexes.resize(cols+1); // Initialize the vector
+
         for (int i = 0; i < cols; ++i) {
             auto columnButton = std::make_unique<ToggleSquare>(juce::Colours::grey, juce::Colours::blue, juce::Image());
             auto slider = std::make_unique<juce::Slider>();
 
             slider->setSliderStyle(juce::Slider::LinearVertical);
             slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-            containerFlex.items.add(juce::FlexItem(*columnButton).withFlex(1));
-            containerFlex.items.add(juce::FlexItem(*slider).withFlex(3));
-            columnButton->setBounds(getLocalBounds());
-            slider->setBounds(getLocalBounds());
-            addAndMakeVisible(*columnButton);
-            addAndMakeVisible(*slider);
+            columnButtons.add(std::move(columnButton));
+            sliders.add(std::move(slider));
+            addAndMakeVisible(columnButtons[i]);
+            addAndMakeVisible(sliders[i]);
+
+            columnFlexes[i].flexDirection = juce::FlexBox::Direction::column;
+            columnFlexes[i].justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+            columnFlexes[i].alignItems = juce::FlexBox::AlignItems::stretch;
+
+            columnFlexes[i].items.add(juce::FlexItem(*columnButtons[i]).withFlex(1).withWidth(20));
+            columnFlexes[i].items.add(juce::FlexItem(*sliders[i]).withFlex(3).withWidth(20));
+            //columnButtons[i]->setSize(30, 30);
+            //sliders[i]->setSize(20, 100);
+
+            containerFlex.items.ensureStorageAllocated(cols+1);
+            containerFlex.items.add(juce::FlexItem(columnFlexes[i]).withFlex(1));
         }
-
-
+        DBG("DownPanel Constructed");
+        DBG("Column Buttons size: " + juce::String(columnButtons.size()));
+        DBG("Sliders size: " + juce::String(sliders.size()));
     }
-
 
     void resized() override {
-        float cellWidth = static_cast<float>(getWidth()) / cols;
-        float cellHeight = static_cast<float>(getHeight()) / rows;
-        containerFlex.flexDirection = juce::FlexBox::Direction::column;
-        containerFlex.justifyContent = juce::FlexBox::JustifyContent::center;
-        containerFlex.alignItems = juce::FlexBox::AlignItems::stretch;
-        for (int col = 0; col < cols; ++col) {
-            sliders[col]->setBounds(
-                col * cellWidth + padding,
-                rows * cellHeight + padding,
-                cellWidth,
-                100);
-        }
-
+        DBG("DownPanel Resized");
+        containerFlex.performLayout(getLocalBounds().toFloat());
     }
+
 private:
     juce::OwnedArray<ToggleSquare> columnButtons;
     juce::OwnedArray<juce::Slider> sliders;
-    FlexBox containerFlex;
-
+    juce::FlexBox containerFlex;
+    std::vector<juce::FlexBox> columnFlexes; // Use a vector of FlexBox
 };
 
 class apcStepperGrid : public juce::AudioProcessorEditor {
@@ -127,26 +130,26 @@ public:
         };
 
         // Load image from Assets folder
-        juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
-                .getParentDirectory()
-                .getChildFile("Assets/shadow.png");
-
-        DBG("Looking for image at: " + imageFile.getFullPathName());
-
-        if (!imageFile.existsAsFile()) {
-            DBG("ERROR: Image file not found!");
-        }
-
-        juce::Image buttonImage;
-        if (imageFile.existsAsFile()) {
-            buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
-        }
+        // juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
+        //         .getParentDirectory()
+        //         .getChildFile("Assets/shadow.png");
+        //
+        // DBG("Looking for image at: " + imageFile.getFullPathName());
+        //
+        // if (!imageFile.existsAsFile()) {
+        //     DBG("ERROR: Image file not found!");
+        // }
+        //
+        // juce::Image buttonImage;
+        // if (imageFile.existsAsFile()) {
+        //     buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
+        // }
 
         for (int row = 0; row < rows; ++row) {
             for (int col = 0; col < cols; ++col) {
                 auto square = std::make_unique<ToggleSquare>(juce::Colours::lightgrey,
                                                              juce::Colour(rowColours[row % rowColours.size()]),
-                                                             buttonImage);
+                                                             Image());
 
 
                 addAndMakeVisible(*square);
@@ -232,7 +235,9 @@ void resized() override {
     mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
 
-
+        containerFlex.flexDirection = juce::FlexBox::Direction::column;
+        containerFlex.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;  // Ensure full width
+        containerFlex.alignItems = juce::FlexBox::AlignItems::stretch;
     containerDownFlex.flexDirection = juce::FlexBox::Direction::row;
     containerDownFlex.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;  // Ensure full width
     containerDownFlex.alignItems = juce::FlexBox::AlignItems::stretch;
@@ -247,7 +252,7 @@ void resized() override {
     }
 
     // Grid FlexBox setup
-    gridFlexBox.flexDirection = juce::FlexBox::Direction::row;
+    gridFlexBox.flexDirection = juce::FlexBox::Direction::column;
     gridFlexBox.justifyContent = juce::FlexBox::JustifyContent::center;
     gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
@@ -255,16 +260,11 @@ void resized() override {
     mainFlexBox.items.add(juce::FlexItem(grid).withFlex(4));  // Grid takes up most space
     mainFlexBox.items.add(juce::FlexItem(rightPanel).withFlex(1));  // Right panel takes less space
 
-    // Make `downPanel` fill entire bottom section
-    containerDownFlex.items.add(juce::FlexItem(downPanel).withFlex(1));
-
     // Add everything to containerFlex
     containerFlex.items.add(juce::FlexItem(mainFlexBox).withFlex(4));
-    containerFlex.items.add(juce::FlexItem(containerDownFlex).withFlex(1));
-
+    containerFlex.items.add(juce::FlexItem(downPanel).withFlex(1));
     // Perform Layouts
-    containerFlex.performLayout(mainBounds);
-    containerDownFlex.performLayout(containerBounds);  // Ensure full height for DownPanel
+    containerFlex.performLayout(mainBounds);// Ensure full height for DownPanel
 }
 
 private:
