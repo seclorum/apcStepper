@@ -131,23 +131,7 @@ public:
                 juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
                 juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::pink
         };
-<<<<<<< HEAD
-        auto *imageData = BinaryData::shadow_png;
-        // Load image from Assets folder
-        // juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
-        //         .getParentDirectory()
-        //         .getChildFile("Assets/shadow.png");
-        //
-        // DBG("Looking for image at: " + imageFile.getFullPathName());
-        //
-        // if (!imageFile.existsAsFile()) {
-        //     DBG("ERROR: Image file not found!");
-        // }
-        //
-        // juce::Image buttonImage;
-        // if (imageFile.existsAsFile()) {
-        //     buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
-        // }
+
         auto imageInputStream = std::make_unique<juce::MemoryInputStream>(BinaryData::shadow_png, BinaryData::cuttlefish_jpgSize, false);
         shadowImage = juce::PNGImageFormat().decodeImage(*imageInputStream);
         for (int row = 0; row < rows; ++row) {
@@ -213,6 +197,9 @@ private:
 =======
     juce::OwnedArray<ToggleSquare> squares;
     Image shadowImage;
+<<<<<<< HEAD
+>>>>>>> 56aee9b (shadow as back)
+=======
 >>>>>>> 56aee9b (shadow as back)
 };
 
