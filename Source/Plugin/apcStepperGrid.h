@@ -162,6 +162,16 @@ public:
         }
     }
 
+    void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
+    {
+        processor.sendMidiMessage(juce::MidiMessage::noteOn(midiChannel, midiNoteNumber, velocity));
+    }
+
+    void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
+    {
+        processor.sendMidiMessage(juce::MidiMessage::noteOff(midiChannel, midiNoteNumber));
+    }
+
     void resized() override {
         float cellWidth = static_cast<float>(getWidth()) / cols;
         float cellHeight = static_cast<float>(getHeight()) / rows;
