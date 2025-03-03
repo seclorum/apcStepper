@@ -1,5 +1,6 @@
 #pragma once
 
+#define MELATONIN
 // !J! Just include all the JUCE things.  Makes it easier to navigate... but slower to build
 #include <juce_analytics/juce_analytics.h>
 #include <juce_animation/juce_animation.h>
@@ -51,14 +52,26 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-private:
-    apcStepperMainProcessor& processor;
+	void setTempo(int newTempo);
 
-    // Melatonin Inspector for debugging
-    melatonin::Inspector inspector{ *this };
+private:
+
+#ifdef MELATONIN
+	// Melatonin Inspector for debugging
+	melatonin::Inspector inspector{ *this };
+#endif
+
+    apcStepperMainProcessor& processor;
+	void syncTempo();
 
     // Tabbed UI Component
     std::unique_ptr<TabbedComponent> tabbedComponent;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainEditor)
+	juce::Slider tempoSlider; // Slider for tempo
+	juce::Label tempoLabel; // Editable tempo label
+
+	// Attachments used to bind to parameters in the processor
+	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainEditor)
 };

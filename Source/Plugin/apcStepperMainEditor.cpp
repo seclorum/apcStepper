@@ -11,10 +11,37 @@ apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
     : juce::AudioProcessorEditor(p), processor(p)
 {
 
+#ifdef MELATONIN
     inspector.setVisible(true);
     inspector.toggle(true);
+#endif
 
-    // Create TabbedComponent safely
+	// Hidden Tempo Slider (For Attachment)
+	tempoSlider.setSliderStyle(Slider::LinearHorizontal);
+	tempoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+	tempoSlider.setRange(20.0f, 300.0f, 1.0f); // Typical tempo range
+	tempoSlider.setVisible(true);
+	addAndMakeVisible(tempoSlider);
+
+	// Editable Tempo Label
+	tempoLabel.setEditable(true);
+	tempoLabel.setJustificationType(Justification::centred);
+	tempoLabel.setColour(Label::textColourId, Colours::white);
+	tempoLabel.setColour(Label::backgroundColourId, Colours::black);
+	tempoLabel.setText(juce::String(tempoSlider.getValue()), dontSendNotification);
+	tempoLabel.onTextChange = [this] {
+		float newTempo = tempoLabel.getText().getFloatValue();
+		tempoSlider.setValue(newTempo, juce::sendNotification);
+	};
+	addAndMakeVisible(tempoLabel);
+
+	tempoAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+			processor.getParameters(), "tempo", tempoSlider);
+
+	// Sync tempo label with slider
+	tempoSlider.onValueChange = [this] { syncTempo(); };
+
+	// Create TabbedComponent safely
     tabbedComponent = std::make_unique<TabbedComponent>(TabbedButtonBar::TabsAtTop);
     jassert(tabbedComponent != nullptr);
 
@@ -32,6 +59,13 @@ apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
 
 }
 
+// Syncs the tempo label with the hidden slider
+void apcStepperMainEditor::syncTempo()
+{
+	tempoLabel.setText(juce::String(tempoSlider.getValue()), juce::dontSendNotification);
+	processor.setTempo(roundToInt(tempoSlider.getValue()));
+}
+
 apcStepperMainEditor::~apcStepperMainEditor() = default;
 
 void apcStepperMainEditor::paint(juce::Graphics& g)
@@ -41,6 +75,12 @@ void apcStepperMainEditor::paint(juce::Graphics& g)
 
 void apcStepperMainEditor::resized()
 {
-    if (tabbedComponent)
-        tabbedComponent->setBounds(getLocalBounds()); // Use getLocalBounds() instead of getBounds()
+	auto bounds = getLocalBounds();
+	auto sliderHeight = 40;
+
+	tempoSlider.setBounds(bounds.removeFromTop(40));
+	tempoLabel.setBounds(bounds.removeFromTop(40).reduced(10)); // Centered editable label
+
+	if (tabbedComponent)
+        tabbedComponent->setBounds(bounds);
 }
