@@ -131,8 +131,8 @@ public:
                 juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
                 juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::pink
         };
+<<<<<<< HEAD
         auto *imageData = BinaryData::shadow_png;
-        auto imageSize = BinaryData::shadow_pngSize;
         // Load image from Assets folder
         // juce::File imageFile = juce::File::getSpecialLocation(juce::File::currentApplicationFile)
         //         .getParentDirectory()
@@ -148,12 +148,13 @@ public:
         // if (imageFile.existsAsFile()) {
         //     buttonImage = juce::ImageFileFormat::loadFrom(imageFile);
         // }
-
+        auto imageInputStream = std::make_unique<juce::MemoryInputStream>(BinaryData::shadow_png, BinaryData::cuttlefish_jpgSize, false);
+        shadowImage = juce::PNGImageFormat().decodeImage(*imageInputStream);
         for (int row = 0; row < rows; ++row) {
             for (int col = 0; col < cols; ++col) {
-                auto square = std::make_unique<apcSquareToggleButton>(juce::Colours::lightgrey,
-                                                                      juce::Colour(rowColours[row % rowColours.size()]),
-                                                                      Image());
+                auto square = std::make_unique<ToggleSquare>(juce::Colours::lightgrey,
+                                                             juce::Colour(rowColours[row % rowColours.size()]),
+                                                             shadowImage);
 
 
                 addAndMakeVisible(*square);
@@ -207,7 +208,12 @@ public:
 
 private:
     apcStepperMainProcessor &processor;
+<<<<<<< HEAD
     juce::OwnedArray<apcSquareToggleButton> squares;
+=======
+    juce::OwnedArray<ToggleSquare> squares;
+    Image shadowImage;
+>>>>>>> 56aee9b (shadow as back)
 };
 
 class apcControlPanel : public juce::AudioProcessorEditor {
