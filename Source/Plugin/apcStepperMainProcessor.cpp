@@ -2,8 +2,11 @@
 #include "apcStepperMainEditor.h"
 
 
-apcStepperMainProcessor::apcStepperMainProcessor() = default;
-
+apcStepperMainProcessor::apcStepperMainProcessor()
+        : parameters(*this, nullptr, "PARAMETERS", {})
+{
+    initializeParameters();
+}
 // !J!  TODO: figure out bus layout
 #if 0
 apcStepperMainProcessor::apcStepperMainProcessor()
@@ -13,11 +16,33 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 }
 #endif
 
+void apcStepperMainProcessor::initializeParameters()
+{
+    using namespace juce;
+
+    NormalisableRange<float> velocityRange(0.0f, 2.0f, 0.01f);
+    velocityRange.setSkewForCentre(1.0f);
+
+    parameters.createAndAddParameter(std::make_unique<AudioParameterInt>("transpose", "Transpose",
+                                                                         -24, 24, 0));
+    parameters.createAndAddParameter(std::make_unique<AudioParameterFloat>("velocityScale", "Velocity Scale",
+                                                                           velocityRange, 1.0f));
+
+    parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
+
+    transposeParam = dynamic_cast<AudioParameterInt*>(parameters.getParameter("transpose"));
+    velocityScaleParam = dynamic_cast<AudioParameterFloat*>(parameters.getParameter("velocityScale"));
+
+    jassert(transposeParam && velocityScaleParam);
+}
+
 
 apcStepperMainProcessor::~apcStepperMainProcessor() = default;
 
-void apcStepperMainProcessor::prepareToPlay(double, int)
+void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+    juce::ignoreUnused(sampleRate, samplesPerBlock);
+
     for (auto& row : midiGrid)
     {
         row.fill(false);
@@ -28,41 +53,49 @@ void apcStepperMainProcessor::prepareToPlay(double, int)
 
 void apcStepperMainProcessor::releaseResources() {}
 
-void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
+
+void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    buffer.clear();
-
-#if 0
-    // Sync with Ableton Link
-    auto timeline = link.captureAppTimeline();
-    auto quantum = 4.0; // Bars per cycle
-    auto phase = timeline.phaseAtTime(link.clock().micros(), quantum);
-    auto beats = timeline.beatsAtTime(link.clock().micros(), quantum);
-
-    // Output MIDI messages based on the current Link phase
-    for (int column = 0; column < 16; ++column)
+    juce::ScopedTryLock lock(midiMutex);
+    if (lock.isLocked())
     {
-        for (int row = 0; row < 24; ++row)
+        midiMessages.addEvents(incomingMidiBuffer, 0, buffer.getNumSamples(), 0);
+        incomingMidiBuffer.clear();
+    }
+
+    juce::MidiBuffer processedMidi;
+    int transposeAmount = transposeParam->get();
+    float velocityScale = velocityScaleParam->get();
+
+    for (const auto metadata : midiMessages)
+    {
+        auto message = metadata.getMessage();
+        auto timeStamp = metadata.samplePosition;
+
+        if (message.isNoteOn())
         {
-            int adjustedColumn = column;
-            int adjustedRow = (row + scrollOffset) % 24;
-
-            // Fixed: Check for valid array index boundaries
-            if (adjustedColumn >= 0 && adjustedColumn < 16 &&
-                adjustedRow >= 0 && adjustedRow < 24 &&
-                midiGrid[adjustedColumn][adjustedRow] &&
-                // static_cast<int>(beats) % 16 == column)
-            {
-                auto message = juce::MidiMessage::noteOn(1, mapRowColumnToNote(adjustedRow, adjustedColumn), (juce::uint8)127);
-//                 message.setTimeStamp(phase);
-//                 midiMessages.addEvent(message, 0);
-
-                auto noteOff = juce::MidiMessage::noteOff(1, mapRowColumnToNote(adjustedRow, adjustedColumn));
-//                midiMessages.addEvent(noteOff, 10);
-            }
+            int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
+            float newVelocity = juce::jlimit(0.0f, 1.0f, message.getFloatVelocity() * velocityScale);
+            message = juce::MidiMessage::noteOn(message.getChannel(), newNote, newVelocity);
         }
-#endif
+        else if (message.isNoteOff())
+        {
+            int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
+            message = juce::MidiMessage::noteOff(message.getChannel(), newNote);
+        }
 
+        processedMidi.addEvent(message, timeStamp);
+    }
+
+    midiMessages.swapWith(processedMidi);
+}
+
+
+
+void apcStepperMainProcessor::sendMidiMessage(const juce::MidiMessage& message)
+{
+    juce::ScopedLock lock(midiMutex);
+    incomingMidiBuffer.addEvent(message, 0);
 }
 
 void apcStepperMainProcessor::scrollGridUp() { scrollOffset = std::max(0, scrollOffset - 1); }
@@ -87,7 +120,6 @@ bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
 {
     return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled();
 }
-
 
 // This function is required for JUCE plugins!
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()

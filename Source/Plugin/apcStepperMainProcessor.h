@@ -65,6 +65,8 @@ public:
     const juce::String getProgramName(int index) override { return {}; }
     void changeProgramName(int index, const juce::String& newName) override {}
 
+    void sendMidiMessage(const juce::MidiMessage& message);
+
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
@@ -74,6 +76,16 @@ public:
 
 private:
     int mapRowColumnToNote(int row, int column);
+    void initializeParameters();
+
+    juce::AudioProcessorValueTreeState parameters;
+    static constexpr int parameterVersion = 1;  // Versioning for future compatibility
+
+    juce::AudioParameterInt* transposeParam = nullptr;
+    juce::AudioParameterFloat* velocityScaleParam = nullptr;
+
+    juce::MidiBuffer incomingMidiBuffer;
+    juce::CriticalSection midiMutex;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainProcessor)
 };
