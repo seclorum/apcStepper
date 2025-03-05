@@ -18,9 +18,6 @@ set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
 set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/apcSequencer_artefacts/Debug/Standalone/Assets")
 set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/apcSequencer_artefacts/Release/Standalone/Assets")
 
-
-
-
 # Message to verify source directory
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
@@ -77,6 +74,11 @@ project(apcStepper VERSION 1.0)
 juce_add_gui_app(
 		apcStepper
 		PRODUCT_NAME "apcStepper"
+		COMPANY_NAME "enabled.io"
+		BUNDLE_ID "io.enabled.apc.Stepper"
+		TARGETED_DEVICE_FAMILY "2" # 1 = iPhone, 2 = iPad, "1,2" = Universal
+		IPHONE_SCREEN_ORIENTATION "Landscape" # or "Landscape", "PortraitAndLandscape"
+		MICROPHONE_PERMISSION_ENABLED TRUE # Example iOS-specific setting
 )
 
 # Automatically add all application source files
@@ -94,22 +96,21 @@ project(apcSequencer VERSION 1.0.0)
 
 set(FORMATS Standalone AU VST3 AUv3)
 
-
-
 juce_add_plugin(
 		apcSequencer
+		PRODUCT_NAME "apcStepper"
 		COMPANY_NAME "enabled.io"
-		IS_SYNTH FALSE
+		BUNDLE_ID "io.enabled.apc.Stepper"
+		IS_SYNTH TRUE
 		NEEDS_MIDI_INPUT TRUE
 		NEEDS_MIDI_OUTPUT TRUE
 		IS_MIDI_EFFECT TRUE
 		EDITOR_WANTS_KEYBOARD_FOCUS TRUE
 		COPY_PLUGIN_AFTER_BUILD ON
 		PLUGIN_MANUFACTURER_CODE ENIO
-		PLUGIN_CODE SEQ1
+		PLUGIN_CODE STEP
 		FORMATS ${FORMATS}
 )
-
 
 # Automatically add all plugin source files
 file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
@@ -130,22 +131,21 @@ target_compile_definitions(apcSequencer
 		PRODUCT_NAME_WITHOUT_VERSION="apcStepper"
 )
 
-
 juce_add_binary_data(Assets
 		SOURCES
 		Assets/cuttlefish.jpg
 		Assets/shadow.png
 )
 
-
 # Link JUCE modules
 target_link_libraries(apcSequencer PRIVATE ${JUCE_MODULES} Assets)
-
-
 
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if (APPLE)
 	message("Building on macOS (Darwin)")
 	target_link_options(apcSequencer INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
+endif()
+
+if (IOS)
 endif()
