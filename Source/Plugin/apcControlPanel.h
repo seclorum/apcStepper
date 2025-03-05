@@ -41,6 +41,7 @@ public:
         juce::FlexBox mainFlexBox;
         juce::FlexBox rightPanel;
         juce::FlexBox gridFlexBox;
+        juce::FlexBox rightContainer;
 
         mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
@@ -49,6 +50,9 @@ public:
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
         rightPanel.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         rightPanel.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
+        rightContainer.flexDirection = juce::FlexBox::Direction::column;
+        rightContainer.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+        rightContainer.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
 
         for (auto& btn : rowButtons) {
             rightPanel.items.add(juce::FlexItem(*btn).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
@@ -62,8 +66,10 @@ public:
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
         }
 
+        rightContainer.items.add(juce::FlexItem(rightPanel).withFlex(2));
+        rightContainer.items.add(juce::FlexItem(emptySpace).withFlex(1));
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
-        mainFlexBox.items.add(juce::FlexItem(rightPanel).withFlex(1));
+        mainFlexBox.items.add(juce::FlexItem(rightContainer).withFlex(1));
 
         mainFlexBox.performLayout(bounds.toFloat());
     }
