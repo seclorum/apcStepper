@@ -94,8 +94,6 @@ project(apcSequencer VERSION 1.0.0)
 
 set(FORMATS Standalone AU VST3 AUv3)
 
-
-
 juce_add_plugin(
 		apcSequencer
 		COMPANY_NAME "enabled.io"
@@ -112,7 +110,7 @@ juce_add_plugin(
 
 
 # Automatically add all plugin source files
-file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
+file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
 
 target_sources(apcSequencer PRIVATE ${PLUGIN_SOURCE_FILES})
 
