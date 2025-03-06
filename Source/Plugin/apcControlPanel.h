@@ -13,7 +13,7 @@ public:
     static constexpr int rows = 8;
     static constexpr int cols = 8;
 
-    apcControlPanel(apcStepperMainProcessor& p)
+    apcControlPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
         auto imageInputStreamPlay = std::make_unique<juce::MemoryInputStream>(
             BinaryData::playcircle_svg, BinaryData::playcircle_svgSize, false);
@@ -52,14 +52,14 @@ public:
         addAndMakeVisible(shiftToggleButton.get());
     }
 
-void resized() {
-    auto bounds = getLocalBounds();
+    void resized() {
+        auto bounds = getLocalBounds();
 
-    juce::FlexBox mainFlexBox;
-    juce::FlexBox rightPanel;
-    juce::FlexBox gridFlexBox;
-    juce::FlexBox rightContainer;
-    juce::FlexBox downButtons;
+        juce::FlexBox mainFlexBox;
+        juce::FlexBox rightPanel;
+        juce::FlexBox gridFlexBox;
+        juce::FlexBox rightContainer;
+        juce::FlexBox downButtons;
         mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
@@ -73,16 +73,14 @@ void resized() {
         rightContainer.alignItems = juce::FlexBox::AlignItems::stretch;
 
         downButtons.flexDirection = juce::FlexBox::Direction::column; // Changed to row
-        downButtons.justifyContent = juce::FlexBox::JustifyContent::center; // Changed to spaceAround
-        downButtons.alignItems = juce::FlexBox::AlignItems::center; //Keep align items center so the buttons are vertically centered.
+        downButtons.justifyContent = juce::FlexBox::JustifyContent::spaceAround; // Changed to spaceAround
+        downButtons.alignItems = juce::FlexBox::AlignItems::center;
+        //Keep align items center so the buttons are vertically centered.
 
 
-        for (auto& btn : rowButtons) {
-
+        for (auto &btn: rowButtons) {
             rightPanel.items.add(juce::FlexItem(*btn).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
-
         }
-
 
 
         gridFlexBox.flexDirection = juce::FlexBox::Direction::row;
@@ -92,13 +90,9 @@ void resized() {
         gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
 
-
-        for (auto& column : columns) {
-
+        for (auto &column: columns) {
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
-
         }
-
 
 
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
@@ -108,11 +102,9 @@ void resized() {
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
 
-
         rightContainer.items.add(juce::FlexItem(rightPanel).withFlex(2));
 
         rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1).withMargin(8));
-
 
 
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
@@ -120,26 +112,30 @@ void resized() {
         mainFlexBox.items.add(juce::FlexItem(rightContainer).withFlex(1));
 
 
-
         mainFlexBox.performLayout(bounds.toFloat());
-  // Add dummy component
+        // Add dummy component
 
 
+        // Calculate square size using the dummy component's bounds
+        auto downButtonsBounds = playToggleButton->getBounds();
+        int squareSize = downButtonsBounds.getHeight();
 
-    // Calculate square size using the dummy component's bounds
-    auto downButtonsBounds = playToggleButton->getBounds();
-    int squareSize = downButtonsBounds.getHeight();
+        // Apply square size to buttons
+        playToggleButton->setSize(squareSize, squareSize);
+        stopToggleButton->setSize(squareSize, squareSize);
+        shiftToggleButton->setSize(squareSize, squareSize);
 
-    // Apply square size to buttons
-    playToggleButton->setSize(squareSize, squareSize);
-    stopToggleButton->setSize(squareSize, squareSize);
-    shiftToggleButton->setSize(squareSize, squareSize);
+        // Reposition buttons within downButtons flexbox
+        shiftToggleButton->setBounds(downButtonsBounds.getX() + (downButtonsBounds.getWidth() / 2) - (squareSize / 2),
+                                     downButtonsBounds.getY()  + squareSize * 2, squareSize, squareSize);
+        playToggleButton->setBounds(downButtonsBounds.getX() + (downButtonsBounds.getWidth() / 2) - (squareSize / 2),
+                                    downButtonsBounds.getY(), squareSize, squareSize);
+        stopToggleButton->setBounds(downButtonsBounds.getX() + (downButtonsBounds.getWidth() / 2) - (squareSize / 2),
+                                    downButtonsBounds.getY()  + squareSize, squareSize, squareSize);
+    }
 
-    // Reposition buttons within downButtons flexbox
-
-}
 private:
-    apcStepperMainProcessor& processor;
+    apcStepperMainProcessor &processor;
     juce::OwnedArray<ToggleSquare> rowButtons;
     std::unique_ptr<ToggleSquare> playToggleButton;
     std::unique_ptr<ToggleSquare> stopToggleButton;
