@@ -1,4 +1,3 @@
-//
 // Created by Tom Peak Walcher on 05.03.25.
 //
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -16,6 +15,17 @@ public:
 
     apcControlPanel(apcStepperMainProcessor& p)
         : AudioProcessorEditor(&p), processor(p) {
+        auto imageInputStreamPlay = std::make_unique<juce::MemoryInputStream>(
+            BinaryData::playcircle_svg, BinaryData::playcircle_svgSize, false);
+        playButton = juce::PNGImageFormat().decodeImage(*imageInputStreamPlay);
+
+        auto imageInputStreamStop = std::make_unique<juce::MemoryInputStream>(
+            BinaryData::stopcircle_svg, BinaryData::stopcircle_svgSize, false);
+        stopButton = juce::PNGImageFormat().decodeImage(*imageInputStreamStop);
+
+        auto imageInputStreamShift = std::make_unique<juce::MemoryInputStream>(
+            BinaryData::shift_svg, BinaryData::shift_svgSize, false);
+        shiftButton = juce::PNGImageFormat().decodeImage(*imageInputStreamShift);
 
         // Initialize columns
         for (int i = 0; i < cols; ++i) {
@@ -30,18 +40,26 @@ public:
         }
 
         addAndMakeVisible(emptySpace);
-        setSize(600, 400);  // Default size
+
+        // Initialize toggle buttons with images
+        playToggleButton = std::make_unique<ToggleSquare>(juce::Colours::green, juce::Colours::darkgreen, playButton);
+        addAndMakeVisible(playToggleButton.get());
+
+        stopToggleButton = std::make_unique<ToggleSquare>(juce::Colours::red, juce::Colours::darkgrey, stopButton);
+        addAndMakeVisible(stopToggleButton.get());
+
+        shiftToggleButton = std::make_unique<ToggleSquare>(juce::Colours::blue, juce::Colours::orange, shiftButton);
+        addAndMakeVisible(shiftToggleButton.get());
     }
 
     void resized() override {
         auto bounds = getLocalBounds();
-         // Adjust this based on design needs
-
 
         juce::FlexBox mainFlexBox;
         juce::FlexBox rightPanel;
         juce::FlexBox gridFlexBox;
         juce::FlexBox rightContainer;
+        juce::FlexBox downButtons;
 
         mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
@@ -50,9 +68,14 @@ public:
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
         rightPanel.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         rightPanel.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
+
         rightContainer.flexDirection = juce::FlexBox::Direction::column;
         rightContainer.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         rightContainer.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
+
+        downButtons.flexDirection = juce::FlexBox::Direction::column;
+        downButtons.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+        downButtons.alignItems = juce::FlexBox::AlignItems::stretch;
 
         for (auto& btn : rowButtons) {
             rightPanel.items.add(juce::FlexItem(*btn).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
@@ -66,8 +89,13 @@ public:
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
         }
 
+        downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
+        downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
+        downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
+
         rightContainer.items.add(juce::FlexItem(rightPanel).withFlex(2));
-        rightContainer.items.add(juce::FlexItem(emptySpace).withFlex(1));
+        rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
+
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
         mainFlexBox.items.add(juce::FlexItem(rightContainer).withFlex(1));
 
@@ -77,7 +105,12 @@ public:
 private:
     apcStepperMainProcessor& processor;
     juce::OwnedArray<ToggleSquare> rowButtons;
+    std::unique_ptr<ToggleSquare> playToggleButton;
+    std::unique_ptr<ToggleSquare> stopToggleButton;
+    std::unique_ptr<ToggleSquare> shiftToggleButton;
     juce::OwnedArray<apcStepperTrack> columns;
-
+    juce::Image playButton;
+    juce::Image stopButton;
+    juce::Image shiftButton;
     juce::Component emptySpace;
 };

@@ -18,7 +18,7 @@ public:
     void paintButton(juce::Graphics &g, bool isMouseOverButton, bool isButtonDown) override {
         g.fillAll(findColour(juce::TextButton::buttonColourId));
         if (!buttonImage.isNull()) {
-            g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit, 1.0f);
+            g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::fillDestination, 1.0f);
         }
         isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::darkgrey);
         g.drawRect(getLocalBounds(), 2);
