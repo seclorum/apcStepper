@@ -4,7 +4,7 @@
 
 #include "apcStepperMainEditor.h"
 #include "apcStepperMainProcessor.h"
-#include "apcStepperGrid.h"
+#include "apcControlPanel.h"
 
 
 apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
