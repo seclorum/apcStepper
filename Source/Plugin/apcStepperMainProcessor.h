@@ -58,7 +58,7 @@ public:
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
 
-    const juce::String getName() const override { return "apcSequencerPlugin"; }
+    const juce::String getName() const override { return "apcStepperMainProcessor"; }
 
     bool acceptsMidi() const override { return true; }
     bool producesMidi() const override { return true; }
