@@ -52,56 +52,100 @@ public:
         addAndMakeVisible(shiftToggleButton.get());
     }
 
-    void resized() override {
-        auto bounds = getLocalBounds();
+void resized() {
+    auto bounds = getLocalBounds();
 
-        juce::FlexBox mainFlexBox;
-        juce::FlexBox rightPanel;
-        juce::FlexBox gridFlexBox;
-        juce::FlexBox rightContainer;
-        juce::FlexBox downButtons;
-
-        mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
-        mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
-        mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
+    juce::FlexBox mainFlexBox;
+    juce::FlexBox rightPanel;
+    juce::FlexBox gridFlexBox;
+    juce::FlexBox rightContainer;
+    juce::FlexBox downButtons;
+        juce::Component downButtonsBoundsComponent; // DughtPanel.flexDirection = juce::FlexBox::Direction::column;
 
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
-        rightPanel.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+        rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
+
         rightPanel.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
 
+
+
         rightContainer.flexDirection = juce::FlexBox::Direction::column;
+
         rightContainer.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+
         rightContainer.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
 
+
+
         downButtons.flexDirection = juce::FlexBox::Direction::column;
-        downButtons.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
-        downButtons.alignItems = juce::FlexBox::AlignItems::stretch;
+
+        downButtons.justifyContent = juce::FlexBox::JustifyContent::center;
+
+        downButtons.alignItems = juce::FlexBox::AlignItems::center;
+
+
 
         for (auto& btn : rowButtons) {
+
             rightPanel.items.add(juce::FlexItem(*btn).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
+
         }
+
+
 
         gridFlexBox.flexDirection = juce::FlexBox::Direction::row;
+
         gridFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+
         gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
+
+
         for (auto& column : columns) {
+
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
+
         }
 
+
+
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
+
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
+
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
+
+
         rightContainer.items.add(juce::FlexItem(rightPanel).withFlex(2));
-        rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1).withMargin(juce::FlexItem::Margin(4)));
+
+        rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1));
+
+
 
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
+
         mainFlexBox.items.add(juce::FlexItem(rightContainer).withFlex(1));
 
-        mainFlexBox.performLayout(bounds.toFloat());
-    }
 
+
+        mainFlexBox.performLayout(bounds.toFloat());
+  // Add dummy component
+
+
+
+    // Calculate square size using the dummy component's bounds
+    auto downButtonsBounds = playToggleButton->getBounds();
+    int squareSize = downButtonsBounds.getHeight();
+
+    // Apply square size to buttons
+    playToggleButton->setSize(squareSize, squareSize);
+    stopToggleButton->setSize(squareSize, squareSize);
+    shiftToggleButton->setSize(squareSize, squareSize);
+
+    // Reposition buttons within downButtons flexbox
+
+}
 private:
     apcStepperMainProcessor& processor;
     juce::OwnedArray<ToggleSquare> rowButtons;
