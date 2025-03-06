@@ -60,29 +60,21 @@ void resized() {
     juce::FlexBox gridFlexBox;
     juce::FlexBox rightContainer;
     juce::FlexBox downButtons;
-        juce::Component downButtonsBoundsComponent; // DughtPanel.flexDirection = juce::FlexBox::Direction::column;
+        mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
+        mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+        mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
         rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
-
-        rightPanel.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
-
-
+        rightPanel.alignItems = juce::FlexBox::AlignItems::stretch;
 
         rightContainer.flexDirection = juce::FlexBox::Direction::column;
+        rightContainer.justifyContent = juce::FlexBox::JustifyContent::center;
+        rightContainer.alignItems = juce::FlexBox::AlignItems::stretch;
 
-        rightContainer.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
-
-        rightContainer.alignItems = juce::FlexBox::AlignItems::stretch; // Ensure full height
-
-
-
-        downButtons.flexDirection = juce::FlexBox::Direction::column;
-
-        downButtons.justifyContent = juce::FlexBox::JustifyContent::center;
-
-        downButtons.alignItems = juce::FlexBox::AlignItems::center;
-
+        downButtons.flexDirection = juce::FlexBox::Direction::column; // Changed to row
+        downButtons.justifyContent = juce::FlexBox::JustifyContent::center; // Changed to spaceAround
+        downButtons.alignItems = juce::FlexBox::AlignItems::center; //Keep align items center so the buttons are vertically centered.
 
 
         for (auto& btn : rowButtons) {
@@ -119,7 +111,7 @@ void resized() {
 
         rightContainer.items.add(juce::FlexItem(rightPanel).withFlex(2));
 
-        rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1));
+        rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1).withMargin(8));
 
 
 
