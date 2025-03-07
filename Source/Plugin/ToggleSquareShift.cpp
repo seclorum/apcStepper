@@ -63,8 +63,8 @@ void ToggleSquareShift::resized() {
     rightPanelContainer.alignItems = juce::FlexBox::AlignItems::stretch;
 
     downButtons.flexDirection = juce::FlexBox::Direction::column;
-    downButtons.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
-    downButtons.alignItems = juce::FlexBox::AlignItems::center;
+    downButtons.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+    downButtons.alignItems = juce::FlexBox::AlignItems::flexStart;
 
     downButtons.performLayout(bounds.toFloat());
     rightPanelContainer.performLayout(bounds.toFloat());
@@ -76,9 +76,9 @@ void ToggleSquareShift::resized() {
     stopToggleButton->setSize(squareSize, squareSize);
     shiftToggleButton->setSize(squareSize, squareSize);
 
-    //playToggleButton->setBounds(downButton->getX() + (bounds.getWidth() /2)  - (squareSize / 2), getY()  , squareSize, squareSize);
-    //stopToggleButton->setBounds(getX() + (bounds.getWidth() / 2)  - (squareSize / 2), getY()  + squareSize, squareSize, squareSize);
-    //shiftToggleButton->setBounds(getX() + (bounds.getWidth() /2) - (squareSize / 2), getY() + squareSize + squareSize, squareSize, squareSize);
+    playToggleButton->setBounds(playToggleButton->getX() + (bounds.getWidth() /2)  - (squareSize / 2), playToggleButton->getY()  , squareSize, squareSize);
+        stopToggleButton->setBounds(stopToggleButton->getX() + (bounds.getWidth() / 2)  - (squareSize / 2), stopToggleButton->getY(), squareSize, squareSize);
+    shiftToggleButton->setBounds(shiftToggleButton->getX() + (bounds.getWidth() /2) - (squareSize / 2), shiftToggleButton->getY(), squareSize, squareSize);
 }
 
 void ToggleSquareShift::updateRowButtonColors() {
