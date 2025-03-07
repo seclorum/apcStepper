@@ -5,6 +5,7 @@
 
 #include "apcStepperTrack.h"
 #include "ToggleSquare.h"
+#include "ToggleSquareShift.h"
 
 class apcStepperMainProcessor;
 
@@ -58,7 +59,7 @@ public:
         juce::FlexBox mainFlexBox;
         juce::FlexBox rightPanel;
         juce::FlexBox gridFlexBox;
-        juce::FlexBox rightContainer;
+
         juce::FlexBox downButtons;
         mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
@@ -68,9 +69,6 @@ public:
         rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
         rightPanel.alignItems = juce::FlexBox::AlignItems::stretch;
 
-        rightContainer.flexDirection = juce::FlexBox::Direction::column;
-        rightContainer.justifyContent = juce::FlexBox::JustifyContent::center;
-        rightContainer.alignItems = juce::FlexBox::AlignItems::stretch;
 
         downButtons.flexDirection = juce::FlexBox::Direction::column; // Changed to row
         downButtons.justifyContent = juce::FlexBox::JustifyContent::spaceAround; // Changed to spaceAround
@@ -95,16 +93,8 @@ public:
         }
 
 
-        downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
-
-        downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
-
-        downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
 
-        rightContainer.items.add(juce::FlexItem(rightPanel).withFlex(2));
-
-        rightContainer.items.add(juce::FlexItem(downButtons).withFlex(1).withMargin(8));
 
 
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
@@ -117,21 +107,7 @@ public:
 
 
         // Calculate square size using the dummy component's bounds
-        auto downButtonsBounds = playToggleButton->getBounds();
-        int squareSize = downButtonsBounds.getHeight();
 
-        // Apply square size to buttons
-        playToggleButton->setSize(squareSize, squareSize);
-        stopToggleButton->setSize(squareSize, squareSize);
-        shiftToggleButton->setSize(squareSize, squareSize);
-
-        // Reposition buttons within downButtons flexbox
-        shiftToggleButton->setBounds(downButtonsBounds.getX() + (downButtonsBounds.getWidth() / 2) - (squareSize / 2),
-                                     downButtonsBounds.getY()  + squareSize * 2, squareSize, squareSize);
-        playToggleButton->setBounds(downButtonsBounds.getX() + (downButtonsBounds.getWidth() / 2) - (squareSize / 2),
-                                    downButtonsBounds.getY(), squareSize, squareSize);
-        stopToggleButton->setBounds(downButtonsBounds.getX() + (downButtonsBounds.getWidth() / 2) - (squareSize / 2),
-                                    downButtonsBounds.getY()  + squareSize, squareSize, squareSize);
     }
 
 private:
@@ -145,4 +121,5 @@ private:
     juce::Image stopButton;
     juce::Image shiftButton;
     juce::Component emptySpace;
+    ToggleSquareShift rightContainer;
 };
