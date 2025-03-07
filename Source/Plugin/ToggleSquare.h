@@ -8,6 +8,8 @@
 
 class ToggleSquare : public juce::TextButton {
 public:
+    juce::Colour initialColour;
+    juce::Colour toggleColour;
     ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const juce::Image &image)
         : juce::TextButton(""), initialColour(initialColour), toggleColour(toggleColour), buttonImage(image) {
         setOpaque(true);
@@ -41,8 +43,7 @@ public:
     }
 
 private:
-    juce::Colour initialColour;
-    juce::Colour toggleColour;
+
     juce::Image buttonImage;
     bool transformOriginCentre = true;
 };
