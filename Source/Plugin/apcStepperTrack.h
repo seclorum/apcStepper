@@ -77,7 +77,7 @@ public:
 
         // Add row toggle button
         controlFlexBox.items.add(
-            juce::FlexItem(*rowToggle).withFlex(1).withWidth(getWidth()).withMargin(4));
+            juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth()-12));
 
         // Add vertical slider
         controlFlexBox.items.add(
