@@ -4,7 +4,8 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_processors/juce_audio_processors.h>
 
-#include "ToggleSquare.h"
+#include "RowToggle.h"
+#include "BinaryData.h"
 
 class apcStepperMainProcessor;
 
@@ -37,7 +38,7 @@ public:
         }
 
         // Row toggle button
-        rowToggle = std::make_unique<ToggleSquare>(juce::Colours::lightgrey, rowColours[1], shadowImage);
+        rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue, shadowImage);
         addAndMakeVisible(rowToggle.get());
 
         // Add a **VERTICAL** slider
@@ -76,7 +77,7 @@ public:
 
         // Add row toggle button
         controlFlexBox.items.add(
-            juce::FlexItem(*rowToggle).withFlex(1).withWidth(getWidth()));
+            juce::FlexItem(*rowToggle).withFlex(1).withWidth(getWidth()).withMargin(4));
 
         // Add vertical slider
         controlFlexBox.items.add(
@@ -103,5 +104,5 @@ private:
     juce::OwnedArray<ToggleSquare> squares;
     juce::Image shadowImage;
     std::unique_ptr<juce::Slider> slider;
-    std::unique_ptr<ToggleSquare> rowToggle;
+    std::unique_ptr<RowToggle> rowToggle;
 };

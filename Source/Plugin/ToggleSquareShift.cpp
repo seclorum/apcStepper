@@ -18,7 +18,8 @@ ToggleSquareShift::ToggleSquareShift() {
     for (int i = 0; i < rows; ++i) {
         rowButtons.add(std::make_unique<ShiftToggleSquareButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange, juce::Image()));
         addAndMakeVisible(rowButtons.getLast());
-        rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1));
+        rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
+        rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
     }
 
     playToggleButton = std::make_unique<ToggleSquare>(juce::Colours::green, juce::Colours::darkgreen, playButton);
@@ -81,11 +82,3 @@ void ToggleSquareShift::resized() {
     shiftToggleButton->setBounds(shiftToggleButton->getX() + (bounds.getWidth() /2) - (squareSize / 2), shiftToggleButton->getY(), squareSize, squareSize);
 }
 
-void ToggleSquareShift::updateRowButtonColors() {
-    for (auto& btn : rowButtons) {
-        auto shiftToggleBtn = dynamic_cast<ShiftToggleSquareButton*>(btn);
-        if (shiftToggleBtn) {
-            shiftToggleBtn->setShiftMode(shiftMode);
-        }
-    }
-}

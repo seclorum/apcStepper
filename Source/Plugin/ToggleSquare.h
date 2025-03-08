@@ -1,8 +1,5 @@
-// Created by Tom Peak Walcher on 05.03.25.
-//
-
-#ifndef TOGGLESQUARE_H
-#define TOGGLESQUARE_H
+// ToggleSquare.h
+#pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -10,42 +7,37 @@ class ToggleSquare : public juce::TextButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
-    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const juce::Image &image)
-        : juce::TextButton(""), initialColour(initialColour), toggleColour(toggleColour), buttonImage(image) {
-        setOpaque(true);
-        setColour(juce::TextButton::buttonColourId, initialColour);
+    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const juce::Image& image)
+        : initialColour(initialColour), toggleColour(toggleColour), shadowImage(image), isToggled(false) {
         setClickingTogglesState(true);
-    }
-
-    void paintButton(juce::Graphics &g, bool isMouseOverButton, bool isButtonDown) override {
-        g.fillAll(findColour(juce::TextButton::buttonColourId));
-        if (!buttonImage.isNull()) {
-            g.drawImageWithin(buttonImage, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::fillDestination, 1.0f);
-        }
-        if (transformOriginCentre) {
-            g.saveState();
-            g.addTransform(juce::AffineTransform::translation(-getWidth() / 2.0f, -getHeight() / 2.0f));
-            g.reduceClipRegion(getLocalBounds());
-            g.restoreState();
-        }
-        isMouseOverButton ? g.setColour(juce::Colours::white) : g.setColour(juce::Colours::darkgrey);
-        g.drawRect(getLocalBounds(), 2);
-    }
-
-    void setTransformOriginToCentre(bool shouldCenter) {
-        transformOriginCentre = shouldCenter;
-        repaint();
+        setColour(juce::TextButton::buttonColourId, initialColour);
     }
 
     void clicked() override {
-        setColour(juce::TextButton::buttonColourId, getToggleState() ? toggleColour : initialColour);
+        isToggled = !isToggled;
+        repaint();
+        if (onClick)
+            onClick();
+    }
+
+    void setToggleState(bool newState, bool shouldAnimate=true) {
+        isToggled = newState;
         repaint();
     }
 
+    bool getToggleState() const {
+        return isToggled;
+    }
+
+    void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
+        g.drawImage(shadowImage, getLocalBounds().toFloat());
+        g.fillAll(isToggled ? toggleColour : initialColour);
+    }
+
+    std::function<void()> onClick;
+
 private:
 
-    juce::Image buttonImage;
-    bool transformOriginCentre = true;
+    juce::Image shadowImage;
+    bool isToggled;
 };
-
-#endif // TOGGLESQUARE_H
