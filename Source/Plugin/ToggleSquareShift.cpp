@@ -3,18 +3,6 @@
 #include <BinaryData.h>
 
 ToggleSquareShift::ToggleSquareShift() {
-    auto imageInputStreamPlay = std::make_unique<juce::MemoryInputStream>(
-        BinaryData::playcircle_svg, BinaryData::playcircle_svgSize, false);
-    playButton = juce::PNGImageFormat().decodeImage(*imageInputStreamPlay);
-
-    auto imageInputStreamStop = std::make_unique<juce::MemoryInputStream>(
-        BinaryData::stopcircle_svg, BinaryData::stopcircle_svgSize, false);
-    stopButton = juce::PNGImageFormat().decodeImage(*imageInputStreamStop);
-
-    auto imageInputStreamShift = std::make_unique<juce::MemoryInputStream>(
-        BinaryData::shift_svg, BinaryData::shift_svgSize, false);
-    shiftButton = juce::PNGImageFormat().decodeImage(*imageInputStreamShift);
-
     for (int i = 0; i < rows; ++i) {
         rowButtons.add(std::make_unique<ShiftToggleSquareButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange, juce::Image()));
         addAndMakeVisible(rowButtons.getLast());
@@ -22,13 +10,13 @@ ToggleSquareShift::ToggleSquareShift() {
         rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
     }
 
-    playToggleButton = std::make_unique<ToggleSquare>(juce::Colours::green, juce::Colours::darkgreen, playButton);
+    playToggleButton = std::make_unique<ToggleSquare>(juce::Colours::green, juce::Colours::darkgreen, BinaryData::playcircle_svg, BinaryData::playcircle_svgSize);
     addAndMakeVisible(playToggleButton.get());
 
-    stopToggleButton = std::make_unique<ToggleSquare>(juce::Colours::red, juce::Colours::darkgrey, stopButton);
+    stopToggleButton = std::make_unique<ToggleSquare>(juce::Colours::red, juce::Colours::darkgrey, BinaryData::stopcircle_svg, BinaryData::stopcircle_svgSize);
     addAndMakeVisible(stopToggleButton.get());
 
-    shiftToggleButton = std::make_unique<ToggleSquare>(juce::Colours::blue, juce::Colours::orange, shiftButton);
+    shiftToggleButton = std::make_unique<ToggleSquare>(juce::Colours::blue, juce::Colours::orange, BinaryData::shift_svg, BinaryData::shift_svgSize);
     addAndMakeVisible(shiftToggleButton.get());
 
     shiftToggleButton->onClick = [this]() {

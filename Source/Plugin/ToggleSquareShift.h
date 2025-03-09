@@ -13,9 +13,6 @@ public:
 private:
     static constexpr int rows = 8;
     juce::OwnedArray<ShiftToggleSquareButton> rowButtons;
-    juce::Image playButton;
-    juce::Image stopButton;
-    juce::Image shiftButton;
     std::unique_ptr<ToggleSquare> playToggleButton;
     std::unique_ptr<ToggleSquare> stopToggleButton;
     std::unique_ptr<ToggleSquare> shiftToggleButton;

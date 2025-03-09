@@ -135,8 +135,8 @@ juce_add_binary_data(Assets
 		SOURCES
 		Assets/cuttlefish.jpg
 		Assets/shadow.png
-		Assets/play-circle.svg
-		Assets/stop-circle.svg
+		Assets/playcircle.svg
+		Assets/stopcircle.svg
 		Assets/shift.svg
 )
 

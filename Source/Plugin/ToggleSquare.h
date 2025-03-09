@@ -2,13 +2,14 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_gui_extra/juce_gui_extra.h>
 
 class ToggleSquare : public juce::TextButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
-    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const juce::Image& image)
-        : initialColour(initialColour), toggleColour(toggleColour), shadowImage(image), isToggled(false) {
+    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const char *image, size_t imagesize)
+        : initialColour(initialColour), toggleColour(toggleColour), iconImage(image), iconImageSize(imagesize),  isToggled(false) {
         setClickingTogglesState(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
     }
@@ -30,7 +31,11 @@ public:
     }
 
     void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-        g.drawImage(shadowImage, getLocalBounds().toFloat());
+		auto iconImageArea = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
+		auto drawAble = juce::Drawable::createFromImageData(iconImage, iconImageSize);
+		drawAble->drawWithin(g, iconImageArea, juce::RectanglePlacement::xRight, 1.f);
+
+//		g.drawImage(iconImage, getLocalBounds().toFloat());
         g.fillAll(isToggled ? toggleColour : initialColour);
     }
 
@@ -38,6 +43,8 @@ public:
 
 private:
 
-    juce::Image shadowImage;
+	const char *iconImage;
+	size_t iconImageSize;
+
     bool isToggled;
 };
