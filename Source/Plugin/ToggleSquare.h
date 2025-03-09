@@ -8,8 +8,10 @@ class ToggleSquare : public juce::TextButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
+
     ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const char *image, size_t imagesize)
-        : initialColour(initialColour), toggleColour(toggleColour), iconImage(image), iconImageSize(imagesize),  isToggled(false) {
+        : initialColour(initialColour), toggleColour(toggleColour), iconImage(image), iconImageSize(imagesize),
+          isToggled(false) {
         setClickingTogglesState(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
     }
@@ -21,7 +23,7 @@ public:
             onClick();
     }
 
-    void setToggleState(bool newState, bool shouldAnimate=true) {
+    void setToggleState(bool newState, bool shouldAnimate = true) {
         isToggled = newState;
         repaint();
     }
@@ -30,21 +32,21 @@ public:
         return isToggled;
     }
 
-    void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-		auto iconImageArea = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
-		auto drawAble = juce::Drawable::createFromImageData(iconImage, iconImageSize);
-		drawAble->drawWithin(g, iconImageArea, juce::RectanglePlacement::xRight, 1.f);
-
-//		g.drawImage(iconImage, getLocalBounds().toFloat());
+    void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
+        auto iconImageArea = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
+        if (iconImage && iconImageSize) {
+            auto drawAble = juce::Drawable::createFromImageData(iconImage, iconImageSize);
+            drawAble->drawWithin(g, iconImageArea, juce::RectanglePlacement::xRight, 1.f);
+        }
+        //		g.drawImage(iconImage, getLocalBounds().toFloat());
         g.fillAll(isToggled ? toggleColour : initialColour);
     }
 
     std::function<void()> onClick;
 
 private:
-
-	const char *iconImage;
-	size_t iconImageSize;
+    const char *iconImage;
+    size_t iconImageSize;
 
     bool isToggled;
 };

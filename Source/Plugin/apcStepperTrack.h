@@ -31,14 +31,14 @@ public:
         // Initialize row squares (1 column of ToggleSquares)
         for (int row = 0; row < rows; ++row) {
             auto square = std::make_unique<ToggleSquare>(
-                juce::Colours::lightgrey, rowColours[row], shadowImage);
+                juce::Colours::lightgrey, rowColours[row], BinaryData::button_svg, BinaryData::button_svgSize);
 
             addAndMakeVisible(*square);
             squares.add(std::move(square));
         }
 
         // Row toggle button
-        rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue, shadowImage);
+        rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue);
         addAndMakeVisible(rowToggle.get());
 
         // Add a **VERTICAL** slider

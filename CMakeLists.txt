@@ -138,6 +138,7 @@ juce_add_binary_data(Assets
 		Assets/playcircle.svg
 		Assets/stopcircle.svg
 		Assets/shift.svg
+		Assets/button.svg
 )
 
 # Link JUCE modules

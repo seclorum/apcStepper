@@ -35,4 +35,5 @@ private:
             button->setShift(shiftMode);
         }
     }
+
 };

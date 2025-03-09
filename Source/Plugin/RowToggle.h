@@ -3,29 +3,30 @@
 #include "ToggleSquare.h"
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class RowToggle : public ToggleSquare {
+class RowToggle : public TextButton {
 public:
-    RowToggle(juce::Colour initialColour, juce::Colour toggleColour, const juce::Image& image)
-        : ToggleSquare(initialColour, toggleColour, image) {
+    juce::Colour initialColour;
+    juce::Colour toggleColour;
+
+    RowToggle(juce::Colour initialColour, juce::Colour toggleColour)
+        : initialColour(initialColour), toggleColour(toggleColour),
+          isToggled(false) {
         setClickingTogglesState(true);
-        setButtonText("Velocity");
-        setSize(200, 20);
-        setColour(juce::TextButton::textColourOnId, juce::Colours::black);
-        changeWidthToFitText(getHeight());
+        setColour(juce::TextButton::buttonColourId, initialColour);
     }
 
     void clicked() override {
-        ToggleSquare::clicked();
+        isToggled = !isToggled;
         setButtonText(getToggleState() ? "Length" : "Velocity");
     }
 
     void resized() override {
-        ToggleSquare::resized();
+       repaint();
     }
 
     void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override
     {
-        ToggleSquare::paintButton(g, shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
+
 
         // Draw the button text centered and scaled
         g.setColour(findColour(juce::TextButton::textColourOnId));
@@ -33,7 +34,12 @@ public:
 
         juce::Rectangle<float> textBounds = getLocalBounds().toFloat();
         g.drawFittedText(getButtonText(), getLocalBounds(), juce::Justification::centred, 1); // Draw centered and scale if needed
+        g.fillAll(isToggled ? toggleColour : initialColour);
     }
 
 private:
+    const char *iconImage;
+    size_t iconImageSize;
+
+    bool isToggled;
 };

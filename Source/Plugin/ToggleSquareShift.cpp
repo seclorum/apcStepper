@@ -4,7 +4,7 @@
 
 ToggleSquareShift::ToggleSquareShift() {
     for (int i = 0; i < rows; ++i) {
-        rowButtons.add(std::make_unique<ShiftToggleSquareButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange, juce::Image()));
+        rowButtons.add(std::make_unique<ShiftToggleSquareButton>(juce::Colours::grey, juce::Colours::blue,juce::Colours::orange,false, BinaryData::button_svg, BinaryData::button_svgSize));
         addAndMakeVisible(rowButtons.getLast());
         rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
         rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
