@@ -1,17 +1,17 @@
 // ToggleSquare.h
 #pragma once
 
-#include "ToggleButton.h"
+#include "apcToggleButton.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class ToggleIconButton : public ToggleButton {
+class ToggleIconButton : public apcToggleButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
 
     ToggleIconButton(juce::Colour initialColour, juce::Colour toggleColour, const char *image, size_t imagesize)
-      : ToggleButton(initialColour, toggleColour), iconImage(image), iconImageSize(imagesize) {}
+      : apcToggleButton(initialColour, toggleColour), iconImage(image), iconImageSize(imagesize) {}
 
     void clicked() override {
         isToggled = !isToggled;

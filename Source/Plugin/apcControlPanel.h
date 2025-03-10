@@ -4,7 +4,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "apcStepperTrack.h"
-#include "ToggleButton.h"
+#include "apcToggleButton.h"
 #include "apcRightPanel.h"
 
 class apcStepperMainProcessor;

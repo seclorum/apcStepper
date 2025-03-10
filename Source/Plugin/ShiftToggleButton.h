@@ -3,14 +3,14 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class ShiftToggleButton : public ToggleButton {
+class ShiftToggleButton : public apcToggleButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
     juce::Colour toggleShiftColour;
     bool isShift;
     ShiftToggleButton(juce::Colour initialColour, juce::Colour toggleColour,juce::Colour toggleShiftColour,bool isShift)
-    : ToggleButton(initialColour, toggleColour), isToggled(false) {
+    : apcToggleButton(initialColour, toggleColour), isToggled(false) {
         setClickingTogglesState(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
     }
@@ -31,10 +31,6 @@ public:
     }
 
     void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-        auto iconImageArea = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
-        auto drawAble = juce::Drawable::createFromImageData(iconImage, iconImageSize);
-        drawAble->drawWithin(g, iconImageArea, juce::RectanglePlacement::xRight, 1.f);
-
         //		g.drawImage(iconImage, getLocalBounds().toFloat());
         g.fillAll(isToggled ? isShift ? toggleShiftColour : toggleColour : initialColour);
     }

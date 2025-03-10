@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ToggleButton.h"
+#include "apcToggleButton.h"
 #include "ToggleIconButton.h"
 #include "ShiftToggleButton.h"
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -14,9 +14,9 @@ public:
 private:
     static constexpr int rows = 8;
     juce::OwnedArray<ShiftToggleButton> rowButtons;
-    std::unique_ptr<ToggleButton> playToggleButton;
-    std::unique_ptr<ToggleButton> stopToggleButton;
-    std::unique_ptr<ToggleButton> shiftToggleButton;
+    std::unique_ptr<apcToggleButton> playToggleButton;
+    std::unique_ptr<apcToggleButton> stopToggleButton;
+    std::unique_ptr<apcToggleButton> shiftToggleButton;
     juce::FlexBox rightPanel;
     juce::FlexBox downButtons;
     juce::FlexBox rightPanelContainer;
