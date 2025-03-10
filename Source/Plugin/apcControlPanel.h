@@ -4,8 +4,8 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "apcStepperTrack.h"
-#include "ToggleSquare.h"
-#include "ToggleSquareShift.h"
+#include "ToggleButton.h"
+#include "apcRightPanel.h"
 
 class apcStepperMainProcessor;
 
@@ -22,7 +22,7 @@ public:
             columns.add(std::make_unique<apcStepperTrack>(processor));
             addAndMakeVisible(columns.getLast());
         }
-        rightContainer = std::make_unique<ToggleSquareShift>();
+        rightContainer = std::make_unique<apcRightPanel>();
         addAndMakeVisible(rightContainer.get());
         // Initialize row buttons
 
@@ -80,5 +80,5 @@ private:
     juce::OwnedArray<apcStepperTrack> columns;
 
     juce::Component emptySpace;
-     std::unique_ptr<ToggleSquareShift> rightContainer;
+     std::unique_ptr<apcRightPanel> rightContainer;
 };

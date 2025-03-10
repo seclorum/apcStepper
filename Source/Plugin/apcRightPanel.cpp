@@ -1,22 +1,22 @@
-#include "ToggleSquareShift.h"
-#include "ShiftToggleSquareButton.h"
+#include "apcRightPanel.h"
+#include "ShiftToggleButton.h"
 #include <BinaryData.h>
 
-ToggleSquareShift::ToggleSquareShift() {
+apcRightPanel::apcRightPanel() {
     for (int i = 0; i < rows; ++i) {
-        rowButtons.add(std::make_unique<ShiftToggleSquareButton>(juce::Colours::grey, juce::Colours::blue,juce::Colours::orange,false, BinaryData::button_svg, BinaryData::button_svgSize));
+        rowButtons.add(std::make_unique<ShiftToggleButton>(juce::Colours::grey, juce::Colours::blue,juce::Colours::orange,false));
         addAndMakeVisible(rowButtons.getLast());
         rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
         rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
     }
 
-    playToggleButton = std::make_unique<ToggleSquare>(juce::Colours::green, juce::Colours::darkgreen, BinaryData::playcircle_svg, BinaryData::playcircle_svgSize);
+    playToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::green, juce::Colours::darkgreen, BinaryData::playcircle_svg, BinaryData::playcircle_svgSize);
     addAndMakeVisible(playToggleButton.get());
 
-    stopToggleButton = std::make_unique<ToggleSquare>(juce::Colours::red, juce::Colours::darkgrey, BinaryData::stopcircle_svg, BinaryData::stopcircle_svgSize);
+    stopToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::red, juce::Colours::darkgrey, BinaryData::stopcircle_svg, BinaryData::stopcircle_svgSize);
     addAndMakeVisible(stopToggleButton.get());
 
-    shiftToggleButton = std::make_unique<ToggleSquare>(juce::Colours::blue, juce::Colours::orange, BinaryData::shift_svg, BinaryData::shift_svgSize);
+    shiftToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::blue, juce::Colours::orange, BinaryData::shift_svg, BinaryData::shift_svgSize);
     addAndMakeVisible(shiftToggleButton.get());
 
     shiftToggleButton->onClick = [this]() {
@@ -40,7 +40,7 @@ ToggleSquareShift::ToggleSquareShift() {
     rightPanelContainer.performLayout(getLocalBounds().toFloat());
 }
 
-void ToggleSquareShift::resized() {
+void apcRightPanel::resized() {
     auto bounds = getLocalBounds();
 
     rightPanel.flexDirection = juce::FlexBox::Direction::column;

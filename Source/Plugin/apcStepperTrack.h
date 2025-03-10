@@ -5,6 +5,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "RowToggle.h"
+#include "ToggleButton.h"
 #include "BinaryData.h"
 
 class apcStepperMainProcessor;
@@ -23,15 +24,11 @@ public:
             juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::pink
         };
 
-        // Load shadow image
-        auto imageInputStream = std::make_unique<juce::MemoryInputStream>(
-            BinaryData::shadow_png, BinaryData::cuttlefish_jpgSize, false);
-        shadowImage = juce::PNGImageFormat().decodeImage(*imageInputStream);
 
         // Initialize row squares (1 column of ToggleSquares)
         for (int row = 0; row < rows; ++row) {
-            auto square = std::make_unique<ToggleSquare>(
-                juce::Colours::lightgrey, rowColours[row], BinaryData::button_svg, BinaryData::button_svgSize);
+            auto square = std::make_unique<ToggleButton>(
+                juce::Colours::lightgrey, rowColours[row]);
 
             addAndMakeVisible(*square);
             squares.add(std::move(square));
@@ -101,7 +98,7 @@ public:
 
 private:
     apcStepperMainProcessor& processor;
-    juce::OwnedArray<ToggleSquare> squares;
+    juce::OwnedArray<ToggleButton> squares;
     juce::Image shadowImage;
     std::unique_ptr<juce::Slider> slider;
     std::unique_ptr<RowToggle> rowToggle;

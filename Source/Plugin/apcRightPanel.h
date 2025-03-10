@@ -1,21 +1,22 @@
 #pragma once
 
-#include "ToggleSquare.h"
-#include "ShiftToggleSquareButton.h"
+#include "ToggleButton.h"
+#include "ToggleIconButton.h"
+#include "ShiftToggleButton.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class ToggleSquareShift : public juce::Component {
+class apcRightPanel : public juce::Component {
 public:
-    ToggleSquareShift();
+    apcRightPanel();
     void resized() override;
 
 private:
     static constexpr int rows = 8;
-    juce::OwnedArray<ShiftToggleSquareButton> rowButtons;
-    std::unique_ptr<ToggleSquare> playToggleButton;
-    std::unique_ptr<ToggleSquare> stopToggleButton;
-    std::unique_ptr<ToggleSquare> shiftToggleButton;
+    juce::OwnedArray<ShiftToggleButton> rowButtons;
+    std::unique_ptr<ToggleButton> playToggleButton;
+    std::unique_ptr<ToggleButton> stopToggleButton;
+    std::unique_ptr<ToggleButton> shiftToggleButton;
     juce::FlexBox rightPanel;
     juce::FlexBox downButtons;
     juce::FlexBox rightPanelContainer;

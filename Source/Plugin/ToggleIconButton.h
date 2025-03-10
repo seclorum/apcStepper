@@ -1,20 +1,17 @@
 // ToggleSquare.h
 #pragma once
 
+#include "ToggleButton.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class ToggleSquare : public juce::TextButton {
+class ToggleIconButton : public ToggleButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
 
-    ToggleSquare(juce::Colour initialColour, juce::Colour toggleColour, const char *image, size_t imagesize)
-        : initialColour(initialColour), toggleColour(toggleColour), iconImage(image), iconImageSize(imagesize),
-          isToggled(false) {
-        setClickingTogglesState(true);
-        setColour(juce::TextButton::buttonColourId, initialColour);
-    }
+    ToggleIconButton(juce::Colour initialColour, juce::Colour toggleColour, const char *image, size_t imagesize)
+      : ToggleButton(initialColour, toggleColour), iconImage(image), iconImageSize(imagesize) {}
 
     void clicked() override {
         isToggled = !isToggled;

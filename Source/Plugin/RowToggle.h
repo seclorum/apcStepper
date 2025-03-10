@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ToggleSquare.h"
+#include "ToggleButton.h"
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class RowToggle : public TextButton {
+class RowToggle : public juce::TextButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;

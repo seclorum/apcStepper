@@ -3,14 +3,14 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class ShiftToggleSquareButton : public juce::TextButton {
+class ShiftToggleButton : public ToggleButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
     juce::Colour toggleShiftColour;
     bool isShift;
-    ShiftToggleSquareButton(juce::Colour initialColour, juce::Colour toggleColour,juce::Colour toggleShiftColour,bool isShift ,const char *image, size_t imagesize)
-        : initialColour(initialColour), toggleColour(toggleColour),toggleShiftColour(toggleShiftColour), isShift(isShift),iconImage(image), iconImageSize(imagesize),  isToggled(false) {
+    ShiftToggleButton(juce::Colour initialColour, juce::Colour toggleColour,juce::Colour toggleShiftColour,bool isShift)
+    : ToggleButton(initialColour, toggleColour), isToggled(false) {
         setClickingTogglesState(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
     }
@@ -46,7 +46,5 @@ public:
 
 private:
 
-    const char *iconImage;
-    size_t iconImageSize;
     bool isToggled;
 };
