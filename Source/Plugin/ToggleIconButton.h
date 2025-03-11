@@ -22,7 +22,7 @@ public:
 
 
     void paintOverChildren(juce::Graphics &g) override {
-        auto iconImageArea = getLocalBounds().toFloat();
+        auto iconImageArea = getLocalBounds().reduced(getHeight()/7).toFloat();
         if (iconImage && iconImageSize) {
             auto drawAble = juce::Drawable::createFromImageData(iconImage, iconImageSize);
             drawAble->drawWithin(g, iconImageArea, juce::RectanglePlacement::xRight, 1.f);
