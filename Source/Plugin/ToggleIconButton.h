@@ -11,7 +11,9 @@ public:
     juce::Colour toggleColour;
 
     ToggleIconButton(juce::Colour initialColour, juce::Colour toggleColour, const char *image, size_t imagesize)
-      : apcToggleButton(initialColour, toggleColour), iconImage(image), iconImageSize(imagesize) {}
+      : apcToggleButton(initialColour, toggleColour), iconImage(image), iconImageSize(imagesize) {
+        setOpaque(true);
+    }
 
     void clicked() override {
         apcToggleButton::clicked();

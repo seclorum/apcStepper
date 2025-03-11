@@ -21,6 +21,7 @@ apcRightPanel::apcRightPanel() {
 
     shiftToggleButton->onClick = [this]() {
         shiftMode = !shiftMode;
+
         updateRowButtonColors();
     };
 

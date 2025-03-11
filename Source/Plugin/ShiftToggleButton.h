@@ -7,7 +7,7 @@ class ShiftToggleButton : public apcToggleButton {
 public:
 
     ShiftToggleButton(juce::Colour initialColour, juce::Colour toggleColour,juce::Colour toggleShiftColour,bool isShift)
-    : apcToggleButton(initialColour, toggleColour), toggleShiftColour(toggleShiftColour), isShift(isShift),isToggled(false) {
+    : apcToggleButton(initialColour, toggleColour), toggleColour(toggleColour),toggleShiftColour(toggleShiftColour), isShift(isShift) {
         setClickingTogglesState(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
     }
@@ -16,26 +16,17 @@ public:
         apcToggleButton::clicked();
 
     }
-    void setToggleState(bool newState, bool shouldAnimate = true)  {
-        juce::TextButton::setToggleState(newState, shouldAnimate);
-        isToggled = newState;
-        repaint();
-    }
 
-    bool getToggleState() const  {
-        return juce::TextButton::getToggleState();
-    }
     void setShift(bool mode) {
 
         isShift = mode;
-        setColourToggle( isShift ? toggleShiftColour : toggleColour);
-        repaint();
+        setColourToggle(isShift ? toggleShiftColour : toggleColour);
+        resized();
     }
 
 private:
-    juce::Colour initialColour;
-    juce::Colour toggleColour;
     juce::Colour toggleShiftColour;
+    juce::Colour toggleColour;
     bool isShift;
-    bool isToggled;
+
 };
