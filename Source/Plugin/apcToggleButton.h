@@ -6,8 +6,10 @@
 
 class apcToggleButton : public juce::TextButton {
 public:
+    juce::Colour &toggleColour;
+    bool isToggled;
     apcToggleButton(juce::Colour initialColour, juce::Colour toggleColour)
-        : initialColour(initialColour), toggleColour(toggleColour), isToggled(false) {
+        : juce::TextButton(""),initialColour(initialColour), toggleColour(toggleColour), isToggled(false) {
 
         setClickingTogglesState(true); // Enables automatic toggling
         setColour(juce::TextButton::buttonColourId, initialColour);
@@ -17,7 +19,11 @@ public:
         isToggled = getToggleState(); // Sync state
         repaint();
     }
-
+    void setColourToggle(juce::Colour newColour) {
+        // Store in JUCE's colour system
+        toggleColour = newColour;// Retrieve updated colour
+        repaint(); // Ensure UI updates
+    }
     void setToggleState(bool newState, bool shouldAnimate = true)  {
         juce::TextButton::setToggleState(newState, shouldAnimate);
         isToggled = newState;
@@ -32,12 +38,11 @@ public:
         g.fillAll(isToggled ? toggleColour : initialColour);
 
         if (auto drawable = juce::Drawable::createFromImageData(BinaryData::button_svg, BinaryData::button_svgSize)) {
-            drawable->drawWithin(g, getLocalBounds().toFloat(), juce::RectanglePlacement::centred, 1.0f);
+            drawable->drawWithin(g, drawable->getDrawableBounds(), juce::RectanglePlacement::fillDestination, 1.0f);
         }
     }
 
 private:
     juce::Colour initialColour;
-    juce::Colour toggleColour;
-    bool isToggled;
+
 };

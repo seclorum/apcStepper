@@ -14,36 +14,23 @@ public:
       : apcToggleButton(initialColour, toggleColour), iconImage(image), iconImageSize(imagesize) {}
 
     void clicked() override {
-        isToggled = !isToggled;
-        repaint();
-        if (onClick)
-            onClick();
+        apcToggleButton::clicked();
     }
 
-    void setToggleState(bool newState, bool shouldAnimate = true) {
-        isToggled = newState;
-        repaint();
-    }
 
-    bool getToggleState() const {
-        return isToggled;
-    }
 
-    void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-        auto iconImageArea = juce::Rectangle<float>(0, 0, getWidth(), getHeight());
+    void paintOverChildren(juce::Graphics &g) override {
+        auto iconImageArea = getBoundsInParent().toFloat();
         if (iconImage && iconImageSize) {
             auto drawAble = juce::Drawable::createFromImageData(iconImage, iconImageSize);
             drawAble->drawWithin(g, iconImageArea, juce::RectanglePlacement::xRight, 1.f);
         }
         //		g.drawImage(iconImage, getLocalBounds().toFloat());
-        g.fillAll(isToggled ? toggleColour : initialColour);
     }
 
-    std::function<void()> onClick;
 
 private:
     const char *iconImage;
     size_t iconImageSize;
 
-    bool isToggled;
 };

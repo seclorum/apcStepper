@@ -5,42 +5,37 @@
 
 class ShiftToggleButton : public apcToggleButton {
 public:
-    juce::Colour initialColour;
-    juce::Colour toggleColour;
-    juce::Colour toggleShiftColour;
-    bool isShift;
+
     ShiftToggleButton(juce::Colour initialColour, juce::Colour toggleColour,juce::Colour toggleShiftColour,bool isShift)
-    : apcToggleButton(initialColour, toggleColour), isToggled(false) {
+    : apcToggleButton(initialColour, toggleColour), toggleShiftColour(toggleShiftColour), isShift(isShift),isToggled(false) {
         setClickingTogglesState(true);
         setColour(juce::TextButton::buttonColourId, initialColour);
     }
 
     void clicked() override {
-        isToggled = !isToggled;
-        repaint();
+        apcToggleButton::clicked();
 
     }
-
-    void setToggleState(bool newState, bool shouldAnimate=true) {
+    void setToggleState(bool newState, bool shouldAnimate = true)  {
+        juce::TextButton::setToggleState(newState, shouldAnimate);
         isToggled = newState;
         repaint();
     }
 
-    bool getToggleState() const {
-        return isToggled;
+    bool getToggleState() const  {
+        return juce::TextButton::getToggleState();
     }
-
-    void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-        //		g.drawImage(iconImage, getLocalBounds().toFloat());
-        g.fillAll(isToggled ? isShift ? toggleShiftColour : toggleColour : initialColour);
-    }
-
     void setShift(bool mode) {
 
         isShift = mode;
+        setColourToggle( isShift ? toggleShiftColour : toggleColour);
+        repaint();
     }
 
 private:
-
+    juce::Colour initialColour;
+    juce::Colour toggleColour;
+    juce::Colour toggleShiftColour;
+    bool isShift;
     bool isToggled;
 };
