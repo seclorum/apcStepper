@@ -74,7 +74,7 @@ public:
     }
 
 private:
-    apcStepperMainProcessor &processor;;
+    apcStepperMainProcessor &processor;
     juce::OwnedArray<apcStepperTrack> columns;
 
     juce::Component emptySpace;

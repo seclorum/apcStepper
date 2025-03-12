@@ -5,6 +5,7 @@
 #include "apcStepperMainEditor.h"
 #include "apcStepperMainProcessor.h"
 #include "apcControlPanel.h"
+#include "apcLog.h"
 
 
 
@@ -52,6 +53,7 @@ apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
         // Use smart pointer to ensure safe memory management
         tabbedComponent->addTab("apcStepper", juce::Colours::darkgrey, new apcControlPanel(processor), true);
         tabbedComponent->addTab("About", juce::Colours::lightblue, new apcAboutBox(), true);
+        tabbedComponent->addTab("Log", juce::Colours::lightblue, new apcLog(), true);
         addAndMakeVisible(tabbedComponent.get());
     }
 
