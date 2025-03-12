@@ -3,16 +3,14 @@
 #include "apcToggleButton.h"
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class RowToggle : public juce::TextButton {
+class RowToggle : public apcToggleButton {
 public:
     juce::Colour initialColour;
     juce::Colour toggleColour;
 
     RowToggle(juce::Colour initialColour, juce::Colour toggleColour)
-        : initialColour(initialColour), toggleColour(toggleColour),
-          isToggled(false) {
-        setClickingTogglesState(true);
-        setColour(juce::TextButton::buttonColourId, initialColour);
+       : apcToggleButton(initialColour, toggleColour){
+        setButtonText("Velocity");
     }
 
     void clicked() override {
@@ -24,7 +22,7 @@ public:
        repaint();
     }
 
-    void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override
+    void paintOverChildren(juce::Graphics& g) override
     {
 
 
@@ -34,12 +32,11 @@ public:
 
         juce::Rectangle<float> textBounds = getLocalBounds().toFloat();
         g.drawFittedText(getButtonText(), getLocalBounds(), juce::Justification::centred, 1); // Draw centered and scale if needed
-        g.fillAll(isToggled ? toggleColour : initialColour);
+
     }
 
 private:
-    const char *iconImage;
-    size_t iconImageSize;
+
 
     bool isToggled;
 };
