@@ -1,8 +1,6 @@
 // Created by Tom Peak Walcher on 05.03.25.
 //
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_processors/juce_audio_processors.h>
-
+#pragma once
 #include "apcStepperTrack.h"
 #include "apcToggleButton.h"
 #include "apcRightPanel.h"
@@ -19,10 +17,10 @@ public:
 
         // Initialize columns
         for (int i = 0; i < cols; ++i) {
-            columns.add(std::make_unique<apcStepperTrack>(processor));
+            columns.add(std::make_unique<apcStepperTrack>(processor,i));
             addAndMakeVisible(columns.getLast());
         }
-        rightContainer = std::make_unique<apcRightPanel>();
+        rightContainer = std::make_unique<apcRightPanel>(processor);
         addAndMakeVisible(rightContainer.get());
         // Initialize row buttons
 

@@ -15,9 +15,8 @@ public:
     static constexpr int rows = 8;
     static constexpr int padding = 2;
 
-    apcStepperTrack(apcStepperMainProcessor& p)
-        : AudioProcessorEditor(&p), processor(p) {
-
+    apcStepperTrack(apcStepperMainProcessor &p, const int t)
+        : AudioProcessorEditor(&p), processor(p), trackNumber(t) {
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {
             juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
@@ -47,7 +46,7 @@ public:
         slider->setRange(0.0, 1.0, 0.01);
         slider->setValue(0.5);
         slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
-        addAndMakeVisible(*slider);// Default size
+        addAndMakeVisible(*slider); // Default size
     }
 
     void resized() override {
@@ -61,7 +60,7 @@ public:
         rowFlexBox.alignItems = juce::FlexBox::AlignItems::center;
 
         // Add squares to rowFlexBox
-        for (auto& square : squares) {
+        for (auto &square: squares) {
             rowFlexBox.items.add(
                 juce::FlexItem(*square).withWidth(squareSize).withHeight(squareSize).withFlex(1).withMargin(6));
         }
@@ -74,7 +73,7 @@ public:
 
         // Add row toggle button
         controlFlexBox.items.add(
-            juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth()-12));
+            juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth() - 12));
 
         // Add vertical slider
         controlFlexBox.items.add(
@@ -97,9 +96,10 @@ public:
     }
 
 private:
-    apcStepperMainProcessor& processor;
+    apcStepperMainProcessor &processor;
     juce::OwnedArray<apcToggleButton> squares;
     juce::Image shadowImage;
     std::unique_ptr<juce::Slider> slider;
     std::unique_ptr<RowToggle> rowToggle;
+    const int trackNumber;
 };

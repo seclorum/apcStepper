@@ -7,6 +7,7 @@
 #include "apcControlPanel.h"
 
 
+
 apcStepperMainEditor::apcStepperMainEditor(apcStepperMainProcessor& p)
     : juce::AudioProcessorEditor(p), processor(p)
 {
