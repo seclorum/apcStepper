@@ -1,8 +1,6 @@
 #pragma once
 
-#include <BinaryData.h>
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_gui_extra/juce_gui_extra.h>
+#include "Common.h"
 
 class apcToggleButton : public juce::TextButton {
 public:

@@ -1,12 +1,10 @@
 // Created by Jay Vaughan on 26.02.25.
 //
 
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_processors/juce_audio_processors.h>
+#include "Common.h"
 
 #include "RowToggle.h"
 #include "apcToggleButton.h"
-#include "BinaryData.h"
 
 class apcStepperMainProcessor;
 
@@ -47,6 +45,7 @@ public:
         slider->setValue(0.5);
         slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
         addAndMakeVisible(*slider); // Default size
+        APCLOG("apcStepperTrack initialized...");
     }
 
     void resized() override {

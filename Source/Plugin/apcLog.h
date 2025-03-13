@@ -5,11 +5,9 @@
 #ifndef APCSEQUENCER_APCLOG_H
 #define APCSEQUENCER_APCLOG_H
 
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_gui_extra/juce_gui_extra.h>
-#include <juce_core/juce_core.h>
+#include "Common.h"
 
-#include "BinaryData.h"
+#define APCLOG(x) Logger::getCurrentLogger()->writeToLog(x)
 
 using namespace juce;
 
@@ -25,7 +23,7 @@ public:
         juce::MessageManager::callAsync([this, message]()
                                         {
                                             logEditor.moveCaretToEnd();
-                                            logEditor.insertTextAtCaret(message + "\n");
+                                            logEditor.insertTextAtCaret(message + newLine);
                                         });
     }
 

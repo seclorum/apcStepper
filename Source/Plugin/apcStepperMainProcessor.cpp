@@ -112,6 +112,8 @@ void apcStepperMainProcessor::setTempo(int newTempo)
 		*tempoParam = newTempo;
 		tempoParam->endChangeGesture();
 	}
+
+    APCLOG(String("Tempo set to" + newTempo));
 }
 
 
@@ -119,17 +121,17 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 {
 	if (parameterID == "tempo")
 	{
-		DBG("Processor: UI changed Tempo to: " << static_cast<int>(newValue));
+		APCLOG(String::formatted("Processor: UI changed Tempo to: %d", static_cast<int>(newValue)));
 		// Apply any real-time logic if needed
 	}
 	if (parameterID == "transpose")
 	{
-		DBG("Processor: UI changed Transpose to: " << static_cast<int>(newValue));
+//        APCLOG(String::formatted("Processor: UI changed Transpose to: %d",  static_cast<int>(newValue)));
 		// Apply any real-time logic if needed
 	}
 	else if (parameterID == "velocityScale")
 	{
-		DBG("Processor: UI changed Velocity Scale to: " << newValue);
+//        APCLOG(String::formatted("Processor: UI changed Velocity Scale to:  %f", newValue));
 		// Apply any real-time logic if needed
 	}
 }
@@ -149,6 +151,8 @@ void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 	lastClockTime = 0.0;
 	accumulatedInterval = 0.0;
 	clockCount = 0;
+
+    APCLOG("apcStepperMainProcessor: prepareToPlay");
 
 }
 

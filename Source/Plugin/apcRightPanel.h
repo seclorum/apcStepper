@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 #include "ShiftToggleButton.h"
 #include "apcToggleButton.h"
 #include "ToggleIconButton.h"
