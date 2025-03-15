@@ -38,6 +38,7 @@ public:
 			drawable->drawWithin(g, drawable->getBounds().toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
 	}
 
+
 private:
 	juce::Colour initialColour;
 	juce::Colour toggleColour;
