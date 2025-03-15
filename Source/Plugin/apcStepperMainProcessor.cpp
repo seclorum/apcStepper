@@ -56,9 +56,6 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
 	// todo: get pointers to each of the stepTrackButtonGroup parameters ..
 
-	if (!tempoParam || !transposeParam || !velocityScaleParam)
-	{
-
 	for (int i = 0; i < 8; ++i)
 	{
 		auto button = std::make_unique<juce::AudioParameterBool>("groupButton" + std::to_string(i), "Group Button " + std::to_string(i), false);
@@ -184,6 +181,9 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 	{
 //        APCLOG(String::formatted("Processor: UI changed Velocity Scale to:  %f", newValue));
 		// Apply any real-time logic if needed
+	}
+	else {
+		APCLOG(String::formatted("Parameter changed: %s", parameterID));
 	}
 }
 
