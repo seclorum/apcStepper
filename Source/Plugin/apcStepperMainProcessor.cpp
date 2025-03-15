@@ -56,8 +56,6 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
 	// todo: get pointers to each of the stepTrackButtonGroup parameters ..
 
-	if (!tempoParam || !transposeParam || !velocityScaleParam)
-	{
 
 	for (int step = 0; step < 8; ++step) {
 		for (int trackNr = 0; trackNr < 8; ++trackNr)
