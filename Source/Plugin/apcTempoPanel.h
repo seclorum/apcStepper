@@ -38,6 +38,11 @@ public:
     void setTempo(int newTempo);
     apcTempoPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
+        tempoFlexPanel.flexDirection = juce::FlexBox::Direction::column;
+        tempoFlexPanel.justifyContent = juce::FlexBox::JustifyContent::center;
+        tempoFlexPanel.alignItems = juce::FlexBox::AlignItems::stretch;
+        tempoFlexPanel.items.add(FlexItem(tempoSlider).withFlex(1));
+        tempoFlexPanel.items.add(FlexItem(tempoLabel).withFlex(1));
         tempoSlider.setSliderStyle(Slider::LinearHorizontal);
         tempoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
         tempoSlider.setRange(20.0f, 300.0f, 1.0f); // Typical tempo range
@@ -70,6 +75,9 @@ public:
         processor.setTempo(roundToInt(tempoSlider.getValue()));
     }
     void resized() override {
+        tempoLabel.setBounds(tempoLabel.getLocalBounds());
+        tempoSlider.setBounds(tempoSlider.getLocalBounds());
+        tempoFlexPanel.performLayout(getLocalBounds());
         setSize(getLocalBounds().getWidth(), getLocalBounds().getHeight());
         repaint();
     }
@@ -80,7 +88,7 @@ private:
 
     // Attachments used to bind to parameters in the processor
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
-
+    juce::FlexBox tempoFlexPanel;
     apcStepperMainProcessor &processor;;
 
 
