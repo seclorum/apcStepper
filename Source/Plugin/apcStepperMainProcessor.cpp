@@ -56,14 +56,15 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
 	// todo: get pointers to each of the stepTrackButtonGroup parameters ..
 
-	for (int step = 0; step < 8; ++step) {
-		for (int trackNr = 0; trackNr < 8; ++trackNr)
-		{
-			auto button = std::make_unique<juce::AudioParameterBool>("step_" + std::to_string(step) + "_track_" + std::to_string(trackNr), "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr), false);
-			// Add the button to the vector
-			parameters.addParameterListener(button->paramID,this);  // Add to the parameter list
-		}
-	}
+
+//	for (int step = 0; step < 8; ++step) {
+//		for (int trackNr = 0; trackNr < 8; ++trackNr)
+//		{
+//			auto button = std::make_unique<juce::AudioParameterBool>("step_" + std::to_string(step) + "_track_" + std::to_string(trackNr), "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr), false);
+//			// Add the button to the vector
+//			parameters.addParameterListener(button->paramID,this);  // Add to the parameter list
+//		}
+//	}
 
 	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
