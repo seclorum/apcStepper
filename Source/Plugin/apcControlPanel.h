@@ -1,9 +1,13 @@
 // Created by Tom Peak Walcher on 05.03.25.
 //
 #pragma once
-#include "apcStepperTrack.h"
+
+#include "Common.h"
+
+#include "apcStepperStep.h"
 #include "apcToggleButton.h"
 #include "apcRightPanel.h"
+
 
 class apcStepperMainProcessor;
 
@@ -17,7 +21,7 @@ public:
 
         // Initialize columns
         for (int i = 0; i < cols; ++i) {
-            columns.add(std::make_unique<apcStepperTrack>(processor,i));
+            columns.add(std::make_unique<apcStepperStep>(processor,i));
             addAndMakeVisible(columns.getLast());
         }
         rightContainer = std::make_unique<apcRightPanel>(processor);
@@ -38,27 +42,15 @@ public:
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
-
         //Keep align items center so the buttons are vertically centered.
 
-
-
-
         gridFlexBox.flexDirection = juce::FlexBox::Direction::row;
-
         gridFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
-
         gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
-
 
         for (auto &column: columns) {
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
         }
-
-
-
-
-
 
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
 
@@ -68,6 +60,7 @@ public:
         mainFlexBox.performLayout(bounds.toFloat());
         // Add dummy component
 
+        APCLOG("apcControl Panel initialized.");
 
         // Calculate square size using the dummy component's bounds
 
@@ -75,7 +68,7 @@ public:
 
 private:
     apcStepperMainProcessor &processor;
-    juce::OwnedArray<apcStepperTrack> columns;
+    juce::OwnedArray<apcStepperStep> columns;
 
     juce::Component emptySpace;
      std::unique_ptr<apcRightPanel> rightContainer;

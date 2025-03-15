@@ -1,8 +1,11 @@
 #pragma once
 
+#include "Common.h"
+
 #include "ShiftToggleButton.h"
 #include "apcToggleButton.h"
 #include "ToggleIconButton.h"
+#include "apcTempoPanel.h"
 
 class apcStepperMainProcessor;
 
@@ -10,6 +13,7 @@ class apcRightPanel : public juce::AudioProcessorEditor {
 public:
     apcRightPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
+        //Track Buttons with Shift option were generated
         for (int i = 0; i < rows; ++i) {
             rowButtons.add(
                 std::make_unique<ShiftToggleButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange,
@@ -39,10 +43,12 @@ public:
             updateRowButtonColors();
         };
 
+        downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
+        addAndMakeVisible(tempoPanel.get());
         addAndMakeVisible(playToggleButton.get());
         addAndMakeVisible(stopToggleButton.get());
         addAndMakeVisible(shiftToggleButton.get());
@@ -91,6 +97,7 @@ public:
 private:
     static constexpr int rows = 8;
     juce::OwnedArray<ShiftToggleButton> rowButtons;
+    std::unique_ptr<apcTempoPanel> tempoPanel;
     std::unique_ptr<apcToggleButton> playToggleButton;
     std::unique_ptr<apcToggleButton> stopToggleButton;
     std::unique_ptr<apcToggleButton> shiftToggleButton;

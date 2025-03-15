@@ -38,7 +38,7 @@ apcLog::~apcLog()
 void apcLog::logMessage(const juce::String& message)
 {
     logTextBox.moveCaretToEnd();
-    logTextBox.insertTextAtCaret(message + "\n");
+    logTextBox.insertTextAtCaret(message + newLine);
 }
 
 void apcLog::getAllToolbarItemIds(juce::Array<int>& ids)

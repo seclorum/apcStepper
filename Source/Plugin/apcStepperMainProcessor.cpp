@@ -9,6 +9,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 					 {
 							 std::make_unique<juce::AudioParameterInt>(ParameterID{"tempo", apcPARAMETER_V1}, "Tempo", 0, 240, 98),
 							 std::make_unique<juce::AudioParameterInt>(ParameterID{"transpose", apcPARAMETER_V1}, "Transpose", -24, 24, 0),
+							 std::make_unique<juce::AudioParameterBool>(ParameterID{"step_1_track_1", apcPARAMETER_V1}, "Transpose", -24, 24, 0),
 							 std::make_unique<juce::AudioParameterFloat>(ParameterID{"velocityScale", apcPARAMETER_V1}, "Velocity Scale",
 																		 juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f, 1.0f),
 																		 1.0f)
@@ -17,18 +18,21 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
+	step_1_trach_1_Param = dynamic_cast<juce::AudioParameterBoolAttributes*>(parameters.getParameter("step_1_track_1"));
 
 	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
 		return;
 	}
 
+	parameters.addParameterListener("step_1_track_1", this);
 	parameters.addParameterListener("tempo", this);
 	parameters.addParameterListener("transpose", this);
 	parameters.addParameterListener("velocityScale", this);
 
 	tempoParam->operator=(98);
 	transposeParam->operator=(0);
+	step_1_track_1_Param->operator=(false);
 	velocityScaleParam->operator=(1.0f);
 
 	parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
@@ -112,6 +116,8 @@ void apcStepperMainProcessor::setTempo(int newTempo)
 		*tempoParam = newTempo;
 		tempoParam->endChangeGesture();
 	}
+
+    APCLOG(String("Tempo set to" + newTempo));
 }
 
 
@@ -119,17 +125,17 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 {
 	if (parameterID == "tempo")
 	{
-		DBG("Processor: UI changed Tempo to: " << static_cast<int>(newValue));
+		APCLOG(String::formatted("Processor: UI changed Tempo to: %d", static_cast<int>(newValue)));
 		// Apply any real-time logic if needed
 	}
 	if (parameterID == "transpose")
 	{
-		DBG("Processor: UI changed Transpose to: " << static_cast<int>(newValue));
+//        APCLOG(String::formatted("Processor: UI changed Transpose to: %d",  static_cast<int>(newValue)));
 		// Apply any real-time logic if needed
 	}
 	else if (parameterID == "velocityScale")
 	{
-		DBG("Processor: UI changed Velocity Scale to: " << newValue);
+//        APCLOG(String::formatted("Processor: UI changed Velocity Scale to:  %f", newValue));
 		// Apply any real-time logic if needed
 	}
 }
@@ -149,6 +155,8 @@ void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 	lastClockTime = 0.0;
 	accumulatedInterval = 0.0;
 	clockCount = 0;
+
+    APCLOG("apcStepperMainProcessor: prepareToPlay");
 
 }
 

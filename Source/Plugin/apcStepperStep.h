@@ -1,21 +1,19 @@
 // Created by Jay Vaughan on 26.02.25.
 //
 
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_processors/juce_audio_processors.h>
+#include "Common.h"
 
 #include "RowToggle.h"
 #include "apcToggleButton.h"
-#include "BinaryData.h"
 
 class apcStepperMainProcessor;
 
-class apcStepperTrack : public juce::AudioProcessorEditor {
+class apcStepperStep : public juce::AudioProcessorEditor {
 public:
     static constexpr int rows = 8;
     static constexpr int padding = 2;
 
-    apcStepperTrack(apcStepperMainProcessor &p, const int t)
+    apcStepperStep(apcStepperMainProcessor &p, const int t)
         : AudioProcessorEditor(&p), processor(p), trackNumber(t) {
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {
@@ -47,6 +45,7 @@ public:
         slider->setValue(0.5);
         slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
         addAndMakeVisible(*slider); // Default size
+        APCLOG("apcStepperTrack initialized...");
     }
 
     void resized() override {

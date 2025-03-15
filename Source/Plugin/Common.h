@@ -1,7 +1,12 @@
-#pragma once
+//
+// Created by Jay Vaughan on 13.03.25.
+//
 
-#define MELATONIN
-// !J! Just include all the JUCE things.  Makes it easier to navigate... but slower to build
+#ifndef APCSEQUENCER_COMMON_H
+#define APCSEQUENCER_COMMON_H
+
+#include <array>
+
 #include <juce_analytics/juce_analytics.h>
 #include <juce_animation/juce_animation.h>
 #include <juce_audio_basics/juce_audio_basics.h>
@@ -26,46 +31,11 @@
 #include <juce_product_unlocking/juce_product_unlocking.h>
 #include <juce_video/juce_video.h>
 
-
-#include <vector>
-#include <memory>
-
-#include "MIDIArpeggiatorEditor.h"
-
-#include "apcAboutBox.h"
 #include "melatonin_inspector/melatonin_inspector.h"
 
-// Forward declarations to avoid unnecessary includes
-class apcStepperMainProcessor;
-class apcStepperMainEditor;
+#include "BinaryData.h"
 
-using namespace juce;
-
-//==============================================================================
-// Editor for the APC Sequencer Processor
-class apcStepperMainEditor : public juce::AudioProcessorEditor
-{
-public:
-    explicit apcStepperMainEditor(apcStepperMainProcessor& processor);
-    ~apcStepperMainEditor() override;
-
-    void paint(juce::Graphics& g) override;
-    void resized() override;
+#include "apcLog.h"
 
 
-
-private:
-
-#ifdef MELATONIN
-	// Melatonin Inspector for debugging
-	melatonin::Inspector inspector{ *this };
-#endif
-
-    apcStepperMainProcessor& processor;
-
-
-    // Tabbed UI Component
-    std::unique_ptr<TabbedComponent> tabbedComponent;
-
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainEditor)
-};
+#endif //APCSEQUENCER_COMMON_H
