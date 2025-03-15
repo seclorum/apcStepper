@@ -78,10 +78,12 @@ private:
 	juce::AudioParameterInt* tempoParam = nullptr;
 	juce::AudioParameterInt* transposeParam = nullptr;
     juce::AudioParameterFloat* velocityScaleParam = nullptr;
-    juce::AudioParameterInt* step_1_track_1_Param = nullptr;
+//    juce::AudioParameterInt* step_1_track_1_Param = nullptr;
+    std::vector<std::unique_ptr<juce::AudioParameterBool>> stepTrackButtonGroup;  // Vector to store the group of buttons
 
     juce::MidiBuffer incomingMidiBuffer;
     juce::CriticalSection midiMutex;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainProcessor)
 };
