@@ -28,7 +28,9 @@ public:
     }
     bool buttonStateChanged() override {
         isToggled = getToggleState(); // Sync state
-        repaint();
+
+		*processor.getParameters().getRawParameterValue(buttonName) = isToggled;
+
         button_attachment.setParameter(buttonName,isToggled);
         return isToggled;
     }
