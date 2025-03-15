@@ -23,8 +23,8 @@ public:
             rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
         }
 
-        tempoPanel = std::make_unique<apcTempoPanel>(processor);
-        addAndMakeVisible(tempoPanel.get());
+        //tempoPanel = std::make_unique<apcTempoPanel>(processor);
+        //addAndMakeVisible(tempoPanel.get());
         playToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::green, juce::Colours::darkgreen,
                                                               BinaryData::playcircle_svg,
                                                               BinaryData::playcircle_svgSize);
@@ -45,7 +45,7 @@ public:
             updateRowButtonColors();
         };
 
-        downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
+        //downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
@@ -58,6 +58,7 @@ public:
         rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4));
         rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
         rightPanelContainer.performLayout(getLocalBounds().toFloat());
+        APCLOG("RightPanel initialized...");
 ;     }
 
     void resized() override {
@@ -91,12 +92,13 @@ public:
                                     stopToggleButton->getY(), squareSize, squareSize);
         shiftToggleButton->setBounds(shiftToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
                                      shiftToggleButton->getY(), squareSize, squareSize);
+
     }
 
 private:
     static constexpr int rows = 8;
     juce::OwnedArray<ShiftToggleButton> rowButtons;
-    std::unique_ptr<apcTempoPanel> tempoPanel;
+    //std::unique_ptr<apcTempoPanel> tempoPanel;
     std::unique_ptr<apcToggleButton> playToggleButton;
     std::unique_ptr<apcToggleButton> stopToggleButton;
     std::unique_ptr<apcToggleButton> shiftToggleButton;

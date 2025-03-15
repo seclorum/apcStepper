@@ -76,7 +76,7 @@ void apcStepperMainProcessor::initializeParameters()
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
 	step_1_track_1_Param = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("step_1_track_1"));
 
-	jassert(tempoParam && transposeParam && velocityScaleParam);
+	jassert(tempoParam && transposeParam && velocityScaleParam && step_1_track_1_Param);
 //
 //	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 //		return; // Or handle the error appropriately

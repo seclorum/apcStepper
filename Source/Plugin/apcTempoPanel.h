@@ -68,7 +68,7 @@ public:
 
         // Sync tempo label with slider
         tempoSlider->onValueChange = [this] { syncTempo(); };
-
+        APCLOG("apcTempoPanel initialized...");
 
     }
     void syncTempo()

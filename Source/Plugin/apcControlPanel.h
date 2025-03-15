@@ -26,7 +26,7 @@ public:
         }
         rightContainer = std::make_unique<apcRightPanel>(processor);
         addAndMakeVisible(rightContainer.get());
-        // Initialize row buttons
+        APCLOG("Main initialized...");
 
     }
 
