@@ -58,19 +58,28 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 
 	if (!tempoParam || !transposeParam || !velocityScaleParam)
 	{
+
+	for (int i = 0; i < 8; ++i)
+	{
+		auto button = std::make_unique<juce::AudioParameterBool>("groupButton" + std::to_string(i), "Group Button " + std::to_string(i), false);
+		  // Add the button to the vector
+		parameters.addParameterListener(button->paramID,this);  // Add to the parameter list
+	}
+	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
 		return;
 	}
 
 	// not sure if we need to do this any more...
-	parameters.addParameterListener("step1_track1", this);
+	//parameters.addParameterListener("step1_track1", this);
+
 	parameters.addParameterListener("tempo", this);
 	parameters.addParameterListener("transpose", this);
 	parameters.addParameterListener("velocityScale", this);
 
 	tempoParam->operator=(98);
 	transposeParam->operator=(0);
-//	step_1_track_1_Param->operator=(0);
+
 	velocityScaleParam->operator=(1.0f);
 
 	parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
@@ -112,7 +121,6 @@ void apcStepperMainProcessor::initializeParameters()
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
-//	step_1_track_1_Param = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("step_1_track_1"));
 
 	jassert(tempoParam && transposeParam && velocityScaleParam);
 //
