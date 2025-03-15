@@ -61,7 +61,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	{
 		auto button = std::make_unique<juce::AudioParameterBool>("groupButton" + std::to_string(i), "Group Button " + std::to_string(i), false);
 		  // Add the button to the vector
-		parameters.addParameterListener(button->getParameterID());  // Add to the parameter list
+		parameters.addParameterListener(button->paramID,this);  // Add to the parameter list
 	}
 	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
