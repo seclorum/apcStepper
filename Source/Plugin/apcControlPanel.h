@@ -5,7 +5,7 @@
 #include "Common.h"
 
 #include "apcStepperStep.h"
-#include "apcToggleButton.h"
+#include "apcToggleParameterButton.h"
 #include "apcRightPanel.h"
 
 

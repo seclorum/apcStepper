@@ -5,6 +5,7 @@
 
 #include "RowToggle.h"
 #include "apcToggleButton.h"
+#include "apcToggleParameterButton.h"
 
 class apcStepperMainProcessor;
 
@@ -24,8 +25,8 @@ public:
 
         // Initialize row squares (1 column of ToggleSquares)
         for (int row = 0; row < rows; ++row) {
-            auto square = std::make_unique<apcToggleButton>(
-                juce::Colours::lightgrey, rowColours[row]);
+            auto square = std::make_unique<apcToggleParameterButton>(("step_" + std::to_string(trackNumber) + "_track_" + std::to_string(row)  ),
+                juce::Colours::lightgrey, rowColours[row],processor);
 
             addAndMakeVisible(*square);
             squares.add(std::move(square));
@@ -96,7 +97,7 @@ public:
 
 private:
     apcStepperMainProcessor &processor;
-    juce::OwnedArray<apcToggleButton> squares;
+    juce::OwnedArray<apcToggleParameterButton> squares;
     juce::Image shadowImage;
     std::unique_ptr<juce::Slider> slider;
     std::unique_ptr<RowToggle> rowToggle;
