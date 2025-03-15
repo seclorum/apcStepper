@@ -23,6 +23,8 @@ public:
             rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
         }
 
+        tempoPanel = std::make_unique<apcTempoPanel>(processor);
+        addAndMakeVisible(tempoPanel.get());
         playToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::green, juce::Colours::darkgreen,
                                                               BinaryData::playcircle_svg,
                                                               BinaryData::playcircle_svgSize);
@@ -48,10 +50,7 @@ public:
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
-        addAndMakeVisible(tempoPanel.get());
-        addAndMakeVisible(playToggleButton.get());
-        addAndMakeVisible(stopToggleButton.get());
-        addAndMakeVisible(shiftToggleButton.get());
+
 
         for (auto &button: rowButtons) {
             addAndMakeVisible(button);
