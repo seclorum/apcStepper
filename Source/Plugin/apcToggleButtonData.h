@@ -15,21 +15,21 @@ using namespace juce;
 class apcToggleButtonData : public juce::TextButton {
 public:
 
-    apcToggleButtonData(juce::Colour initialColour, buttonName juce::Colour toggleColour,apcStepperMainProcessor &p)
+    apcToggleButtonData(juce::Colour initialColour, std::string buttonName, juce::Colour toggleColour, apcStepperMainProcessor &p)
 
         : juce::TextButton(""),initialColour(initialColour), buttonName(buttonName),toggleColour(toggleColour),AudioProcessorEditor(&p), processor(p) , isToggled(false) {
         setClickingTogglesState(true); // Enables automatic toggling
         setColour(juce::TextButton::buttonColourId, initialColour);
-        button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-           processor.getParameters(), buttonName, tempoSlider);
+        button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::BoolAttachment>(
+           processor.getParameters(),buttonName,isToggled);
 
         // Sync tempo label with slider
 
     }
-    void onValueChange() override { syncTempo(); };
     bool buttonStateChanged() override {
         isToggled = getToggleState(); // Sync state
         repaint();
+        processor.setParameter(buttonName,isToggled);
         return isToggled;
     }
     void setColourToggle(const juce::Colour newColour) {
