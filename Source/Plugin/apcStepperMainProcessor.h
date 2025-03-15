@@ -79,7 +79,7 @@ private:
 	juce::AudioParameterInt* transposeParam = nullptr;
     juce::AudioParameterFloat* velocityScaleParam = nullptr;
 //    juce::AudioParameterInt* step_1_track_1_Param = nullptr;
-	std::array<std::unique_ptr<juce::AudioParameterBool>, 8> stepTrackButtonGroup;
+	std::array<std::unique_ptr<juce::AudioParameterBool>, 200> stepTrackButtonGroup;
 
     juce::MidiBuffer incomingMidiBuffer;
     juce::CriticalSection midiMutex;

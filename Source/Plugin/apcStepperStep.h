@@ -4,6 +4,7 @@
 #include "Common.h"
 
 #include "RowToggle.h"
+#include "apcLog.h"
 #include "apcToggleButton.h"
 #include "apcToggleParameterButton.h"
 
@@ -14,8 +15,8 @@ public:
     static constexpr int rows = 8;
     static constexpr int padding = 2;
 
-    apcStepperStep(apcStepperMainProcessor &p, const int t)
-        : AudioProcessorEditor(&p), processor(p), trackNumber(t) {
+    apcStepperStep(apcStepperMainProcessor &p, const int s)
+        : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {
             juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
@@ -24,32 +25,34 @@ public:
 
 
         // Initialize row squares (1 column of ToggleSquares)
-        for (int row = 0; row < rows; ++row) {
-            auto square = std::make_unique<apcToggleParameterButton>(("step_" + std::to_string(trackNumber) + "_track_" + std::to_string(row)  ),
-                juce::Colours::lightgrey, rowColours[row],processor);
 
+        for (int row = 0; row < rows; ++row) {
+            auto square = std::make_unique<apcToggleParameterButton>("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row),
+                                                                     juce::Colours::lightgrey, rowColours[row],processor);
+            //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
             addAndMakeVisible(*square);
             squares.add(std::move(square));
+
+            APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
         }
 
-        // Row toggle button
-        rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue);
-        addAndMakeVisible(rowToggle.get());
+                // Row toggle button
+                rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue);
+            addAndMakeVisible(rowToggle.get());
 
-        // Add a **VERTICAL** slider
-        // Create a slider (default constructor)
-        slider = std::make_unique<juce::Slider>();
+            // Add a **VERTICAL** slider
+            // Create a slider (default constructor)
+            slider = std::make_unique<juce::Slider>();
 
-        // Set the slider to be vertical
-        slider->setSliderStyle(juce::Slider::LinearVertical);
-        slider->setRange(0.0, 1.0, 0.01);
-        slider->setValue(0.5);
-        slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
-        addAndMakeVisible(*slider); // Default size
-        APCLOG("apcStepperTrack initialized...");
-    }
-
-    void resized() override {
+            // Set the slider to be vertical
+            slider->setSliderStyle(juce::Slider::LinearVertical);
+            slider->setRange(0.0, 1.0, 0.01);
+            slider->setValue(0.5);
+            slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
+            addAndMakeVisible(*slider); // Default size
+            APCLOG("apcStepperTrack initialized...");
+        }
+        void resized() override {
         auto bounds = getLocalBounds();
         float squareSize = bounds.getHeight() / (rows + 2) - 2 * padding; // Fit squares + row toggle
 
@@ -101,5 +104,5 @@ private:
     juce::Image shadowImage;
     std::unique_ptr<juce::Slider> slider;
     std::unique_ptr<RowToggle> rowToggle;
-    const int trackNumber;
+    const int stepNumber;
 };

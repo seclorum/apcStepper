@@ -5,31 +5,6 @@
 
 static const int apcPARAMETER_V1 = 0x01;
 
-class MyAudioProcessor : public juce::AudioProcessor {
-public:
-    MyAudioProcessor()
-        : parameters(*this, nullptr, "PARAMETERS", {
-            // Single Slider (0.0 to 1.0 range)
-            std::make_unique<juce::AudioParameterFloat>("mainSlider", "Main Slider", 0.0f, 1.0f, 0.5f),
-
-            // Single Button (boolean)
-            std::make_unique<juce::AudioParameterBool>("mainButton", "Main Button", false)
-        })
-    {
-      // Group of 8 Buttons (stored in a std::array for convenience)
-        for (int i = 0; i < 8; ++i)
-        {
-            buttonGroup[i] = std::make_unique<juce::AudioParameterBool>("groupButton" + std::to_string(i), "Group Button " + std::to_string(i), false);
-        }
-    }
-
-    juce::AudioProcessorValueTreeState parameters;
-
-private:
-    std::vector<std::unique_ptr<juce::AudioParameterBool>> buttonGroup;  // Vector to store the group of buttons
-};
-
-
 
 
 apcStepperMainProcessor::apcStepperMainProcessor()
@@ -43,28 +18,37 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 																		 1.0f)
 					 })
 {
-	//Instead of this: std::make_unique<juce::AudioParameterInt>(ParameterID{"step_1_track_1", apcPARAMETER_V1}, "track",0,1,0),
-	// we do this:
-	// Group of 8 Buttons (stored in a std::array for convenience)
-    for (int i = 0; i < 8; ++i)
-    {
-		stepTrackButtonGroup[i] = std::make_unique<juce::AudioParameterBool>("step" + std::to_string(i), "track1", false);
-	}
 
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
 	// todo: get pointers to each of the stepTrackButtonGroup parameters ..
+	std::set<juce::String> addedParameterIDs;
+	for (int step = 0; step < 8; ++step) {
+		for (int trackNr = 0; trackNr < 8; ++trackNr)
+		{
+			std::string parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
+
+			if (addedParameterIDs.find(parameterID) == addedParameterIDs.end()) {
+				auto b = std::make_unique<juce::AudioParameterBool>(ParameterID{parameterID,apcPARAMETER_V1}.getParamID(), parameterID, false);
 
 
-//	for (int step = 0; step < 8; ++step) {
-//		for (int trackNr = 0; trackNr < 8; ++trackNr)
-//		{
-//			auto button = std::make_unique<juce::AudioParameterBool>("step_" + std::to_string(step) + "_track_" + std::to_string(trackNr), "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr), false);
-//			// Add the button to the vector
-//			parameters.addParameterListener(button->paramID,this);  // Add to the parameter list
-//		}
-//	}
+
+				addParameter(b.get());
+				addedParameterIDs.insert(parameterID);
+
+
+			} else {
+				DBG("Parameter ID already added: " + parameterID);
+			}
+		}
+	}
+	parameters.processor.reset();
+
+	auto o = addedParameterIDs;
+	for (const auto& str : o) {
+		DBG(str);
+	}
 
 	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
@@ -82,7 +66,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	transposeParam->operator=(0);
 
 	velocityScaleParam->operator=(1.0f);
-
+	parameters.processor.reset();
 	parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
 }
 

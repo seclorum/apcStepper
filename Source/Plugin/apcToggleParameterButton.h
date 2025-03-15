@@ -12,10 +12,10 @@
 //#include "ShiftToggleButton.h"
 //#include "apcToggleButton.h"
 //#include "ToggleIconButton.h"
-
+static const int apcPARAMETER_V1 = 0x01;
 class apcToggleParameterButton : public juce::TextButton {
 public:
-	apcToggleParameterButton(juce::String buttonName, juce::Colour initialColour, juce::Colour toggleColour, apcStepperMainProcessor& p)
+	apcToggleParameterButton(std::string buttonName, juce::Colour initialColour, juce::Colour toggleColour, apcStepperMainProcessor& p)
 			: juce::TextButton(""), buttonName(buttonName), initialColour(initialColour),
 			  toggleColour(toggleColour), processor(p), isToggled(false)
 	{
@@ -23,7 +23,9 @@ public:
 		setColour(juce::TextButton::buttonColourId, initialColour);
 
 		button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
-				processor.getParameters(), buttonName, *this);
+						processor.getParameters(),buttonName,*this);
+
+
 	}
 
 	void clicked() override {
@@ -36,6 +38,9 @@ public:
 		auto drawable = juce::Drawable::createFromImageData(BinaryData::button_svg, BinaryData::button_svgSize);
 		if (drawable)
 			drawable->drawWithin(g, drawable->getBounds().toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
+	}
+	void resized() override {
+
 	}
 
 
