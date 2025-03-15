@@ -52,7 +52,7 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-	void setTempo(int newTempo);
+
 
 private:
 
@@ -62,16 +62,10 @@ private:
 #endif
 
     apcStepperMainProcessor& processor;
-	void syncTempo();
+
 
     // Tabbed UI Component
     std::unique_ptr<TabbedComponent> tabbedComponent;
-
-	juce::Slider tempoSlider; // Slider for tempo
-	juce::Label tempoLabel; // Editable tempo label
-
-	// Attachments used to bind to parameters in the processor
-	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainEditor)
 };

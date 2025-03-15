@@ -1,117 +1,90 @@
 #pragma once
+#include <juce_analytics/juce_analytics.h>
+#include <juce_animation/juce_animation.h>
+#include <juce_audio_basics/juce_audio_basics.h>
+#include <juce_audio_devices/juce_audio_devices.h>
+#include <juce_audio_formats/juce_audio_formats.h>
+#include <juce_audio_plugin_client/juce_audio_plugin_client.h>
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_box2d/juce_box2d.h>
+#include <juce_core/juce_core.h>
+#include <juce_cryptography/juce_cryptography.h>
+#include <juce_data_structures/juce_data_structures.h>
+#include <juce_dsp/juce_dsp.h>
+#include <juce_events/juce_events.h>
+#include <juce_graphics/juce_graphics.h>
+#include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_gui_extra/juce_gui_extra.h>
+#include <juce_javascript/juce_javascript.h>
+#include <juce_midi_ci/juce_midi_ci.h>
+#include <juce_opengl/juce_opengl.h>
+#include <juce_osc/juce_osc.h>
+#include <juce_product_unlocking/juce_product_unlocking.h>
+#include <juce_video/juce_video.h>
 
+#include <array>
+#include "melatonin_inspector/melatonin_inspector.h"
+#include "apcStepperMainProcessor.h"
+#include "apcStepperMainEditor.h"
 #include "ShiftToggleButton.h"
 #include "apcToggleButton.h"
 #include "ToggleIconButton.h"
 
 class apcStepperMainProcessor;
-
-class apcRightPanel : public juce::AudioProcessorEditor {
+using namespace juce;
+class apcTempoPanel : public juce::AudioProcessorEditor {
 public:
-    apcRightPanel(apcStepperMainProcessor &p)
+    void setTempo(int newTempo);
+    apcTempoPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
-        for (int i = 0; i < rows; ++i) {
-            rowButtons.add(
-                std::make_unique<ShiftToggleButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange,
-                                                    false));
-            addAndMakeVisible(rowButtons.getLast());
-            rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
-            rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
-        }
+        tempoSlider.setSliderStyle(Slider::LinearHorizontal);
+        tempoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+        tempoSlider.setRange(20.0f, 300.0f, 1.0f); // Typical tempo range
+        tempoSlider.setVisible(true);
+        addAndMakeVisible(tempoSlider);
 
-        playToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::green, juce::Colours::darkgreen,
-                                                              BinaryData::playcircle_svg,
-                                                              BinaryData::playcircle_svgSize);
-        addAndMakeVisible(playToggleButton.get());
-
-        stopToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::red, juce::Colours::darkgrey,
-                                                              BinaryData::stopcircle_svg,
-                                                              BinaryData::stopcircle_svgSize);
-        addAndMakeVisible(stopToggleButton.get());
-
-        shiftToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::blue, juce::Colours::orange,
-                                                               BinaryData::shift_svg, BinaryData::shift_svgSize);
-        addAndMakeVisible(shiftToggleButton.get());
-
-        shiftToggleButton->onClick = [this]() {
-            shiftMode = !shiftMode;
-
-            updateRowButtonColors();
+        // Editable Tempo Label
+        tempoLabel.setEditable(true);
+        tempoLabel.setJustificationType(Justification::centred);
+        tempoLabel.setColour(Label::textColourId, Colours::white);
+        tempoLabel.setColour(Label::backgroundColourId, Colours::black);
+        tempoLabel.setText(juce::String(tempoSlider.getValue()), dontSendNotification);
+        tempoLabel.onTextChange = [this] {
+            float newTempo = tempoLabel.getText().getFloatValue();
+            tempoSlider.setValue(newTempo, juce::sendNotification);
         };
+        addAndMakeVisible(tempoLabel);
 
-        downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
-        downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
-        downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
+        tempoAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+                processor.getParameters(), "tempo", tempoSlider);
 
-        addAndMakeVisible(playToggleButton.get());
-        addAndMakeVisible(stopToggleButton.get());
-        addAndMakeVisible(shiftToggleButton.get());
-
-        for (auto &button: rowButtons) {
-            addAndMakeVisible(button);
-        };
-        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4));
-        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
-        rightPanelContainer.performLayout(getLocalBounds().toFloat());
-;     }
-
-    void resized() override {
-        auto bounds = getLocalBounds();
-
-        rightPanel.flexDirection = juce::FlexBox::Direction::column;
-        rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
-        rightPanel.alignItems = juce::FlexBox::AlignItems::stretch;
-
-        rightPanelContainer.flexDirection = juce::FlexBox::Direction::column;
-        rightPanelContainer.justifyContent = juce::FlexBox::JustifyContent::center;
-        rightPanelContainer.alignItems = juce::FlexBox::AlignItems::stretch;
-
-        downButtons.flexDirection = juce::FlexBox::Direction::column;
-        downButtons.justifyContent = juce::FlexBox::JustifyContent::flexStart;
-        downButtons.alignItems = juce::FlexBox::AlignItems::flexStart;
-
-        downButtons.performLayout(bounds.toFloat());
-        rightPanelContainer.performLayout(bounds.toFloat());
+        // Sync tempo label with slider
+        tempoSlider.onValueChange = [this] { syncTempo(); };
 
 
-        int squareSize = playToggleButton->getHeight();
-
-        playToggleButton->setSize(squareSize, squareSize);
-        stopToggleButton->setSize(squareSize, squareSize);
-        shiftToggleButton->setSize(squareSize, squareSize);
-
-        playToggleButton->setBounds(playToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
-                                    playToggleButton->getY(), squareSize, squareSize);
-        stopToggleButton->setBounds(stopToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
-                                    stopToggleButton->getY(), squareSize, squareSize);
-        shiftToggleButton->setBounds(shiftToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
-                                     shiftToggleButton->getY(), squareSize, squareSize);
     }
+    void syncTempo()
+    {
+        tempoLabel.setText(juce::String(tempoSlider.getValue()), juce::dontSendNotification);
+        processor.setTempo(roundToInt(tempoSlider.getValue()));
+    }
+    void resized() override {
+        setSize(getLocalBounds().getWidth(), getLocalBounds().getHeight());
 
+    }
 private:
-    static constexpr int rows = 8;
-    juce::OwnedArray<ShiftToggleButton> rowButtons;
-    std::unique_ptr<apcToggleButton> playToggleButton;
-    std::unique_ptr<apcToggleButton> stopToggleButton;
-    std::unique_ptr<apcToggleButton> shiftToggleButton;
-    juce::FlexBox rightPanel;
-    juce::FlexBox downButtons;
-    juce::FlexBox rightPanelContainer;
-    bool shiftMode = false;
+
+    juce::Slider tempoSlider; // Slider for tempo
+    juce::Label tempoLabel; // Editable tempo label
+    auto sliderHeight = 40;
+    // Attachments used to bind to parameters in the processor
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
+
     apcStepperMainProcessor &processor;;
 
-    void squareClicked(int index) {
-        for (int i = 0; i < rows; ++i) {
-            if (i != index) {
-                rowButtons[i]->setToggleState(false, false);
-            }
-        }
-        rowButtons[index]->setToggleState(true, false);
-    }
 
-    void updateRowButtonColors() {
-        for (auto &button: rowButtons) {
-            button->setShift(shiftMode);
-        }
-    }
+
+
 };
+

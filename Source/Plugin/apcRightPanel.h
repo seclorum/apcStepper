@@ -5,6 +5,7 @@
 #include "ShiftToggleButton.h"
 #include "apcToggleButton.h"
 #include "ToggleIconButton.h"
+#include "apcTempoPanel.h"
 
 class apcStepperMainProcessor;
 
@@ -41,10 +42,12 @@ public:
             updateRowButtonColors();
         };
 
+        downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
+        addAndMakeVisible(tempoPanel.get());
         addAndMakeVisible(playToggleButton.get());
         addAndMakeVisible(stopToggleButton.get());
         addAndMakeVisible(shiftToggleButton.get());
@@ -93,6 +96,7 @@ public:
 private:
     static constexpr int rows = 8;
     juce::OwnedArray<ShiftToggleButton> rowButtons;
+    std::unique_ptr<apcTempoPanel> tempoPanel;
     std::unique_ptr<apcToggleButton> playToggleButton;
     std::unique_ptr<apcToggleButton> stopToggleButton;
     std::unique_ptr<apcToggleButton> shiftToggleButton;
