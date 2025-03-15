@@ -47,6 +47,7 @@ public:
         tempoFlexPanel.items.add(FlexItem(*tempoLabel).withFlex(1));
         tempoSlider->setSliderStyle(Slider::LinearHorizontal);
         tempoSlider->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+
         tempoSlider->setRange(20.0f, 300.0f, 1.0f); // Typical tempo range
         tempoSlider->setVisible(true);
         addAndMakeVisible(tempoSlider.get());
@@ -77,8 +78,8 @@ public:
         processor.setTempo(roundToInt(tempoSlider->getValue()));
     }
     void resized() override {
-       ;
-        
+        tempoFlexPanel.performLayout(getLocalBounds());
+
     }
 private:
 

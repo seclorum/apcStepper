@@ -23,8 +23,8 @@ public:
             rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
         }
 
-        //tempoPanel = std::make_unique<apcTempoPanel>(processor);
-        //addAndMakeVisible(tempoPanel.get());
+        tempoPanel = std::make_unique<apcTempoPanel>(processor);
+        addAndMakeVisible(tempoPanel.get());
         playToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::green, juce::Colours::darkgreen,
                                                               BinaryData::playcircle_svg,
                                                               BinaryData::playcircle_svgSize);
@@ -45,7 +45,7 @@ public:
             updateRowButtonColors();
         };
 
-        //downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
+        downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
@@ -86,6 +86,7 @@ public:
         stopToggleButton->setSize(squareSize, squareSize);
         shiftToggleButton->setSize(squareSize, squareSize);
 
+        tempoPanel->setBounds(tempoPanel->getX(),tempoPanel->getY(),bounds.getWidth(), tempoPanel->getHeight());
         playToggleButton->setBounds(playToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
                                     playToggleButton->getY(), squareSize, squareSize);
         stopToggleButton->setBounds(stopToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
@@ -98,7 +99,7 @@ public:
 private:
     static constexpr int rows = 8;
     juce::OwnedArray<ShiftToggleButton> rowButtons;
-    //std::unique_ptr<apcTempoPanel> tempoPanel;
+    std::unique_ptr<apcTempoPanel> tempoPanel;
     std::unique_ptr<apcToggleButton> playToggleButton;
     std::unique_ptr<apcToggleButton> stopToggleButton;
     std::unique_ptr<apcToggleButton> shiftToggleButton;
