@@ -3,6 +3,45 @@
 
 static const int apcPARAMETER_V1 = 0x01;
 
+/*
+ An example of what we want:
+
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <array>
+
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <vector>
+
+class MyAudioProcessor : public juce::AudioProcessor {
+public:
+    MyAudioProcessor()
+        : parameters(*this, nullptr, "PARAMETERS", {
+            // Single Slider (0.0 to 1.0 range)
+            std::make_unique<juce::AudioParameterFloat>("mainSlider", "Main Slider", 0.0f, 1.0f, 0.5f),
+
+            // Single Button (boolean)
+            std::make_unique<juce::AudioParameterBool>("mainButton", "Main Button", false)
+        })
+    {
+        // Group of buttons (can be resized dynamically)
+        for (int i = 0; i < 8; ++i)
+        {
+            auto button = std::make_unique<juce::AudioParameterBool>("groupButton" + std::to_string(i), "Group Button " + std::to_string(i), false);
+            buttonGroup.push_back(std::move(button));  // Add the button to the vector
+            parameters.addParameter(buttonGroup.back().get());  // Add to the parameter list
+        }
+    }
+
+    juce::AudioProcessorValueTreeState parameters;
+
+private:
+    std::vector<std::unique_ptr<juce::AudioParameterBool>> buttonGroup;  // Vector to store the group of buttons
+};
+
+ */
+
+
+
 apcStepperMainProcessor::apcStepperMainProcessor()
 		: juce::AudioProcessor(getBusesProperties()),  // Use a helper function for bus config
 		  parameters(*this, nullptr, "PARAMETERS",
