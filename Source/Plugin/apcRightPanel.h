@@ -13,6 +13,7 @@ class apcRightPanel : public juce::AudioProcessorEditor {
 public:
     apcRightPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
+        //Track Buttons with Shift option were generated
         for (int i = 0; i < rows; ++i) {
             rowButtons.add(
                 std::make_unique<ShiftToggleButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange,

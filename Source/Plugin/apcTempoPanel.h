@@ -71,13 +71,13 @@ public:
     }
     void resized() override {
         setSize(getLocalBounds().getWidth(), getLocalBounds().getHeight());
-
+        repaint();
     }
 private:
 
     juce::Slider tempoSlider; // Slider for tempo
     juce::Label tempoLabel; // Editable tempo label
-    auto sliderHeight = 40;
+
     // Attachments used to bind to parameters in the processor
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
 

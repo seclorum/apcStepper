@@ -4,7 +4,7 @@
 
 #include "Common.h"
 
-#include "apcStepperTrack.h"
+#include "apcStepperStep.h"
 #include "apcToggleButton.h"
 #include "apcRightPanel.h"
 
@@ -21,7 +21,7 @@ public:
 
         // Initialize columns
         for (int i = 0; i < cols; ++i) {
-            columns.add(std::make_unique<apcStepperTrack>(processor,i));
+            columns.add(std::make_unique<apcStepperStep>(processor,i));
             addAndMakeVisible(columns.getLast());
         }
         rightContainer = std::make_unique<apcRightPanel>(processor);
@@ -68,7 +68,7 @@ public:
 
 private:
     apcStepperMainProcessor &processor;
-    juce::OwnedArray<apcStepperTrack> columns;
+    juce::OwnedArray<apcStepperStep> columns;
 
     juce::Component emptySpace;
      std::unique_ptr<apcRightPanel> rightContainer;

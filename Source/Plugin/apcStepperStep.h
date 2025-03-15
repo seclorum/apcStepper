@@ -8,12 +8,12 @@
 
 class apcStepperMainProcessor;
 
-class apcStepperTrack : public juce::AudioProcessorEditor {
+class apcStepperStep : public juce::AudioProcessorEditor {
 public:
     static constexpr int rows = 8;
     static constexpr int padding = 2;
 
-    apcStepperTrack(apcStepperMainProcessor &p, const int t)
+    apcStepperStep(apcStepperMainProcessor &p, const int t)
         : AudioProcessorEditor(&p), processor(p), trackNumber(t) {
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {

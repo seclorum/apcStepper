@@ -78,6 +78,7 @@ private:
 	juce::AudioParameterInt* tempoParam = nullptr;
 	juce::AudioParameterInt* transposeParam = nullptr;
     juce::AudioParameterFloat* velocityScaleParam = nullptr;
+    juce::AudioParameterBool* step_1_track_1_Param = nullptr;
 
     juce::MidiBuffer incomingMidiBuffer;
     juce::CriticalSection midiMutex;
