@@ -9,15 +9,14 @@ static const int apcPARAMETER_V1 = 0x01;
 
 apcStepperMainProcessor::apcStepperMainProcessor()
 		: juce::AudioProcessor(getBusesProperties()),  // Use a helper function for bus config
-		  parameters(*this, nullptr, "PARAMETERS",
-					 {
-							 std::make_unique<juce::AudioParameterInt>(ParameterID{"tempo", apcPARAMETER_V1}, "Tempo", 0, 240, 98),
-							 std::make_unique<juce::AudioParameterInt>(ParameterID{"transpose", apcPARAMETER_V1}, "Transpose", -24, 24, 0),
-							 std::make_unique<juce::AudioParameterFloat>(ParameterID{"velocityScale", apcPARAMETER_V1}, "Velocity Scale",
-																		 juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f, 1.0f),
-																		 1.0f)
-					 })
+		  parameters(*this, nullptr, "PARAMETERS",createParameterLayout())
 {
+
+	layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", 0x01}, "Tempo", 0, 240, 98));
+	layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", 0x01}, "Transpose", -24, 24, 0));
+	layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", 0x01}, "Velocity Scale",
+															juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f, 1.0f),
+															1.0f));
 
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
@@ -30,11 +29,10 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 			std::string parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
 
 			if (addedParameterIDs.find(parameterID) == addedParameterIDs.end()) {
-				auto b = std::make_unique<juce::AudioParameterBool>(ParameterID{parameterID,apcPARAMETER_V1}.getParamID(), parameterID, false);
 
 
+				layout.add(std::make_unique<juce::AudioParameterBool>(ParameterID{parameterID,apcPARAMETER_V1}.getParamID(), parameterID,false));// Add the unique_ptr to the layout
 
-				addParameter(b.get());
 				addedParameterIDs.insert(parameterID);
 
 
@@ -43,13 +41,13 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 			}
 		}
 	}
-	parameters.processor.reset();
+
 
 	auto o = addedParameterIDs;
 	for (const auto& str : o) {
-		DBG(str);
+		APCLOG(str);
 	}
-
+	reset();
 	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
 		return;
@@ -97,7 +95,33 @@ bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
            layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled();
 #endif
 }
+juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout()
+{
+	juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
+	layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", 0x01}, "Tempo", 0, 240, 98));
+	layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", 0x01}, "Transpose", -24, 24, 0));
+	layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", 0x01}, "Velocity Scale",
+															juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f, 1.0f),
+															1.0f));
+
+	std::set<juce::String> addedParameterIDs;
+	for (int step = 0; step < 8; ++step) {
+		for (int trackNr = 0; trackNr < 8; ++trackNr) {
+			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
+
+			if (addedParameterIDs.find(parameterID) == addedParameterIDs.end()) {
+				layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, 0x01}, parameterID, false));
+				addedParameterIDs.insert(parameterID);
+				DBG("Parameter ID just added: " + parameterID);
+			} else {
+				DBG("Parameter ID already added: " + parameterID);
+			}
+		}
+	}
+
+	return layout;
+}
 void apcStepperMainProcessor::initializeParameters()
 {
 	using namespace juce;

@@ -16,16 +16,16 @@ static const int apcPARAMETER_V1 = 0x01;
 class apcToggleParameterButton : public juce::TextButton {
 public:
 	apcToggleParameterButton(std::string buttonName, juce::Colour initialColour, juce::Colour toggleColour, apcStepperMainProcessor& p)
-			: juce::TextButton(""), buttonName(buttonName), initialColour(initialColour),
+			: juce::TextButton(buttonName), buttonName(buttonName), initialColour(initialColour),
 			  toggleColour(toggleColour), processor(p), isToggled(false)
 	{
 		setClickingTogglesState(true); // Enables automatic toggling
 		setColour(juce::TextButton::buttonColourId, initialColour);
 
+
+
 		button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
 						processor.getParameters(),buttonName,*this);
-
-
 	}
 
 	void clicked() override {

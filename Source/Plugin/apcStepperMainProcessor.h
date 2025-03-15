@@ -12,9 +12,9 @@ class apcStepperMainProcessor : public juce::AudioProcessor,
 public:
     apcStepperMainProcessor();
     ~apcStepperMainProcessor() override;
-
+	juce::AudioProcessorValueTreeState parameters;
 	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
-
+	AudioProcessorValueTreeState::ParameterLayout layout;
 	juce::AudioProcessorValueTreeState& getParameters() { return parameters; }
 
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
@@ -70,9 +70,12 @@ private:
 	static juce::AudioProcessor::BusesProperties getBusesProperties();
 
     int mapRowColumnToNote(int row, int column);
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
     void initializeParameters();
 
-    juce::AudioProcessorValueTreeState parameters;
+
     static constexpr int parameterVersion = 1;  // Versioning for future compatibility
 
 	juce::AudioParameterInt* tempoParam = nullptr;
