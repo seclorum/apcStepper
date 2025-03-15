@@ -38,49 +38,56 @@ public:
     void setTempo(int newTempo);
     apcTempoPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
-        tempoSlider.setSliderStyle(Slider::LinearHorizontal);
-        tempoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-        tempoSlider.setRange(20.0f, 300.0f, 1.0f); // Typical tempo range
-        tempoSlider.setVisible(true);
-        addAndMakeVisible(tempoSlider);
+        tempoFlexPanel.flexDirection = juce::FlexBox::Direction::column;
+        tempoFlexPanel.justifyContent = juce::FlexBox::JustifyContent::center;
+        tempoFlexPanel.alignItems = juce::FlexBox::AlignItems::stretch;
+        tempoSlider = std::make_unique<juce::Slider>();
+        tempoLabel = std::make_unique<juce::Label>();
+        tempoFlexPanel.items.add(FlexItem(*tempoSlider).withFlex(1));
+        tempoFlexPanel.items.add(FlexItem(*tempoLabel).withFlex(1));
+        tempoSlider->setSliderStyle(Slider::LinearHorizontal);
+        tempoSlider->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+        tempoSlider->setRange(20.0f, 300.0f, 1.0f); // Typical tempo range
+        tempoSlider->setVisible(true);
+        addAndMakeVisible(tempoSlider.get());
 
         // Editable Tempo Label
-        tempoLabel.setEditable(true);
-        tempoLabel.setJustificationType(Justification::centred);
-        tempoLabel.setColour(Label::textColourId, Colours::white);
-        tempoLabel.setColour(Label::backgroundColourId, Colours::black);
-        tempoLabel.setText(juce::String(tempoSlider.getValue()), dontSendNotification);
-        tempoLabel.onTextChange = [this] {
-            float newTempo = tempoLabel.getText().getFloatValue();
-            tempoSlider.setValue(newTempo, juce::sendNotification);
+        tempoLabel->setEditable(true);
+        tempoLabel->setJustificationType(Justification::centred);
+        tempoLabel->setColour(Label::textColourId, Colours::white);
+        tempoLabel->setColour(Label::backgroundColourId, Colours::black);
+        tempoLabel->setText(juce::String(tempoSlider->getValue()), dontSendNotification);
+        tempoLabel->onTextChange = [this] {
+            float newTempo = tempoLabel->getText().getFloatValue();
+            tempoSlider->setValue(newTempo, juce::sendNotification);
         };
-        addAndMakeVisible(tempoLabel);
+        addAndMakeVisible(tempoLabel.get());
 
         tempoAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-                processor.getParameters(), "tempo", tempoSlider);
+                processor.getParameters(), "tempo", *tempoSlider);
 
         // Sync tempo label with slider
-        tempoSlider.onValueChange = [this] { syncTempo(); };
+        tempoSlider->onValueChange = [this] { syncTempo(); };
 
 
     }
     void syncTempo()
     {
-        tempoLabel.setText(juce::String(tempoSlider.getValue()), juce::dontSendNotification);
-        processor.setTempo(roundToInt(tempoSlider.getValue()));
+        tempoLabel->setText(juce::String(tempoSlider->getValue()), juce::dontSendNotification);
+        processor.setTempo(roundToInt(tempoSlider->getValue()));
     }
     void resized() override {
-        setSize(getLocalBounds().getWidth(), getLocalBounds().getHeight());
-        repaint();
+       ;
+        
     }
 private:
 
-    juce::Slider tempoSlider; // Slider for tempo
-    juce::Label tempoLabel; // Editable tempo label
+    std::unique_ptr<juce::Slider> tempoSlider; // Slider for tempo
+    std::unique_ptr<juce::Label> tempoLabel; // Editable tempo label
 
     // Attachments used to bind to parameters in the processor
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
-
+    juce::FlexBox tempoFlexPanel;
     apcStepperMainProcessor &processor;;
 
 
