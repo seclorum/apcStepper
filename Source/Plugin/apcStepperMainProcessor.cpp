@@ -70,7 +70,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 
 	tempoParam->operator=(98);
 	transposeParam->operator=(0);
-	step_1_track_1_Param->operator=(0);
+//	step_1_track_1_Param->operator=(0);
 	velocityScaleParam->operator=(1.0f);
 
 	parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
@@ -112,7 +112,7 @@ void apcStepperMainProcessor::initializeParameters()
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
-	step_1_track_1_Param = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("step_1_track_1"));
+//	step_1_track_1_Param = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("step_1_track_1"));
 
 	jassert(tempoParam && transposeParam && velocityScaleParam);
 //
