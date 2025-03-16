@@ -195,10 +195,10 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 			int step = std::stoi(stepString);
 			int track = std::stoi(trackString);
 		APCLOG(String("Step: " + stepString + "; Track: " + trackString));
-			auto stepParam = getParameters().getParameter(parameterID);
-			stepParam->beginChangeGesture();
+			auto stepParam = getParameters().getParameter(ParameterID{parameterID,apcPARAMETER_V1}.getParamID());
+			//stepParam->beginChangeGesture();
 			stepParam->setValue(newValue);
-			stepParam->endChangeGesture();
+			//stepParam->endChangeGesture();
 			APCLOG(String("StepValue: " + std::to_string(stepParam->getValue())));
 		}
 	}
