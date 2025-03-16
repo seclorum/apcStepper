@@ -13,6 +13,8 @@ public:
     apcStepperMainProcessor();
     ~apcStepperMainProcessor() override;
 	juce::AudioProcessorValueTreeState parameters;
+
+	std::unique_ptr<juce::MidiOutput> midiOutput = nullptr;
 	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 
 	juce::AudioProcessorValueTreeState& getParameters() { return parameters; }

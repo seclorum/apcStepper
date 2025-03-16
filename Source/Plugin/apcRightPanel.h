@@ -44,6 +44,10 @@ public:
 
             updateRowButtonColors();
         };
+        playToggleButton->onClick = [this]() {
+            auto midiOutputDevices = juce::MidiOutput::getAvailableDevices();
+            processor.midiOutput= juce::MidiOutput::openDevice(midiOutputDevices[0].identifier);
+            };
 
         downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));

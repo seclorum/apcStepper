@@ -8,6 +8,7 @@
 #include "apcStepperMainEditor.h"
 
 
+
 static const int apcPARAMETER_V1 = 0x01;
 
 /* 
@@ -35,7 +36,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 		  parameters(*this, nullptr, "PARAMETERS",createParameterLayout())
 {
 
-	std::set<juce::String> addedParameterIDs;
+
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
@@ -234,7 +235,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	midiMessages.addEvents(incomingMidiBuffer, 0, buffer.getNumSamples(), 0);
 	incomingMidiBuffer.clear();
 
-
+	if (midiOutput)
 	for (int step = 0;step<8;step++) // Only update when a new step starts
 	{
 		currentStepIndex = step;
@@ -245,12 +246,13 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 			if (midiGrid[step][trackNr]) // If step is active
 			{
 				int midiNote =mapRowColumnToNote(step,currentStepIndex); // Map row index to MIDI notes (C1 and up)
-				midiMessages.addEvent(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 21),0);
+				midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 21));
 			}else {
 				int midiNote =mapRowColumnToNote(step,currentStepIndex); // Map row index to MIDI notes (C1 and up)
-				midiMessages.addEvent(juce::MidiMessage::noteOff(6, midiNote, (juce::uint8) 21),0);
+				midiOutput->sendMessageNow(juce::MidiMessage::noteOff(6, midiNote, (juce::uint8) 21));
 			}
 		}
+		//midiMessages.swapWith(midiMessages);
 	}
     if (playHead != nullptr)
     {
@@ -426,7 +428,7 @@ void apcStepperMainProcessor::getStateInformation(juce::MemoryBlock &) {}
 void apcStepperMainProcessor::setStateInformation(const void *, int) {}
 
 int apcStepperMainProcessor::mapRowColumnToNote(int step, int track) {
-	return  (step + track * 7);
+	return (track + step * 7);
 }
 
 
