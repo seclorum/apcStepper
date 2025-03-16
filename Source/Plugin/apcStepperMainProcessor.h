@@ -56,7 +56,13 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-    std::array<std::array<bool, 24>, 16> midiGrid{};
+	constexpr int numSteps = 8;
+	constexpr int numInstruments = 8;
+	int currentStepIndex = 0;
+	const int ppqPerStep = 1;
+
+
+    std::array<std::array<bool, numSteps>, numInstruments> midiGrid{};
     int scrollOffset = 0;
     int pageOffset = 0;
 

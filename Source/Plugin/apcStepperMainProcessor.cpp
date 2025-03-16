@@ -8,6 +8,24 @@
 
 static const int apcPARAMETER_V1 = 0x01;
 
+/* 
+ Notes:
+
+	Key Architectural Considerations
+
+		- Use a fixed-size 2D array or vector for storing step states
+		- Each row represents an instrument (MIDI note).
+		- Each column represents a step (beat).
+		- The values are true (active) or false (inactive).
+		- A simple std::array<bool, 8> or std::vector<std::vector<bool>> works well.
+		- Keep a transport-aware stepIndex to track playback position
+		- This updates every time a new step is triggered, based on the sequencer tempo.
+		- Precompute MIDI messages per step for efficient processing
+		- Instead of calculating everything in processBlock(), prepare a precomputed schedule of MIDI events.
+		- Use MIDI buffers to queue and send messages efficiently
+		- JUCE’s MidiBuffer is ideal for handling MIDI event timing.
+
+ */
 
 
 apcStepperMainProcessor::apcStepperMainProcessor()
@@ -199,6 +217,55 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 		APCLOG("Parameter changed: " + parameterID);
 	}
 }
+
+
+void MyAudioProcessor::processBlockMIDI(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) 
+{
+    auto numSamples = buffer.getNumSamples();
+    auto playHead = getPlayHead();
+    
+    if (playHead != nullptr)
+    {
+        juce::AudioPlayHead::CurrentPositionInfo posInfo;
+        if (playHead->getCurrentPosition(posInfo))
+        {
+            if (posInfo.isPlaying)
+            {
+                double ppqPosition = posInfo.ppqPosition; // Current position in beats
+
+                // Compute which step we're on
+                int newStepIndex = static_cast<int>(std::floor(ppqPosition / ppqPerStep)) % numSteps;
+
+                if (newStepIndex != currentStepIndex) // Only update when a new step starts
+                {
+                    currentStepIndex = newStepIndex;
+
+                    // Process active steps for this column
+                    for (int instrument = 0; instrument < numInstruments; ++instrument)
+                    {
+                        if (stepGrid[instrument][currentStepIndex]) // If step is active
+                        {
+                            int midiNote = 36 + instrument; // Map row index to MIDI notes (C1 and up)
+                            midiMessages.addEvent(juce::MidiMessage::noteOn(1, midiNote, (juce::uint8) 100), 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Clear old MIDI notes after a short delay (MIDI Note Off)
+    int noteOffTime = static_cast<int>(numSamples * 0.9); // 90% into the block
+    for (int instrument = 0; instrument < numInstruments; ++instrument)
+    {
+        if (stepGrid[instrument][currentStepIndex]) 
+        {
+            int midiNote = 36 + instrument;
+            midiMessages.addEvent(juce::MidiMessage::noteOff(1, midiNote), noteOffTime);
+        }
+    }
+}
+
 
 
 
