@@ -2,6 +2,7 @@
 
 #include "apcStepperMainProcessor.h"
 
+#include <regex>
 
 
 #include "apcStepperMainEditor.h"
@@ -109,12 +110,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
 		for (int trackNr = 0; trackNr < 8; ++trackNr) {
 			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
 
+				layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), parameterID, false));
 
-				std::unique_ptr<juce::AudioParameterBool> button =  std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), parameterID, false);
-
-				layout.add(std::move(button));
-
-				stepTrackButtonGroup[step*trackNr+trackNr] = std::move(button);
+				stepTrackButtonGroup[step*8+trackNr] = std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), "box", false);
 				//APCLOG("Parameter ID just added: " + stepTrackButtonGroup[step*trackNr+trackNr]->getParameterID());
 
 		}
@@ -186,18 +184,24 @@ void apcStepperMainProcessor::setTempo(int newTempo)
 
 
 void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue){
-	for (int step = 0; step < 8; step++) {
-		for (int trackNr = 0; trackNr < 8; trackNr++) {
+	std::string input = parameterID.toStdString();
+	std::regex pattern(R"(step_(\d+)_track_(\d+))");
+	std::smatch matches;
+	if (std::regex_match(input, matches, pattern)) {
+		if (matches.size() == 3) {
+			std::string stepString = matches[1].str();
+			std::string trackString = matches[2].str();
 
-
-				//stepTrackButtonGroup[trackNr*step+trackNr]->beginChangeGesture();
-
-				//stepTrackButtonGroup[trackNr*step+trackNr]->endChangeGesture();
-				//APCLOG("Parameter changed: " + parameterID);}
-			///APCLOG(stepTrackButtonGroup[trackNr*step+trackNr]->getParameterID());
+			int step = std::stoi(stepString);
+			int track = std::stoi(trackString);
+		APCLOG(String("Step: " + stepString + "; Track: " + trackString));
+			auto stepParam = getParameters().getParameter(parameterID);
+			stepParam->beginChangeGesture();
+			stepParam->setValue(newValue);
+			stepParam->endChangeGesture();
+			APCLOG(String("StepValue: " + std::to_string(stepParam->getValue())));
 		}
 	}
-
 	if (parameterID == "tempo")
 	{
 		APCLOG(String::formatted("Processor: UI changed Tempo to: %d", static_cast<int>(newValue)));
