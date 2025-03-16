@@ -14,7 +14,7 @@ public:
     ~apcStepperMainProcessor() override;
 	juce::AudioProcessorValueTreeState parameters;
 	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
-	AudioProcessorValueTreeState::ParameterLayout layout;
+
 	juce::AudioProcessorValueTreeState& getParameters() { return parameters; }
 
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
@@ -41,6 +41,9 @@ public:
     double getTailLengthSeconds() const override { return 0.0; }
 
 	void setTempo(int newTempo);
+
+    void toggleButton(juce::String toogleState);
+
 
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
@@ -77,12 +80,12 @@ private:
 
 
     static constexpr int parameterVersion = 1;  // Versioning for future compatibility
-
+	juce::AudioProcessorValueTreeState::ParameterLayout layout;
 	juce::AudioParameterInt* tempoParam = nullptr;
 	juce::AudioParameterInt* transposeParam = nullptr;
     juce::AudioParameterFloat* velocityScaleParam = nullptr;
 //    juce::AudioParameterInt* step_1_track_1_Param = nullptr;
-	std::array<std::unique_ptr<juce::AudioParameterBool>, 200> stepTrackButtonGroup;
+	std::vector<std::unique_ptr<juce::AudioParameterBool>> stepTrackButtonGroup;
 
     juce::MidiBuffer incomingMidiBuffer;
     juce::CriticalSection midiMutex;

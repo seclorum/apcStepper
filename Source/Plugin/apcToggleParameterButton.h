@@ -26,10 +26,13 @@ public:
 
 		button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
 						processor.getParameters(),buttonName,*this);
+
 	}
 
 	void clicked() override {
 		isToggled = getToggleState();
+		//processor.parameterChanged(buttonName,isToggled);
+
 	}
 
 	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {

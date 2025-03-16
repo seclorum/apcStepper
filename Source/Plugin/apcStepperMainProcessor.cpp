@@ -1,6 +1,9 @@
 #include <vector>
 
 #include "apcStepperMainProcessor.h"
+
+
+
 #include "apcStepperMainEditor.h"
 
 static const int apcPARAMETER_V1 = 0x01;
@@ -12,42 +15,14 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 		  parameters(*this, nullptr, "PARAMETERS",createParameterLayout())
 {
 
-	layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", 0x01}, "Tempo", 0, 240, 98));
-	layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", 0x01}, "Transpose", -24, 24, 0));
-	layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", 0x01}, "Velocity Scale",
-															juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f, 1.0f),
-															1.0f));
-
+	std::set<juce::String> addedParameterIDs;
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
-	// todo: get pointers to each of the stepTrackButtonGroup parameters ..
-	std::set<juce::String> addedParameterIDs;
-	for (int step = 0; step < 8; ++step) {
-		for (int trackNr = 0; trackNr < 8; ++trackNr)
-		{
-			std::string parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
-
-			if (addedParameterIDs.find(parameterID) == addedParameterIDs.end()) {
 
 
-				layout.add(std::make_unique<juce::AudioParameterBool>(ParameterID{parameterID,apcPARAMETER_V1}.getParamID(), parameterID,false));// Add the unique_ptr to the layout
-
-				addedParameterIDs.insert(parameterID);
 
 
-			} else {
-				DBG("Parameter ID already added: " + parameterID);
-			}
-		}
-	}
-
-
-	auto o = addedParameterIDs;
-	for (const auto& str : o) {
-		APCLOG(str);
-	}
-	reset();
 	if (!tempoParam || !transposeParam || !velocityScaleParam) {
 		juce::Logger::writeToLog("Error: Failed to initialize parameters!");
 		return;
@@ -59,12 +34,17 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 	parameters.addParameterListener("tempo", this);
 	parameters.addParameterListener("transpose", this);
 	parameters.addParameterListener("velocityScale", this);
+	for (int step = 0; step < 8; step++) {
+		for (int trackNr = 0; trackNr < 8; trackNr++) {
+			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
 
+			parameters.addParameterListener(ParameterID{parameterID,apcPARAMETER_V1}.getParamID(), this);
+		}
+	}
 	tempoParam->operator=(98);
 	transposeParam->operator=(0);
 
 	velocityScaleParam->operator=(1.0f);
-	parameters.processor.reset();
 	parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
 }
 
@@ -105,21 +85,22 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
 															juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f, 1.0f),
 															1.0f));
 
-	std::set<juce::String> addedParameterIDs;
+	std::set<std::unique_ptr<juce::AudioParameterBool>> addedParameterIDs;
+	stepTrackButtonGroup.resize(200);
 	for (int step = 0; step < 8; ++step) {
 		for (int trackNr = 0; trackNr < 8; ++trackNr) {
 			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
 
-			if (addedParameterIDs.find(parameterID) == addedParameterIDs.end()) {
-				layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, 0x01}, parameterID, false));
-				addedParameterIDs.insert(parameterID);
-				DBG("Parameter ID just added: " + parameterID);
-			} else {
-				DBG("Parameter ID already added: " + parameterID);
-			}
+
+				std::unique_ptr<juce::AudioParameterBool> button =  std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), parameterID, false);
+
+				layout.add(std::move(button));
+
+				stepTrackButtonGroup[step*trackNr+trackNr] = std::move(button);
+				//APCLOG("Parameter ID just added: " + stepTrackButtonGroup[step*trackNr+trackNr]->getParameterID());
+
 		}
 	}
-
 	return layout;
 }
 void apcStepperMainProcessor::initializeParameters()
@@ -130,7 +111,16 @@ void apcStepperMainProcessor::initializeParameters()
 	tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
 	transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
 	velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
+	for (int step = 0; step < 8; step++) {
+		for (int trackNr = 0; trackNr < 8; trackNr++) {
+			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
+			auto stepValue = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter(parameterID));
+			stepTrackButtonGroup[trackNr*step+trackNr]->beginChangeGesture();
+			*stepTrackButtonGroup[trackNr*step+trackNr] = stepValue;
+			stepTrackButtonGroup[trackNr*step+trackNr]->endChangeGesture();
 
+		}
+	}
 	jassert(tempoParam && transposeParam && velocityScaleParam);
 //
 //	if (!tempoParam || !transposeParam || !velocityScaleParam) {
@@ -177,8 +167,19 @@ void apcStepperMainProcessor::setTempo(int newTempo)
 }
 
 
-void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue)
-{
+void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue){
+	for (int step = 0; step < 8; step++) {
+		for (int trackNr = 0; trackNr < 8; trackNr++) {
+
+
+				//stepTrackButtonGroup[trackNr*step+trackNr]->beginChangeGesture();
+
+				//stepTrackButtonGroup[trackNr*step+trackNr]->endChangeGesture();
+				//APCLOG("Parameter changed: " + parameterID);}
+			///APCLOG(stepTrackButtonGroup[trackNr*step+trackNr]->getParameterID());
+		}
+	}
+
 	if (parameterID == "tempo")
 	{
 		APCLOG(String::formatted("Processor: UI changed Tempo to: %d", static_cast<int>(newValue)));
