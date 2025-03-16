@@ -20,14 +20,14 @@ public:
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {
             juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
-            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::pink
+            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::red
         };
 
 
         // Initialize row squares (1 column of ToggleSquares)
 
-        for (int row = 0; row < rows; ++row) {
-            auto square = std::make_unique<apcToggleParameterButton>("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row),
+        for (int row = rows-1; row >=0; row--) {
+            auto square = std::make_unique<apcToggleParameterButton>("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row),stepNumber,row,
                                                                      juce::Colours::lightgrey, rowColours[row],processor);
             //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
             addAndMakeVisible(*square);

@@ -15,8 +15,8 @@
 static const int apcPARAMETER_V1 = 0x01;
 class apcToggleParameterButton : public juce::TextButton {
 public:
-	apcToggleParameterButton(std::string buttonName, juce::Colour initialColour, juce::Colour toggleColour, apcStepperMainProcessor& p)
-			: juce::TextButton(buttonName), buttonName(buttonName), initialColour(initialColour),
+	apcToggleParameterButton(std::string buttonName,int step, int track,juce::Colour initialColour, juce::Colour toggleColour, apcStepperMainProcessor& p)
+			: juce::TextButton(buttonName), buttonName(buttonName),step(step),track(track),initialColour(initialColour),
 			  toggleColour(toggleColour), processor(p), isToggled(false)
 	{
 		setClickingTogglesState(true); // Enables automatic toggling
@@ -32,6 +32,9 @@ public:
 	void clicked() override {
 		isToggled = getToggleState();
 		//processor.parameterChanged(buttonName,isToggled);
+		int midiNote =mapRowColumnToNote(step,track); // Map row index to MIDI notes (C1 and up)
+		isToggled ? processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 55))
+	: processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 00));
 
 	}
 
@@ -45,7 +48,11 @@ public:
 	void resized() override {
 
 	}
+	int mapRowColumnToNote(int step, int track) {
 
+		return (step + track*8);
+
+	}
 
 private:
 	juce::Colour initialColour;
@@ -54,4 +61,6 @@ private:
 	juce::String buttonName;
 	apcStepperMainProcessor& processor;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> button_attachment;
+	int step;
+	int track;
 };

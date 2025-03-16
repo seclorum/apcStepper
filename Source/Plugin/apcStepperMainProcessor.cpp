@@ -107,15 +107,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
 															1.0f));
 
 	std::set<std::unique_ptr<juce::AudioParameterBool>> addedParameterIDs;
-	stepTrackButtonGroup.resize(200);
+
 	for (int step = 0; step < 8; ++step) {
 		for (int trackNr = 0; trackNr < 8; ++trackNr) {
 			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
 
 				layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), parameterID, false));
 
-				stepTrackButtonGroup[step*8+trackNr] = std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), "box", false);
-				APCLOG("Parameter ID just added: " + stepTrackButtonGroup[step*8+trackNr]->getParameterID());
 
 		}
 	}
@@ -235,25 +233,6 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	midiMessages.addEvents(incomingMidiBuffer, 0, buffer.getNumSamples(), 0);
 	incomingMidiBuffer.clear();
 
-	if (midiOutput)
-	for (int step = 0;step<8;step++) // Only update when a new step starts
-	{
-		currentStepIndex = step;
-
-		// Process active steps for this column
-		for (int trackNr = 0; trackNr < 8; ++trackNr)
-		{
-			if (midiGrid[step][trackNr]) // If step is active
-			{
-				int midiNote =mapRowColumnToNote(step,currentStepIndex); // Map row index to MIDI notes (C1 and up)
-				midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 21));
-			}else {
-				int midiNote =mapRowColumnToNote(step,currentStepIndex); // Map row index to MIDI notes (C1 and up)
-				midiOutput->sendMessageNow(juce::MidiMessage::noteOff(6, midiNote, (juce::uint8) 21));
-			}
-		}
-		//midiMessages.swapWith(midiMessages);
-	}
     if (playHead != nullptr)
     {
         juce::AudioPlayHead::CurrentPositionInfo posInfo;
@@ -428,7 +407,9 @@ void apcStepperMainProcessor::getStateInformation(juce::MemoryBlock &) {}
 void apcStepperMainProcessor::setStateInformation(const void *, int) {}
 
 int apcStepperMainProcessor::mapRowColumnToNote(int step, int track) {
-	return (track + step * 7);
+
+	return (step*7 + track *7);
+
 }
 
 
