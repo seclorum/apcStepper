@@ -25,6 +25,10 @@ public:
 
 	void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override;
 
+	// !J! Merge processBlock and processBlockTEMPO
+	void processBlockTEMPO(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
+
+
 	void scrollGridUp();
     void scrollGridDown();
     void jumpPageLeft();
@@ -56,11 +60,11 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-	constexpr int numSteps = 8;
-	constexpr int numInstruments = 8;
+	// For MIDI step calculations:
+	static const int numSteps = 8;
+	static const int numInstruments = 8;
 	int currentStepIndex = 0;
-	const int ppqPerStep = 1;
-
+	const int ppqPerStep = 1; // !J! TODO: Adjust this
 
     std::array<std::array<bool, numSteps>, numInstruments> midiGrid{};
     int scrollOffset = 0;

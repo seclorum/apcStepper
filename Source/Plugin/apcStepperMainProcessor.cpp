@@ -219,7 +219,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 }
 
 
-void MyAudioProcessor::processBlockMIDI(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) 
+void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     auto numSamples = buffer.getNumSamples();
     auto playHead = getPlayHead();
@@ -243,7 +243,7 @@ void MyAudioProcessor::processBlockMIDI(juce::AudioBuffer<float>& buffer, juce::
                     // Process active steps for this column
                     for (int instrument = 0; instrument < numInstruments; ++instrument)
                     {
-                        if (stepGrid[instrument][currentStepIndex]) // If step is active
+                        if (midiGrid[instrument][currentStepIndex]) // If step is active
                         {
                             int midiNote = 36 + instrument; // Map row index to MIDI notes (C1 and up)
                             midiMessages.addEvent(juce::MidiMessage::noteOn(1, midiNote, (juce::uint8) 100), 0);
@@ -258,7 +258,7 @@ void MyAudioProcessor::processBlockMIDI(juce::AudioBuffer<float>& buffer, juce::
     int noteOffTime = static_cast<int>(numSamples * 0.9); // 90% into the block
     for (int instrument = 0; instrument < numInstruments; ++instrument)
     {
-        if (stepGrid[instrument][currentStepIndex]) 
+        if (midiGrid[instrument][currentStepIndex]) 
         {
             int midiNote = 36 + instrument;
             midiMessages.addEvent(juce::MidiMessage::noteOff(1, midiNote), noteOffTime);
@@ -290,7 +290,9 @@ void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 void apcStepperMainProcessor::releaseResources() {}
 
 
-void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+// !J! TODO: merge processBlockTEMPO and processBlock
+
+void apcStepperMainProcessor::processBlockTEMPO(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
 #if JUCE_STANDALONE_APPLICATION
 	buffer.clear(); // Pass-through or clear audio for standalone
