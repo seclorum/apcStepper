@@ -7,6 +7,7 @@
 
 #include "apcStepperMainEditor.h"
 
+
 static const int apcPARAMETER_V1 = 0x01;
 
 /* 
@@ -113,7 +114,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
 				layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), parameterID, false));
 
 				stepTrackButtonGroup[step*8+trackNr] = std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1}.getParamID(), "box", false);
-				//APCLOG("Parameter ID just added: " + stepTrackButtonGroup[step*trackNr+trackNr]->getParameterID());
+				APCLOG("Parameter ID just added: " + stepTrackButtonGroup[step*8+trackNr]->getParameterID());
 
 		}
 	}
@@ -131,9 +132,9 @@ void apcStepperMainProcessor::initializeParameters()
 		for (int trackNr = 0; trackNr < 8; trackNr++) {
 			juce::String parameterID = "step_" + std::to_string(step) + "_track_" + std::to_string(trackNr);
 			auto stepValue = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter(parameterID));
-			stepTrackButtonGroup[trackNr*step+trackNr]->beginChangeGesture();
-			*stepTrackButtonGroup[trackNr*step+trackNr] = stepValue;
-			stepTrackButtonGroup[trackNr*step+trackNr]->endChangeGesture();
+			                     stepTrackButtonGroup[trackNr*step+trackNr]->beginChangeGesture();
+			                     *stepTrackButtonGroup[trackNr*step+trackNr] = stepValue;
+			                     stepTrackButtonGroup[trackNr*step+trackNr]->endChangeGesture();
 
 		}
 	}
@@ -184,6 +185,7 @@ void apcStepperMainProcessor::setTempo(int newTempo)
 
 
 void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue){
+
 	std::string input = parameterID.toStdString();
 	std::regex pattern(R"(step_(\d+)_track_(\d+))");
 	std::smatch matches;
@@ -194,6 +196,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
 
 			int step = std::stoi(stepString);
 			int track = std::stoi(trackString);
+			midiGrid[step][track] = newValue;
 		APCLOG(String("Step: " + stepString + "; Track: " + trackString));
 			auto stepParam = getParameters().getParameter(ParameterID{parameterID,apcPARAMETER_V1}.getParamID());
 			//stepParam->beginChangeGesture();
@@ -227,7 +230,28 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 {
     auto numSamples = buffer.getNumSamples();
     auto playHead = getPlayHead();
-    
+	juce::ScopedLock lock(midiMutex);
+	midiMessages.addEvents(incomingMidiBuffer, 0, buffer.getNumSamples(), 0);
+	incomingMidiBuffer.clear();
+
+
+	for (int step = 0;step<8;step++) // Only update when a new step starts
+	{
+		currentStepIndex = step;
+
+		// Process active steps for this column
+		for (int trackNr = 0; trackNr < 8; ++trackNr)
+		{
+			if (midiGrid[step][trackNr]) // If step is active
+			{
+				int midiNote =mapRowColumnToNote(step,currentStepIndex); // Map row index to MIDI notes (C1 and up)
+				midiMessages.addEvent(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 21),0);
+			}else {
+				int midiNote =mapRowColumnToNote(step,currentStepIndex); // Map row index to MIDI notes (C1 and up)
+				midiMessages.addEvent(juce::MidiMessage::noteOff(6, midiNote, (juce::uint8) 21),0);
+			}
+		}
+	}
     if (playHead != nullptr)
     {
         juce::AudioPlayHead::CurrentPositionInfo posInfo;
@@ -249,8 +273,9 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
                     {
                         if (midiGrid[instrument][currentStepIndex]) // If step is active
                         {
-                            int midiNote = 36 + instrument; // Map row index to MIDI notes (C1 and up)
+                            int midiNote =mapRowColumnToNote(instrument,currentStepIndex); // Map row index to MIDI notes (C1 and up)
                             midiMessages.addEvent(juce::MidiMessage::noteOn(1, midiNote, (juce::uint8) 100), 0);
+
                         }
                     }
                 }
@@ -400,8 +425,8 @@ void apcStepperMainProcessor::getStateInformation(juce::MemoryBlock &) {}
 
 void apcStepperMainProcessor::setStateInformation(const void *, int) {}
 
-int apcStepperMainProcessor::mapRowColumnToNote(int row, int column) {
-	return 36 + (row + column * 24);
+int apcStepperMainProcessor::mapRowColumnToNote(int step, int track) {
+	return  (step + track * 7);
 }
 
 
