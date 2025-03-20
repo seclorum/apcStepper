@@ -15,8 +15,8 @@ add_subdirectory(modules/melatonin_inspector)
 set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
 
 # Define the destination directory in the build folder
-set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/apcSequencer_artefacts/Debug/Standalone/Assets")
-set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/apcSequencer_artefacts/Release/Standalone/Assets")
+set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/apcStepper_artefacts/Debug/Standalone/Assets")
+set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/apcStepper_artefacts/Release/Standalone/Assets")
 
 # Message to verify source directory
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -69,10 +69,10 @@ set(JUCE_MODULES
 # ==============================================================================
 # APPLICATION: apcStepper
 # ==============================================================================
-project(apcStepper VERSION 1.0)
+project(apcAPP VERSION 1.0)
 
 juce_add_gui_app(
-		apcStepper
+		apcAPP
 		PRODUCT_NAME "apcStepper"
 		COMPANY_NAME "enabled.io"
 		BUNDLE_ID "io.enabled.apc.Stepper"
@@ -84,20 +84,20 @@ juce_add_gui_app(
 # Automatically add all application source files
 file(GLOB_RECURSE APP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h)
 
-target_sources(apcStepper PRIVATE ${APP_SOURCE_FILES})
+target_sources(apcAPP PRIVATE ${APP_SOURCE_FILES})
 
 # Link JUCE modules
-target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES})
+target_link_libraries(apcAPP PRIVATE ${JUCE_MODULES})
 
 # ==============================================================================
-# PLUGIN: apcSequencer
+# PLUGIN: apcStepper
 # ==============================================================================
-project(apcSequencer VERSION 1.0.0)
+project(apcStepper VERSION 1.0.0)
 
 set(FORMATS Standalone AU VST3 AUv3)
 
 juce_add_plugin(
-		apcSequencer
+		apcStepper
 		PRODUCT_NAME "apcStepper"
 		COMPANY_NAME "enabled.io"
 		BUNDLE_ID "io.enabled.apc.Stepper"
@@ -115,10 +115,10 @@ juce_add_plugin(
 # Automatically add all plugin source files
 file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
 
-target_sources(apcSequencer PRIVATE ${PLUGIN_SOURCE_FILES})
+target_sources(apcStepper PRIVATE ${PLUGIN_SOURCE_FILES})
 
 # Set plugin compile definitions
-target_compile_definitions(apcSequencer
+target_compile_definitions(apcStepper
 		INTERFACE
 		JUCE_WEB_BROWSER=0  # If enabled, add `NEEDS_WEB_BROWSER TRUE` to `juce_add_plugin`
 		JUCE_USE_CURL=0     # If enabled, add `NEEDS_CURL TRUE` to `juce_add_plugin`
@@ -142,12 +142,12 @@ juce_add_binary_data(Assets
 )
 
 # Link JUCE modules
-target_link_libraries(apcSequencer PRIVATE ${JUCE_MODULES} Assets)
+target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES} Assets)
 
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if (APPLE)
 	message("Building on macOS (Darwin)")
-	target_link_options(apcSequencer INTERFACE -Wl)
+	target_link_options(apcStepper INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
 endif()
 
