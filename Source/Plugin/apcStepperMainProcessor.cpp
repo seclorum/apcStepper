@@ -32,6 +32,18 @@ apcStepperMainProcessor::apcStepperMainProcessor()
         }
     }
 
+    // Initialize FatButton  parameters
+    for (int fatButtonNr = 0; fatButtonNr < 8; fatButtonNr++) {
+        juce::String parameterID = "fatButton_" + juce::String(fatButtonNr);
+        parameters.addParameterListener(parameterID, this);
+    }
+
+    // Initialize slider parameters
+    for (int sliderNr = 0; sliderNr < 8; sliderNr++) {
+        juce::String parameterID = "slider_" + juce::String(sliderNr);
+        parameters.addParameterListener(parameterID, this);
+    }
+
     // Set initial values
     *tempoParam = 98;
     *transposeParam = 0;
@@ -89,33 +101,28 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
                 parameterID, false));
         }
     }
+
+    for (int fatButtonNr = 0; fatButtonNr < 8; ++fatButtonNr) {
+        juce::String parameterID = "fatButton_" + juce::String(fatButtonNr);
+        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1},
+            parameterID, false));
+    }
+
+    for (int sliderNr = 0; sliderNr < 8; ++sliderNr) {
+        juce::String parameterID = "slider_" + juce::String(sliderNr);
+        layout.add(std::make_unique<juce::AudioParameterFloat>(
+            juce::ParameterID{parameterID, apcPARAMETER_V1},
+            parameterID,                                    // Name
+            juce::NormalisableRange<float>(0.0f, 1.0f),    // Range (min, max)
+            0.0f));                                        // Default value
+    }
+
     return layout;
 }
 
 void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
-    std::string input = parameterID.toStdString();
-    std::regex pattern(R"(step_(\d+)_track_(\d+))");
-    std::smatch matches;
-
-    if (std::regex_match(input, matches, pattern) && matches.size() == 3) {
-        int step = std::stoi(matches[1].str());
-        int track = std::stoi(matches[2].str());
-        if (step < numSteps && track < numInstruments) {
-            midiGrid[track][step] = (newValue > 0.5f);
-            APCLOG("step_" + std::to_string(step) + "_" + std::to_string(track) + " = " + std::to_string(newValue));
-        }
-    }
-    // Handle other parameter changes
-    else if (parameterID == "tempo") {
-        APCLOG("Processor: Tempo changed to: " + juce::String(newValue));
-    }
-    else if (parameterID == "transpose") {
-        APCLOG("Processor: Transpose changed to: " + juce::String(newValue));
-    }
-    else if (parameterID == "velocityScale") {
-        APCLOG("Processor: Velocity Scale changed to: " + juce::String(newValue));
-    }
+    APCLOG("parameter changed: " + parameterID + " = " + std::to_string(newValue));
 }
 
 void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
@@ -164,6 +171,9 @@ void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
     for (auto& row : midiGrid) {
         row.resize(numSteps, false);
     }
+
+    midiSlider.resize(numSteps);
+    midiFatButton.resize(numSteps);
 
     currentStepIndex = -1;
     lastClockSample = -1;

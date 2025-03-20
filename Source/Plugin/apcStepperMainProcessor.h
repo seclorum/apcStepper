@@ -83,6 +83,9 @@ private:
 
 	// std::array<std::array<bool, numSteps>, numInstruments> midiGrid{};
 	std::vector<std::vector<bool>> midiGrid;
+	std::vector<std::vector<float>> midiSlider;
+	std::vector<std::vector<bool>> midiFatButton;
+
 	juce::AudioParameterInt* tempoParam;
 	juce::AudioParameterInt* transposeParam;
 	juce::AudioParameterFloat* velocityScaleParam;
