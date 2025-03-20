@@ -47,7 +47,6 @@ public:
     bool isMidiEffect() const override { return true; }
     double getTailLengthSeconds() const override { return 0.0; }
 
-	void setTempo(int newTempo);
 
     void toggleButton(juce::String toogleState);
 
@@ -64,12 +63,11 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
 	// For MIDI step calculations:
-	static const int numSteps = 8;
-	static const int numInstruments = 8;
+	static const int numSteps = 16;
+	static const int numInstruments = 16;
 	int currentStepIndex = 0;
 	const int ppqPerStep = 1; // !J! TODO: Adjust this
 
-    std::array<std::array<bool, numSteps>, numInstruments> midiGrid{};
     int scrollOffset = 0;
     int pageOffset = 0;
 
@@ -81,8 +79,15 @@ public:
 	int clockCount = 0;                   // Number of clocks since last tempo update
 	static constexpr int clocksPerQuarterNote = 24; // MIDI Clock standard
 
-
 private:
+
+	// std::array<std::array<bool, numSteps>, numInstruments> midiGrid{};
+	std::vector<std::vector<bool>> midiGrid;
+	juce::AudioParameterInt* tempoParam;
+	juce::AudioParameterInt* transposeParam;
+	juce::AudioParameterFloat* velocityScaleParam;
+
+
 	static juce::AudioProcessor::BusesProperties getBusesProperties();
 
     int mapRowColumnToNote(int row, int column);
@@ -94,9 +99,6 @@ private:
 
     static constexpr int parameterVersion = 1;  // Versioning for future compatibility
 	juce::AudioProcessorValueTreeState::ParameterLayout layout;
-	juce::AudioParameterInt* tempoParam = nullptr;
-	juce::AudioParameterInt* transposeParam = nullptr;
-    juce::AudioParameterFloat* velocityScaleParam = nullptr;
 //    juce::AudioParameterInt* step_1_track_1_Param = nullptr;
 	std::vector<std::unique_ptr<juce::AudioParameterBool>> stepTrackButtonGroup;
 

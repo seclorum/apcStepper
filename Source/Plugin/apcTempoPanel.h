@@ -35,7 +35,6 @@ class apcStepperMainProcessor;
 using namespace juce;
 class apcTempoPanel : public juce::AudioProcessorEditor {
 public:
-    void setTempo(int newTempo);
     apcTempoPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
         tempoFlexPanel.flexDirection = juce::FlexBox::Direction::column;
@@ -68,15 +67,15 @@ public:
                 processor.getParameters(), "tempo", *tempoSlider);
 
         // Sync tempo label with slider
-        tempoSlider->onValueChange = [this] { syncTempo(); };
+        tempoSlider->onValueChange = [this] {
+            tempoLabel->setText(juce::String(tempoSlider->getValue()), juce::dontSendNotification);
+            // processor.setTempo(roundToInt(tempoSlider->getValue()));
+        };
+
         APCLOG("apcTempoPanel initialized...");
 
     }
-    void syncTempo()
-    {
-        tempoLabel->setText(juce::String(tempoSlider->getValue()), juce::dontSendNotification);
-        processor.setTempo(roundToInt(tempoSlider->getValue()));
-    }
+
     void resized() override {
         tempoFlexPanel.performLayout(getLocalBounds());
 

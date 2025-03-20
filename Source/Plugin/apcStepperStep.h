@@ -20,7 +20,7 @@ public:
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {
             juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
-            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::red
+            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::azure, juce::Colours::azure
         };
 
 

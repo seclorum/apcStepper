@@ -22,8 +22,6 @@ public:
 		setClickingTogglesState(true); // Enables automatic toggling
 		setColour(juce::TextButton::buttonColourId, initialColour);
 
-
-
 		button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
 						processor.getParameters(),buttonName,*this);
 
@@ -33,8 +31,10 @@ public:
 		isToggled = getToggleState();
 		//processor.parameterChanged(buttonName,isToggled);
 		int midiNote =mapRowColumnToNote(step,track); // Map row index to MIDI notes (C1 and up)
-		isToggled ? processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 55))
-	: processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 00));
+
+		// !J! confirms that we can access MIDI from here:
+		// isToggled ? processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 55))
+		// : processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 00));
 
 	}
 
