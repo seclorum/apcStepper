@@ -7,12 +7,11 @@ static const int apcPARAMETER_V1 = 1;
 
 apcStepperMainProcessor::apcStepperMainProcessor()
     : juce::AudioProcessor(getBusesProperties()),
-      parameters(*this, nullptr, "PARAMETERS", createParameterLayout())
-{
+      parameters(*this, nullptr, "PARAMETERS", createParameterLayout()) {
     // Initialize parameters
-    tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
-    transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
-    velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
+    tempoParam = dynamic_cast<juce::AudioParameterInt *>(parameters.getParameter("tempo"));
+    transposeParam = dynamic_cast<juce::AudioParameterInt *>(parameters.getParameter("transpose"));
+    velocityScaleParam = dynamic_cast<juce::AudioParameterFloat *>(parameters.getParameter("velocityScale"));
 
     if (!tempoParam || !transposeParam || !velocityScaleParam) {
         juce::Logger::writeToLog("Error: Failed to initialize parameters!");
@@ -53,27 +52,32 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 
     // Initialize midiGrid
     midiGrid.resize(numInstruments);
-    for (auto& row : midiGrid) {
+    for (auto &row: midiGrid) {
         row.resize(numSteps, false);
     }
+
+    // Initialize MIDI file and sequence
+    midiFile.setTicksPerQuarterNote(96);  // 1/8 note = 48 ticks
+
+    // Create and add a track
+    trackSequence = std::make_unique<juce::MidiMessageSequence>();
+    midiFile.addTrack(*trackSequence);
 }
 
 apcStepperMainProcessor::~apcStepperMainProcessor() = default;
 
-juce::AudioProcessor::BusesProperties apcStepperMainProcessor::getBusesProperties()
-{
+juce::AudioProcessor::BusesProperties apcStepperMainProcessor::getBusesProperties() {
 #if JUCE_STANDALONE_APPLICATION
     return BusesProperties()
-        .withInput("Input", juce::AudioChannelSet::stereo(), true)
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true);
+            .withInput("Input", juce::AudioChannelSet::stereo(), true)
+            .withOutput("Output", juce::AudioChannelSet::stereo(), true);
 #else
     return BusesProperties()
         .withOutput("MIDI Out", juce::AudioChannelSet::disabled(), true);
 #endif
 }
 
-bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
-{
+bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const {
 #if JUCE_STANDALONE_APPLICATION
     return (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo() &&
             layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo()) ||
@@ -85,48 +89,112 @@ bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
 #endif
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout()
-{
+juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout() {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
-    layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", apcPARAMETER_V1}, "Tempo", 0, 240, 98));
-    layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", apcPARAMETER_V1}, "Transpose", -24, 24, 0));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", apcPARAMETER_V1}, "Velocity Scale",
-        juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f), 1.0f));
+    layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", apcPARAMETER_V1}, "Tempo", 0, 240,
+                                                         98));
+    layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", apcPARAMETER_V1}, "Transpose",
+                                                         -24, 24, 0));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", apcPARAMETER_V1},
+                                                           "Velocity Scale",
+                                                           juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f), 1.0f));
 
     for (int step = 0; step < 8; ++step) {
         for (int trackNr = 0; trackNr < 8; ++trackNr) {
             juce::String parameterID = "step_" + juce::String(step) + "_track_" + juce::String(trackNr);
             layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1},
-                parameterID, false));
+                                                                  parameterID, false));
         }
     }
 
     for (int fatButtonNr = 0; fatButtonNr < 8; ++fatButtonNr) {
         juce::String parameterID = "fatButton_" + juce::String(fatButtonNr);
         layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1},
-            parameterID, false));
+                                                              parameterID, false));
     }
 
     for (int sliderNr = 0; sliderNr < 8; ++sliderNr) {
         juce::String parameterID = "slider_" + juce::String(sliderNr);
         layout.add(std::make_unique<juce::AudioParameterFloat>(
             juce::ParameterID{parameterID, apcPARAMETER_V1},
-            parameterID,                                    // Name
-            juce::NormalisableRange<float>(0.0f, 1.0f),    // Range (min, max)
-            0.0f));                                        // Default value
+            parameterID, // Name
+            juce::NormalisableRange<float>(0.0f, 1.0f), // Range (min, max)
+            0.0f)); // Default value
     }
 
     return layout;
 }
 
-void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue)
-{
+void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, float newValue) {
     APCLOG("parameter changed: " + parameterID + " = " + std::to_string(newValue));
+
+    // Parse parameter ID (format: "step_X_track_Y")
+    juce::StringArray tokens = juce::StringArray::fromTokens(parameterID, "_", "");
+    if (tokens.size() != 4 || !tokens[0].equalsIgnoreCase("step") || !tokens[2].equalsIgnoreCase("track"))
+        return;
+
+    int stepNum = tokens[1].getIntValue(); // 1-8
+    int trackNum = tokens[3].getIntValue(); // 1-8
+
+    if (stepNum < 1 || stepNum > 8 || trackNum < 1 || trackNum > 8)
+        return;
+
+    // Convert to 0-based indexing
+    stepNum--;
+    trackNum--;
+
+    // Calculate MIDI note number (C-1 = 0, each track is an octave up)
+    int midiNote = 0 + (trackNum * 12); // C-1 starts at 0, each octave adds 12
+
+    // Calculate time in ticks (1/8 note = 48 ticks)
+    int tickPosition = stepNum * 48;
+
+    // Remove any existing note at this position for this MIDI note
+    for (int i = trackSequence->getNumEvents() - 1; i >= 0; i--) {
+        const juce::MidiMessage *msg = &trackSequence->getEventPointer(i)->message;
+        if (msg->isNoteOn() &&
+            msg->getNoteNumber() == midiNote &&
+            juce::approximatelyEqual(msg->getTimeStamp(), (double) tickPosition)) {
+            trackSequence->deleteEvent(i, true);
+        }
+    }
+
+    // If newValue is 1, add a new note
+    if (juce::approximatelyEqual(newValue, 1.0f)) {
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(
+            1, // MIDI channel 1
+            midiNote, // Note number
+            0.8f // Velocity
+        );
+        noteOn.setTimeStamp(tickPosition);
+
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(
+            1,
+            midiNote
+        );
+        noteOff.setTimeStamp(tickPosition + 48); // 1/8 note duration
+
+        trackSequence->addEvent(noteOn);
+        trackSequence->addEvent(noteOff);
+        trackSequence->updateMatchedPairs();
+    }
 }
 
-void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
-{
+void apcStepperMainProcessor::saveMidiFile(const juce::File &file) {
+    juce::FileOutputStream output(file);
+
+    if (output.openedOk()) {
+        // Update the track in the MIDI file before saving
+        if (midiFile.getNumTracks() > 0) {
+            midiFile.clear();
+            midiFile.addTrack(*trackSequence);
+        }
+        midiFile.writeTo(output);
+    }
+}
+
+void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages) {
 #if JUCE_STANDALONE_APPLICATION
     buffer.clear();
 #endif
@@ -151,11 +219,12 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
                             int midiNote = mapRowColumnToNote(instrument, currentStepIndex);
                             float velocity = velocityScaleParam->get() * 100.0f;
                             midiMessages.addEvent(juce::MidiMessage::noteOn(1, midiNote + transposeParam->get(),
-                                juce::jlimit(0.0f, 127.0f, velocity)), 0);
+                                                                            juce::jlimit(0.0f, 127.0f, velocity)), 0);
 
                             // Schedule note off
                             int noteOffTime = buffer.getNumSamples() * 0.9;
-                            midiMessages.addEvent(juce::MidiMessage::noteOff(1, midiNote + transposeParam->get()), noteOffTime);
+                            midiMessages.addEvent(juce::MidiMessage::noteOff(1, midiNote + transposeParam->get()),
+                                                  noteOffTime);
                         }
                     }
                 }
@@ -164,11 +233,10 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
     }
 }
 
-void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
-{
+void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
     this->sampleRate = sampleRate;
     midiGrid.resize(numInstruments);
-    for (auto& row : midiGrid) {
+    for (auto &row: midiGrid) {
         row.resize(numSteps, false);
     }
 
@@ -186,23 +254,24 @@ void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
     APCLOG("apcStepperMainProcessor: prepareToPlay");
 }
 
-void apcStepperMainProcessor::releaseResources() {}
-
-int apcStepperMainProcessor::mapRowColumnToNote(int instrument, int /*step*/)
-{
-    // Simple mapping: base note (C1 = 36) + instrument offset + transpose
-    return 36 + instrument;  // Removed step multiplication as it was creating large jumps
+void apcStepperMainProcessor::releaseResources() {
 }
 
-juce::AudioProcessorEditor* apcStepperMainProcessor::createEditor()
-{
+int apcStepperMainProcessor::mapRowColumnToNote(int instrument, int /*step*/) {
+    // Simple mapping: base note (C1 = 36) + instrument offset + transpose
+    return 36 + instrument; // Removed step multiplication as it was creating large jumps
+}
+
+juce::AudioProcessorEditor *apcStepperMainProcessor::createEditor() {
     return new apcStepperMainEditor(*this);
 }
 
-void apcStepperMainProcessor::getStateInformation(juce::MemoryBlock&) {}
-void apcStepperMainProcessor::setStateInformation(const void*, int) {}
+void apcStepperMainProcessor::getStateInformation(juce::MemoryBlock &) {
+}
 
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
+void apcStepperMainProcessor::setStateInformation(const void *, int) {
+}
+
+juce::AudioProcessor * JUCE_CALLTYPE createPluginFilter() {
     return new apcStepperMainProcessor();
 }

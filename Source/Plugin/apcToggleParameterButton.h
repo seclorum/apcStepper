@@ -29,11 +29,10 @@ public:
 
 	void clicked() override {
 		isToggled = getToggleState();
-		//processor.parameterChanged(buttonName,isToggled);
 		int midiNote =mapRowColumnToNote(step,track); // Map row index to MIDI notes (C1 and up)
 		// !J! confirms that we can access MIDI from here:
-		// isToggled ? processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 55))
-		// : processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 00));
+		//isToggled ? processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 55))
+		//: processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 00));
 	}
 
 	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {

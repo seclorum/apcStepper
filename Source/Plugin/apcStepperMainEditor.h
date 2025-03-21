@@ -41,6 +41,7 @@ using namespace juce;
 // Editor for the APC Sequencer Processor
 class apcStepperMainEditor : public juce::AudioProcessorEditor
 {
+
 public:
     explicit apcStepperMainEditor(apcStepperMainProcessor& processor);
     ~apcStepperMainEditor() override;

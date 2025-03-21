@@ -22,6 +22,8 @@ public:
 
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
 
+    void saveMidiFile(const juce::File &file);
+
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 
     void releaseResources() override;
@@ -89,6 +91,8 @@ private:
 	juce::AudioParameterInt* tempoParam;
 	juce::AudioParameterInt* transposeParam;
 	juce::AudioParameterFloat* velocityScaleParam;
+	juce::MidiFile midiFile;
+	std::unique_ptr<juce::MidiMessageSequence> trackSequence;
 
 
 	static juce::AudioProcessor::BusesProperties getBusesProperties();
