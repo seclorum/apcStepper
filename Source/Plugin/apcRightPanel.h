@@ -45,7 +45,7 @@ public:
             updateRowButtonColors();
         };
         playToggleButton->onClick = [this]() {
-            juce::File midiFile("./tom_first.mid");
+            juce::File midiFile("/Users/tompeakwalcher/Documents/tom_first.mid");
             processor.saveMidiFile(midiFile);
             };
 

@@ -137,7 +137,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     int stepNum = tokens[1].getIntValue(); // 1-8
     int trackNum = tokens[3].getIntValue(); // 1-8
 
-    if (stepNum < 1 || stepNum > 8 || trackNum < 1 || trackNum > 8)
+    if (stepNum < 0 || stepNum > 7 || trackNum < 0 || trackNum > 7)
         return;
 
     // Convert to 0-based indexing
