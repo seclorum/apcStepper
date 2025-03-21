@@ -144,8 +144,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     stepNum--;
     trackNum--;
 
-    // Calculate MIDI note number (C-1 = 0, each track is an octave up)
-    int midiNote = 0 + (trackNum * 12); // C-1 starts at 0, each octave adds 12
+    int midiNote = trackNum; // C-1 starts at 0
 
     // Calculate time in ticks (1/8 note = 48 ticks)
     int tickPosition = stepNum * 48;
