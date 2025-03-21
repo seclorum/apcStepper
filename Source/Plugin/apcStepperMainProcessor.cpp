@@ -144,10 +144,10 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     stepNum--;
     trackNum--;
 
-    int midiNote = trackNum; // C-1 starts at 0
+    int midiNote = 36  + ( 8 - trackNum) - 2; // C-1 starts at 0
 
     // Calculate time in ticks (1/8 note = 48 ticks)
-    int tickPosition = stepNum * 48;
+    int tickPosition = stepNum * 48 ;
 
     // Remove any existing note at this position for this MIDI note
     for (int i = trackSequence->getNumEvents() - 1; i >= 0; i--) {
@@ -182,14 +182,22 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
 
 void apcStepperMainProcessor::saveMidiFile(const juce::File &file) {
     juce::FileOutputStream output(file);
+    if (output.openedOk())
+    {
+        // Clear any existing tracks and add our single track
+        midiFile.clear();
+        midiFile.addTrack(*trackSequence);
 
-    if (output.openedOk()) {
-        // Update the track in the MIDI file before saving
-        if (midiFile.getNumTracks() > 0) {
-            midiFile.clear();
-            midiFile.addTrack(*trackSequence);
-        }
+        // Add end of track marker
+        trackSequence->addEvent(juce::MidiMessage::endOfTrack(),
+                              trackSequence->getEndTime() + 1);
+
         midiFile.writeTo(output);
+        output.flush();
+    }
+    else
+    {
+        APCLOG("Failed to open MIDI file for writing!");
     }
 }
 
