@@ -67,7 +67,7 @@ set(JUCE_MODULES
 )
 
 # ==============================================================================
-# APPLICATION: apcStepper
+# APPLICATION: apcStepper (iOS GUI App)
 # ==============================================================================
 project(apcAPP VERSION 1.0)
 
@@ -78,7 +78,11 @@ juce_add_gui_app(
 		BUNDLE_ID "io.enabled.apc.Stepper"
 		TARGETED_DEVICE_FAMILY "2" # 1 = iPhone, 2 = iPad, "1,2" = Universal
 		IPHONE_SCREEN_ORIENTATION "Landscape" # or "Landscape", "PortraitAndLandscape"
-		MICROPHONE_PERMISSION_ENABLED TRUE # Example iOS-specific setting
+		MICROPHONE_PERMISSION_ENABLED TRUE
+		DOCUMENT_BROWSER_ENABLED FALSE # Optional iOS-specific setting
+		FILE_SHARING_ENABLED FALSE     # Optional iOS-specific setting
+		REQUIRES_FULL_SCREEN TRUE      # Optional: Full-screen app
+		IPAD_SCREEN_ORIENTATIONS "LandscapeLeft;LandscapeRight" # Specific to iPad
 )
 
 # Automatically add all application source files
@@ -89,12 +93,39 @@ target_sources(apcAPP PRIVATE ${APP_SOURCE_FILES})
 # Link JUCE modules
 target_link_libraries(apcAPP PRIVATE ${JUCE_MODULES})
 
+# iOS-specific settings
+if(IOS)
+	# Set iOS deployment target
+	set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum iOS deployment version")
+
+	# Set architectures for iOS (arm64 for devices, arm64/x86_64 for simulator)
+	set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "iOS architectures")
+
+	# Add iOS-specific compile definitions
+	target_compile_definitions(apcAPP PRIVATE
+			JUCE_IOS=1
+			JUCE_STANDALONE_APPLICATION=1
+	)
+
+	# Ensure the app is signed (required for iOS builds)
+	set_target_properties(apcAPP PROPERTIES
+			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "YOUR_TEAM_ID" # Replace with your Apple Developer Team ID
+	)
+
+	# Add custom Info.plist entries if needed
+	juce_set_custom_xcode_plist_properties(apcAPP
+			"UIFileSharingEnabled" "NO"
+			"UIBackgroundModes" "audio" # Example: Enable background audio if needed
+	)
+endif()
+
 # ==============================================================================
 # PLUGIN: apcStepper
 # ==============================================================================
 project(apcStepper VERSION 1.0.0)
 
-set(FORMATS Standalone AU VST3 AUv3)
+set(FORMATS Standalone AU VST3 AUv3) # AUv3 is iOS-compatible
 
 juce_add_plugin(
 		apcStepper
@@ -120,8 +151,8 @@ target_sources(apcStepper PRIVATE ${PLUGIN_SOURCE_FILES})
 # Set plugin compile definitions
 target_compile_definitions(apcStepper
 		INTERFACE
-		JUCE_WEB_BROWSER=0  # If enabled, add `NEEDS_WEB_BROWSER TRUE` to `juce_add_plugin`
-		JUCE_USE_CURL=0     # If enabled, add `NEEDS_CURL TRUE` to `juce_add_plugin`
+		JUCE_WEB_BROWSER=0
+		JUCE_USE_CURL=0
 		JUCE_VST3_CAN_REPLACE_VST2=0
 		JUCE_MODAL_LOOPS_PERMITTED=1
 		CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
@@ -144,12 +175,20 @@ juce_add_binary_data(Assets
 # Link JUCE modules
 target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES} Assets)
 
+# iOS-specific settings for the plugin (if targeting iOS)
+if(IOS)
+	target_compile_definitions(apcStepper PRIVATE
+			JUCE_IOS=1
+	)
+	set_target_properties(apcStepper PROPERTIES
+			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "xxxxx" # !J! TODO: Work with Tom to get enabled.io Team set up
+	)
+endif()
+
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
-if (APPLE)
+if(APPLE AND NOT IOS)
 	message("Building on macOS (Darwin)")
 	target_link_options(apcStepper INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
-endif()
-
-if (IOS)
 endif()
