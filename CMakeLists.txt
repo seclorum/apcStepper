@@ -182,7 +182,7 @@ if(IOS)
 	)
 	set_target_properties(apcStepper PROPERTIES
 			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # !J! TODO: Work with Tom to get enabled.io Team set up
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "xxxxx" # !J! TODO: Work with Tom to get enabled.io Team set up
 	)
 endif()
 
