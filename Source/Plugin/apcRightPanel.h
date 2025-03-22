@@ -46,14 +46,15 @@ public:
         };
         playToggleButton->onClick = [this]() {
             juce::File midiFile("/Users/tompeakwalcher/Documents/tom_first.mid");
+            if (midiFile.existsAsFile() && !midiFile.deleteFile())
+                APCLOG("Failed to delete existing file!");
             processor.saveMidiFile(midiFile);
-            };
+        };
 
         downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
         downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
         downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
-
 
 
         for (auto &button: rowButtons) {
@@ -62,8 +63,8 @@ public:
         rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4));
         rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
         rightPanelContainer.performLayout(getLocalBounds().toFloat());
-        APCLOG("RightPanel initialized...");
-;     }
+        APCLOG("RightPanel initialized...");;
+    }
 
     void resized() override {
         auto bounds = getLocalBounds();
@@ -90,14 +91,13 @@ public:
         stopToggleButton->setSize(squareSize, squareSize);
         shiftToggleButton->setSize(squareSize, squareSize);
 
-        tempoPanel->setBounds(tempoPanel->getX(),tempoPanel->getY(),bounds.getWidth(), tempoPanel->getHeight());
+        tempoPanel->setBounds(tempoPanel->getX(), tempoPanel->getY(), bounds.getWidth(), tempoPanel->getHeight());
         playToggleButton->setBounds(playToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
                                     playToggleButton->getY(), squareSize, squareSize);
         stopToggleButton->setBounds(stopToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
                                     stopToggleButton->getY(), squareSize, squareSize);
         shiftToggleButton->setBounds(shiftToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
                                      shiftToggleButton->getY(), squareSize, squareSize);
-
     }
 
 private:

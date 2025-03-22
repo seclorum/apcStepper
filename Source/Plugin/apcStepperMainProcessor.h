@@ -22,7 +22,7 @@ public:
 
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
 
-    void saveMidiFile(const juce::File &file);
+    void saveMidiFile(const juce::File &file) const;
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 

@@ -57,7 +57,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
     }
 
     // Initialize MIDI file and sequence
-    midiFile.setTicksPerQuarterNote(96);  // 1/8 note = 48 ticks
+    midiFile.setTicksPerQuarterNote(96); // 1/8 note = 48 ticks
 
     // Create and add a track
     trackSequence = std::make_unique<juce::MidiMessageSequence>();
@@ -137,6 +137,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     int stepNum = tokens[1].getIntValue(); // 1-8
     int trackNum = tokens[3].getIntValue(); // 1-8
 
+    // Check input range before decrementing
     if (stepNum < 0 || stepNum > 7 || trackNum < 0 || trackNum > 7)
         return;
 
@@ -144,10 +145,12 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     stepNum--;
     trackNum--;
 
-    int midiNote = 36  + ( 8 - trackNum) - 2; // C-1 starts at 0
+    // MIDI note: C-1 (24) for track 8, up to B0 (35) for track 1
+    int midiNote = 35  + ( 7 - trackNum); // Invert track order: track 8 = C-1, track 1 = B0
+    // Alternatively, if you want C-1 upward: int midiNote = 24 + trackNum;
 
     // Calculate time in ticks (1/8 note = 48 ticks)
-    int tickPosition = stepNum * 48 ;
+    int tickPosition = stepNum * 48;
 
     // Remove any existing note at this position for this MIDI note
     for (int i = trackSequence->getNumEvents() - 1; i >= 0; i--) {
@@ -168,10 +171,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
         );
         noteOn.setTimeStamp(tickPosition);
 
-        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(
-            1,
-            midiNote
-        );
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(1, midiNote);
         noteOff.setTimeStamp(tickPosition + 48); // 1/8 note duration
 
         trackSequence->addEvent(noteOn);
@@ -180,23 +180,34 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     }
 }
 
-void apcStepperMainProcessor::saveMidiFile(const juce::File &file) {
+void apcStepperMainProcessor::saveMidiFile(const juce::File &file) const {
     juce::FileOutputStream output(file);
-    if (output.openedOk())
-    {
-        // Clear any existing tracks and add our single track
-        midiFile.clear();
-        midiFile.addTrack(*trackSequence);
+    if (output.openedOk()) {
+        // Create a fresh MidiFile
+        juce::MidiFile newMidiFile;
+        newMidiFile.setTicksPerQuarterNote(96);
 
-        // Add end of track marker
-        trackSequence->addEvent(juce::MidiMessage::endOfTrack(),
-                              trackSequence->getEndTime() + 1);
+        // Create a copy of the track sequence and add meta events
+        auto newTrackSequence = std::make_unique<juce::MidiMessageSequence>(*trackSequence);
 
-        midiFile.writeTo(output);
+        // Add time signature and tempo if not present
+        if (newTrackSequence->getNumEvents() == 0 ||
+            !newTrackSequence->getEventPointer(0)->message.isTimeSignatureMetaEvent()) {
+            newTrackSequence->addEvent(juce::MidiMessage::timeSignatureMetaEvent(4, 4), 0);
+            newTrackSequence->addEvent(juce::MidiMessage::tempoMetaEvent(500000), 0); // 120 BPM
+        }
+
+        // Add end of track marker before adding to file
+        newTrackSequence->addEvent(juce::MidiMessage::endOfTrack(),
+                                   newTrackSequence->getEndTime() + 1);
+
+        // Add the single track
+        newMidiFile.addTrack(*newTrackSequence);
+
+        // Write to file
+        newMidiFile.writeTo(output);
         output.flush();
-    }
-    else
-    {
+    } else {
         APCLOG("Failed to open MIDI file for writing!");
     }
 }
