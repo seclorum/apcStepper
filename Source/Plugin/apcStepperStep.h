@@ -26,7 +26,7 @@ public:
 
         // Initialize row squares (1 column of ToggleSquares)
 
-        for (int row = rows-1; row >=0; row--) {
+        for (int row = 0; row <rows; row++) {
             auto square = std::make_unique<apcToggleParameterButton>("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row),stepNumber,row,
                                                                      juce::Colours::lightgrey, rowColours[row],processor);
             //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));

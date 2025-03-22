@@ -146,7 +146,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     trackNum--;
 
     // MIDI note: C-1 (24) for track 8, up to B0 (35) for track 1
-    int midiNote = 35  + ( 7 - trackNum); // Invert track order: track 8 = C-1, track 1 = B0
+    int midiNote = 37  +  trackNum; // Invert track order: track 8 = C-1, track 1 = B0
     // Alternatively, if you want C-1 upward: int midiNote = 24 + trackNum;
 
     // Calculate time in ticks (1/8 note = 48 ticks)
