@@ -43,7 +43,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
     // Initialize step track parameters
     for (int step = 0; step < 8; step++) {
         for (int trackNr = 0; trackNr < numSteps; trackNr++) {
-            juce::String parameterID = "step_" + juce::String(step) + "_track_" + juce::String(trackNr);
+            juce::String parameterID = "s" + addLeadingZeros(step) + "i" + addLeadingZeros(trackNr);
             parameters.addParameterListener(parameterID, this);
         }
     }
@@ -114,9 +114,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
 
     for (int step = 0; step < 8; ++step) {
         for (int trackNr = 0; trackNr < 8; ++trackNr) {
-            juce::String parameterID = "step_" + juce::String(step) + "_track_" + juce::String(trackNr);
+            juce::String parameterID = "s" + addLeadingZeros(step) + "i" + addLeadingZeros(trackNr);
             layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{parameterID, apcPARAMETER_V1},
                                                                   parameterID, false));
+            midiGrid.assignName(parameterID,step,trackNr);
         }
     }
 
@@ -140,8 +141,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
 
 void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, float newValue) {
     APCLOG("parameter changed: " + parameterID + " = " + std::to_string(newValue));
-
-    midiGrid.updateFromString(parameterID.toStdString(), newValue);
+    midiGrid.at(parameterID,newValue);
+    //rmidiGrid.updateFromString(parameterID.toStdString(), newValue);
 
 }
 
@@ -349,7 +350,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float> &buffer, juc
                     // Process active steps for this column
                     for (int instrument = 0; instrument < numInstruments; ++instrument) {
                         // [instrument][currentStepIndex]) // If step is active
-                        if (midiGrid.getInstAt(currentStepIndex, instrument))
+                        if (midiGrid.at(currentStepIndex, instrument))
                         {
                             int midiNote = 36 + instrument; // Map row index to MIDI notes (C1 and up)
                             midiMessages.addEvent(juce::MidiMessage::noteOn(1, midiNote, (juce::uint8) 100), 0);
@@ -363,7 +364,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float> &buffer, juc
     // Clear old MIDI notes after a short delay (MIDI Note Off)
     int noteOffTime = static_cast<int>(numSamples * 0.9); // 90% into the block
     for (int instrument = 0; instrument < numInstruments; ++instrument) {
-        if (midiGrid.getInstAt(currentStepIndex, instrument)) {
+        if (midiGrid.at(currentStepIndex,instrument)) {
             int midiNote = 36 + instrument;
             midiMessages.addEvent(juce::MidiMessage::noteOff(1, midiNote), noteOffTime);
         }
@@ -411,3 +412,9 @@ void apcStepperMainProcessor::setStateInformation(const void *, int) {
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
     return new apcStepperMainProcessor();
 }
+std::string addLeadingZeros(int number) {
+    std::stringstream ss;
+    ss << std::setw(3) << std::setfill('0') << number;
+    return ss.str();
+}
+
