@@ -74,6 +74,8 @@ apcStepperMainProcessor::apcStepperMainProcessor()
     // Create and add a track
     trackSequence = std::make_unique<juce::MidiMessageSequence>();
     midiFile.addTrack(*trackSequence);
+
+    midiGrid.resize(8,8); // init 8 x 8
 }
 
 apcStepperMainProcessor::~apcStepperMainProcessor() = default;

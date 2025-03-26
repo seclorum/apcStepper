@@ -109,7 +109,7 @@ private:
 //    std::array<std::array<bool, 1>, 1> midiGrid{};
 //	std::vector<std::vector<bool>> midiGrid;
 
-    apcResizableArray<bool> midiGrid{8, 8};  // Initial 8x8 grid
+    apcResizeableArray<bool> midiGrid;  // Initial 8x8 grid
 
 	std::vector<std::vector<float>> midiSlider;
 	std::vector<std::vector<bool>> midiFatButton;
