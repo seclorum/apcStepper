@@ -7,15 +7,19 @@
 #include <string>
 
 template<typename T>
-class apcResizableArray {
+class apcResizeableArray {
 private:
     std::vector<std::vector<T>> data;
     std::unordered_map<std::string, std::pair<int, int>> nameToIndex;
     int cols, rows;
 
 public:
-    apcResizableArray(int initialCols, int initialRows, T defaultValue = T())
-        : cols(initialCols), rows(initialRows) {
+    // Default constructor: initializes an empty array with zero dimensions
+    apcResizeableArray() : cols(0), rows(0) {}
+
+    // Parameterized constructor
+    apcResizeableArray(int initialCols, int initialRows, T defaultValue = T())
+            : cols(initialCols), rows(initialRows) {
         data.resize(rows, std::vector<T>(cols, defaultValue));
     }
 
