@@ -6,6 +6,9 @@
 #include <unordered_map>
 #include <string>
 
+
+
+
 template<typename T>
 class apcResizeableArray {
 private:
@@ -49,5 +52,31 @@ public:
         throw std::out_of_range("Key not found");
     }
 };
+
+
+#if 0
+void test_apcResizeableArray()
+{// Create a 3x3 Tic-Tac-Toe board with default value ' '
+    apcResizeableArray<char> board(3, 3, ' ');
+
+    // Assign names to key positions
+    board.assignName("top-left", 0, 0);
+    board.assignName("center", 1, 1);
+    board.assignName("bottom-right", 2, 2);
+
+    // Place some moves
+    board.at("top-left") = 'X';
+    board.at("center") = 'O';
+    board.at(2, 0) = 'X'; // Access by indices
+
+    // Print the board
+    for (int y = 0; y < 3; y++) {
+        for (int x = 0; x < 3; x++) {
+            std::cout << board.at(x, y) << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+#endif
 
 #endif // APCRESIZEABLEARRAY_H
