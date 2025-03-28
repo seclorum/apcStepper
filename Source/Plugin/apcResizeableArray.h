@@ -49,7 +49,7 @@ public:
         if (it != nameToIndex.end()) {
             return data[it->second.second][it->second.first];
         }
-        throw std::out_of_range("Key not found");
+        return nullptr;
     }
 };
 

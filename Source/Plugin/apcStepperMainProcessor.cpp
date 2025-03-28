@@ -38,8 +38,9 @@ apcStepperMainProcessor::apcStepperMainProcessor()
     // Initialize step track parameters
     for (int step = 0; step < 8; step++) {
         for (int trackNr = 0; trackNr < numSteps; trackNr++) { // numSteps was not declared, now fixed
-            juce::String parameterID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(trackNr);
+            std::string parameterID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(trackNr);
             parameters.addParameterListener(parameterID, this);
+            midiGrid.assignName(parameterID,step,trackNr);
         }
     }
 
@@ -110,9 +111,10 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     APCLOG("parameter changed: " + parameterID + " = " + std::to_string(newValue));
 
     // Fixed: Incorrect method call on midiGrid
-    midiGrid.at(parameterID.toStdString()) =  newValue;
-
-    // Proper way to update the grid should be implemented based on logic
+    if (midiGrid.at(parameterID.toStdString())) {
+        midiGrid.at(parameterID.toStdString()) =  newValue;
+        // Proper way to update the grid should be implemented based on logic
+    }
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout() {
