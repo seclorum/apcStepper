@@ -1,6 +1,7 @@
 //
 // Created by Jay Vaughan on 13.03.25.
 //
+#pragma once
 
 #ifndef APCSEQUENCER_COMMON_H
 #define APCSEQUENCER_COMMON_H
@@ -36,6 +37,7 @@
 #include "BinaryData.h"
 
 #include "apcLog.h"
+
 
 
 #endif //APCSEQUENCER_COMMON_H

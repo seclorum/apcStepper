@@ -72,6 +72,9 @@ apcStepperMainProcessor::apcStepperMainProcessor()
 apcStepperMainProcessor::~apcStepperMainProcessor() = default;
 
 
+
+
+
 std::string apcStepperMainProcessor::addLeadingZeros(int number) {
     std::stringstream ss;
     ss << std::setw(3) << std::setfill('0') << number;
@@ -107,7 +110,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String &parameterID, 
     APCLOG("parameter changed: " + parameterID + " = " + std::to_string(newValue));
 
     // Fixed: Incorrect method call on midiGrid
-    // midiGrid.at(parameterID, newValue); // This does not match the expected behavior
+    midiGrid[parameterID] = newValue; // This does not match the expected behavior
     // Proper way to update the grid should be implemented based on logic
 }
 

@@ -41,13 +41,13 @@ public:
 
 	juce::AudioProcessorValueTreeState& getParameters() { return parameters; }
 
+	std::string addLeadingZeros(int number);
+
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     void exportMIDI(const juce::String &parameterID, float newValue);
 
     void saveMidiFile(const juce::File &file) const;
-
-    std::string addLeadingZeros(int number);
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 
