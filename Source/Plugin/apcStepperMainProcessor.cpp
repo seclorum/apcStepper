@@ -316,6 +316,8 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 			if (newStepIndex != currentStepIndex) {
 				currentStepIndex = newStepIndex;
 
+				APCLOG("Step: " + std::to_string(currentStepIndex));
+
 				for (int instrument = 0; instrument < numInstruments; ++instrument) {
 					if (midiGrid.at(currentStepIndex, instrument)) {
 						int midiNote = 36 + instrument;

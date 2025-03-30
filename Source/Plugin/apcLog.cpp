@@ -73,3 +73,4 @@ void apcLog::resized()
     toolbar.setBounds(bounds.removeFromTop(40));
     logTextBox.setBounds(bounds);
 }
+
