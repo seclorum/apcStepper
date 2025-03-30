@@ -53,6 +53,8 @@ public:
 
     void releaseResources() override;
 
+	void handleMidiClock(int timeStamp);
+
 	void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override;
 
 	// !J! Merge processBlock and processBlockTEMPO

@@ -240,123 +240,95 @@ void apcStepperMainProcessor::saveMidiFile(const juce::File &file) const {
 		- JUCE’s MidiBuffer is ideal for handling MIDI event timing.
 
  */
-void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages) {
-#if JUCE_STANDALONE_APPLICATION
-    buffer.clear(); // Pass-through or clear audio for standalone
-#endif
-
-    juce::MidiBuffer processedMidi;
-    int transposeAmount = transposeParam->get();
-    float velocityScale = velocityScaleParam->get();
-    bool doTranspose = false;
-
-// NOTE
-
-    auto numSamples = buffer.getNumSamples();
-    auto playHead = getPlayHead();
-
-// TEMPO
-
-    // Process MIDI Clock and other messages
-    for (const auto metadata: midiMessages) {
-        auto message = metadata.getMessage();
-        auto timeStamp = metadata.samplePosition;
-
-        if (message.isMidiClock()) // Check for MIDI Clock (0xF8)
-        {
-            if (sampleRate > 0.0) // Ensure sample rate is valid
-            {
-                double currentTime = static_cast<double>(timeStamp) / sampleRate;
-
-                if (lastClockSample >= 0) // Not the first clock
-                {
-                    double interval = currentTime - lastClockTime;
-                    accumulatedInterval += interval;
-                    clockCount++;
-
-                    // Update tempo every 24 clocks (1 quarter note) for stability
-                    if (clockCount >= clocksPerQuarterNote) {
-                        // Calculate average interval per clock
-                        double avgIntervalPerClock = accumulatedInterval / clockCount;
-                        // Tempo (BPM) = 60 / (time per quarter note)
-                        // Time per quarter note = avgIntervalPerClock * 24
-                        double quarterNoteTime = avgIntervalPerClock * clocksPerQuarterNote;
-                        int calculatedTempo = juce::roundToInt(60.0 / quarterNoteTime);
-
-                        // Clamp to parameter range (0-240)
-                        calculatedTempo = juce::jlimit(0, 240, calculatedTempo);
-
-                        // Update tempo parameter if different
-                        if (tempoParam && *tempoParam != calculatedTempo) {
-                            tempoParam->beginChangeGesture();
-                            *tempoParam = calculatedTempo;
-                            tempoParam->endChangeGesture();
-                            DBG("MIDI Clock detected - Tempo set to: " << calculatedTempo);
-                        }
-
-                        // Reset accumulators
-                        accumulatedInterval = 0.0;
-                        clockCount = 0;
-                    }
-                }
-
-                lastClockSample = timeStamp;
-                lastClockTime = currentTime;
-            }
-        } else if (doTranspose) {
-            if (message.isNoteOn()) {
-                int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
-                float newVelocity = juce::jlimit(0.0f, 1.0f, message.getFloatVelocity() * velocityScale);
-                message = juce::MidiMessage::noteOn(message.getChannel(), newNote, newVelocity);
-            } else if (message.isNoteOff()) {
-                int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
-                message = juce::MidiMessage::noteOff(message.getChannel(), newNote);
-            }
-
-            processedMidi.addEvent(message, timeStamp);
-        }
-    }
 
 
-    if (playHead != nullptr) {
-        juce::AudioPlayHead::CurrentPositionInfo posInfo;
-        if (playHead->getCurrentPosition(posInfo)) {
-            if (posInfo.isPlaying) {
-                double ppqPosition = posInfo.ppqPosition; // Current position in beats
+// Add helper method for MIDI clock handling
+void apcStepperMainProcessor::handleMidiClock(int timeStamp) {
+	if (sampleRate <= 0.0) return;
 
-                // Compute which step we're on
-                int newStepIndex = static_cast<int>(std::floor(ppqPosition / ppqPerStep)) % numSteps;
+	double currentTime = static_cast<double>(timeStamp) / sampleRate;
 
-                if (newStepIndex != currentStepIndex) // Only update when a new step starts
-                {
-                    currentStepIndex = newStepIndex;
+	if (lastClockSample >= 0) {
+		double interval = currentTime - lastClockTime;
+		accumulatedInterval += interval;
+		clockCount++;
 
-                    // Process active steps for this column
-                    for (int instrument = 0; instrument < numInstruments; ++instrument) {
-                        // [instrument][currentStepIndex]) // If step is active
-                        if (midiGrid.at(currentStepIndex, instrument))
-                        {
-                            int midiNote = 36 + instrument; // Map row index to MIDI notes (C1 and up)
-                            midiMessages.addEvent(juce::MidiMessage::noteOn(1, midiNote, (juce::uint8) 100), 0);
-                        }
-                    }
-                }
-            }
-        }
-    }
+		if (clockCount >= clocksPerQuarterNote) {
+			double avgIntervalPerClock = accumulatedInterval / clockCount;
+			double quarterNoteTime = avgIntervalPerClock * clocksPerQuarterNote;
+			int calculatedTempo = juce::roundToInt(60.0 / quarterNoteTime);
+			calculatedTempo = juce::jlimit(0, 240, calculatedTempo);
 
-    // Clear old MIDI notes after a short delay (MIDI Note Off)
-    int noteOffTime = static_cast<int>(numSamples * 0.9); // 90% into the block
-    for (int instrument = 0; instrument < numInstruments; ++instrument) {
-        if (midiGrid.at(currentStepIndex,instrument)) {
-            int midiNote = 36 + instrument;
-            midiMessages.addEvent(juce::MidiMessage::noteOff(1, midiNote), noteOffTime);
-        }
-    }
+			if (tempoParam && *tempoParam != calculatedTempo) {
+				tempoParam->beginChangeGesture();
+				*tempoParam = calculatedTempo;
+				tempoParam->endChangeGesture();
+			}
 
-    midiMessages.swapWith(processedMidi);
+			accumulatedInterval = 0.0;
+			clockCount = 0;
+		}
+	}
+
+	lastClockSample = timeStamp;
+	lastClockTime = currentTime;
 }
 
+
+void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) {
+#if JUCE_STANDALONE_APPLICATION
+	buffer.clear();
+#endif
+
+	juce::MidiBuffer processedMidi;
+	int transposeAmount = transposeParam->get();
+	float velocityScale = velocityScaleParam->get();
+
+	// Process incoming MIDI
+	for (const auto metadata : midiMessages) {
+		auto message = metadata.getMessage();
+		auto timeStamp = metadata.samplePosition;
+
+		if (message.isMidiClock()) {
+			handleMidiClock(timeStamp);
+		} else if (transposeAmount != 0 || velocityScale != 1.0f) {
+			if (message.isNoteOn()) {
+				int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
+				float newVelocity = juce::jlimit(0.0f, 1.0f, message.getFloatVelocity() * velocityScale);
+				processedMidi.addEvent(juce::MidiMessage::noteOn(message.getChannel(), newNote, newVelocity), timeStamp);
+			} else if (message.isNoteOff()) {
+				int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
+				processedMidi.addEvent(juce::MidiMessage::noteOff(message.getChannel(), newNote), timeStamp);
+			} else {
+				processedMidi.addEvent(message, timeStamp);
+			}
+		} else {
+			processedMidi.addEvent(message, timeStamp);
+		}
+	}
+
+	// Handle sequencer
+	if (auto playHead = getPlayHead()) {
+		juce::AudioPlayHead::CurrentPositionInfo posInfo;
+		if (playHead->getCurrentPosition(posInfo) && posInfo.isPlaying) {
+			int newStepIndex = static_cast<int>(std::floor(posInfo.ppqPosition / ppqPerStep)) % numSteps;
+
+			if (newStepIndex != currentStepIndex) {
+				currentStepIndex = newStepIndex;
+
+				for (int instrument = 0; instrument < numInstruments; ++instrument) {
+					if (midiGrid.at(currentStepIndex, instrument)) {
+						int midiNote = 36 + instrument;
+						processedMidi.addEvent(juce::MidiMessage::noteOn(1, midiNote, 0.8f), 0);
+						processedMidi.addEvent(juce::MidiMessage::noteOff(1, midiNote), buffer.getNumSamples() / 2);
+					}
+				}
+			}
+		}
+	}
+
+	midiMessages.swapWith(processedMidi);
+}
 
 void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
     this->sampleRate = sampleRate;
