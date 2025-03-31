@@ -11,7 +11,7 @@
 
 class apcStepperMainProcessor;
 
-class apcControlPanel : public juce::AudioProcessorEditor {
+class apcControlPanel : public juce::AudioProcessorEditor, private juce::Timer {
 public:
     static constexpr int rows = 8;
     static constexpr int cols = 8;
@@ -27,8 +27,22 @@ public:
         rightContainer = std::make_unique<apcRightPanel>(processor);
         addAndMakeVisible(rightContainer.get());
         APCLOG("Main initialized...");
-
+        startTimer(25); // !J!
     }
+
+    void timerCallback() {
+
+        for (int i = 0; i < columns.size(); ++i)
+        {
+            if (auto* step = columns.getUnchecked(processor.currentMIDIStep))  // Get the column at index `i`
+            {
+                step->setColumnforStep(processor.currentMIDIStep);
+            }
+        }
+
+
+    };
+
 
     void resized() {
         auto bounds = getLocalBounds();

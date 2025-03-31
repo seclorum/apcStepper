@@ -76,9 +76,7 @@ public:
     bool isMidiEffect() const override { return true; }
     double getTailLengthSeconds() const override { return 0.0; }
 
-
     void toggleButton(juce::String toogleState);
-
 
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
@@ -94,7 +92,7 @@ public:
 	// For MIDI step calculations:
 	static const int numSteps = 8;
 	static const int numInstruments = 8;
-	int currentStepIndex;
+	int currentMIDIStep;
 	const int ppqPerStep = 1; // !J! TODO: Adjust this
 
     int scrollOffset = 0;

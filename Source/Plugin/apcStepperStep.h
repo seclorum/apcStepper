@@ -16,19 +16,21 @@ public:
     static constexpr int padding = 2;
 
     apcStepperStep(apcStepperMainProcessor &p, const int s)
-        : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
+            : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
         // Define row colors for each step in the sequence
         juce::Array<juce::Colour> rowColours = {
-            juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
-            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::azure, juce::Colours::azure
+                juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
+                juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::azure,
+                juce::Colours::azure
         };
 
 
         // Initialize row squares (1 column of ToggleSquares)
 
-        for (int row = 0; row <rows; row++) {
-            auto square = std::make_unique<apcToggleParameterButton>("s" + processor.addLeadingZeros(stepNumber) + "t" + processor.addLeadingZeros(row),
-                stepNumber,row,juce::Colours::lightgrey, rowColours[row],processor);
+        for (int row = 0; row < rows; row++) {
+            auto square = std::make_unique<apcToggleParameterButton>(
+                    "s" + processor.addLeadingZeros(stepNumber) + "t" + processor.addLeadingZeros(row),
+                    stepNumber, row, juce::Colours::lightgrey, rowColours[row], processor);
 
             //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
             addAndMakeVisible(*square);
@@ -37,30 +39,31 @@ public:
             APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
         }
 
-                // Row toggle button
-                rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue);
-            addAndMakeVisible(rowToggle.get());
+        // Row toggle button
+        rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue);
+        addAndMakeVisible(rowToggle.get());
 
-            // Add a **VERTICAL** slider
-            // Create a slider (default constructor)
-            slider = std::make_unique<juce::Slider>();
+        // Add a **VERTICAL** slider
+        // Create a slider (default constructor)
+        slider = std::make_unique<juce::Slider>();
 
-            // Set the slider to be vertical
-            slider->setSliderStyle(juce::Slider::LinearVertical);
-            slider->setRange(0.0, 1.0, 0.01);
-            slider->setValue(0.5);
-            slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
+        // Set the slider to be vertical
+        slider->setSliderStyle(juce::Slider::LinearVertical);
+        slider->setRange(0.0, 1.0, 0.01);
+        slider->setValue(0.5);
+        slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
 
-            fatButton_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
-            processor.getParameters(), "fatButton_" + std::to_string(stepNumber),*rowToggle);
+        fatButton_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+                processor.getParameters(), "fatButton_" + std::to_string(stepNumber), *rowToggle);
 
         slider_attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-            processor.getParameters(), "slider_" + std::to_string(stepNumber),*slider);
+                processor.getParameters(), "slider_" + std::to_string(stepNumber), *slider);
 
-            addAndMakeVisible(*slider); // Default size
-            APCLOG("apcStepperTrack initialized...");
-        }
-        void resized() override {
+        addAndMakeVisible(*slider); // Default size
+        APCLOG("apcStepperTrack initialized...");
+    }
+
+    void resized() override {
         auto bounds = getLocalBounds();
         float squareSize = bounds.getHeight() / (rows + 2) - 2 * padding; // Fit squares + row toggle
 
@@ -73,7 +76,7 @@ public:
         // Add squares to rowFlexBox
         for (auto &square: squares) {
             rowFlexBox.items.add(
-                juce::FlexItem(*square).withWidth(squareSize).withHeight(squareSize).withFlex(1).withMargin(6));
+                    juce::FlexItem(*square).withWidth(squareSize).withHeight(squareSize).withFlex(1).withMargin(6));
         }
 
         // Create a FlexBox for rowToggle and slider
@@ -84,11 +87,11 @@ public:
 
         // Add row toggle button
         controlFlexBox.items.add(
-            juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth() - 12));
+                juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth() - 12));
 
         // Add vertical slider
         controlFlexBox.items.add(
-            juce::FlexItem(*slider).withFlex(5).withWidth(getWidth()));
+                juce::FlexItem(*slider).withFlex(5).withWidth(getWidth()));
 
         // Create main column FlexBox
         juce::FlexBox columnFlexBox;
@@ -104,6 +107,15 @@ public:
 
         // Apply layout
         columnFlexBox.performLayout(bounds.toFloat());
+    }
+
+    void setColumnforStep(int step) {
+        if (step == stepNumber) {
+            setColour(Label::backgroundColourId, Colours::orange);
+        }
+        else {
+            setColour(Label::backgroundColourId, Colours::white);
+        }
     }
 
 private:

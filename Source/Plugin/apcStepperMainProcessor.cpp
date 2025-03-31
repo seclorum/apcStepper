@@ -313,13 +313,13 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		if (playHead->getCurrentPosition(posInfo) && posInfo.isPlaying) {
 			int newStepIndex = static_cast<int>(std::floor(posInfo.ppqPosition / ppqPerStep)) % numSteps;
 
-			if (newStepIndex != currentStepIndex) {
-				currentStepIndex = newStepIndex;
+			if (newStepIndex != currentMIDIStep) {
+                currentMIDIStep = newStepIndex;
 
-				APCLOG("Step: " + std::to_string(currentStepIndex));
+				APCLOG("Step: " + std::to_string(currentMIDIStep));
 
 				for (int instrument = 0; instrument < numInstruments; ++instrument) {
-					if (midiGrid.at(currentStepIndex, instrument)) {
+					if (midiGrid.at(currentMIDIStep, instrument)) {
 						int midiNote = 36 + instrument;
 						processedMidi.addEvent(juce::MidiMessage::noteOn(1, midiNote, 0.8f), 0);
 						processedMidi.addEvent(juce::MidiMessage::noteOff(1, midiNote), buffer.getNumSamples() / 2);
@@ -338,7 +338,7 @@ void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
     midiSlider.resize(numSteps);
     midiFatButton.resize(numSteps);
 
-    currentStepIndex = -1;
+    currentMIDIStep = 0;
     lastClockSample = -1;
     lastClockTime = 0.0;
     accumulatedInterval = 0.0;
