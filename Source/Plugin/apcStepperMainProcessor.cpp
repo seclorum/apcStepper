@@ -98,12 +98,12 @@ void apcStepperMainProcessor::exportMIDI(const juce::String& parameterID, float 
     if (step < 0 || step >= numSteps || track < 0 || track >= numInstruments) return;
 
     int midiNote = mapRowColumnToNote(track, step);
-    int tickPosition = step * 48;
+    double tickPosition = static_cast<double>(step * 48);
 
     for (int i = trackSequence->getNumEvents() - 1; i >= 0; --i)
     {
         auto* msg = &trackSequence->getEventPointer(i)->message;
-        if (msg->isNoteOn() && msg->getNoteNumber() == midiNote && msg->getTimeStamp() == tickPosition)
+        if (msg->isNoteOn() && msg->getNoteNumber() == midiNote && std::abs(msg->getTimeStamp() - tickPosition) < 1e-6)
             trackSequence->deleteEvent(i, true);
     }
 
@@ -168,7 +168,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
     buffer.clear();
 #endif
     juce::MidiBuffer processedMidi;
-    int transpose = transpose paramagnetic->get();
+    int transpose = transposeParam->get();
     float velocityScale = velocityScaleParam->get();
 
     for (const auto metadata : midiMessages)
@@ -199,10 +199,10 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 
     if (auto playHead = getPlayHead())
     {
-        juce::AudioPlayHead::CurrentPositionInfo posInfo;
-        if (playHead->getCurrentPosition(posInfo) && posInfo.isPlaying)
+        std::optional<juce::AudioPlayHead::PositionInfo> posInfo = playHead->getPosition();
+        if (posInfo.has_value() && posInfo->getIsPlaying())
         {
-            int newStep = static_cast<int>(posInfo.ppqPosition / ppqPerStep) % numSteps;
+            int newStep = static_cast<int>(posInfo->getPpqPosition().orFallback(0.0) / ppqPerStep) % numSteps;
             if (newStep != currentMIDIStep)
             {
                 currentMIDIStep = newStep;
