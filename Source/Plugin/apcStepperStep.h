@@ -52,13 +52,13 @@ public:
         slider->setRange(0.0, 1.0, 0.01);
         slider->setValue(0.5);
         slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0); // Hide text box
-
+/*
         fatButton_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
                 processor.getParameters(), "fatButton_" + std::to_string(stepNumber), *rowToggle);
 
         slider_attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
                 processor.getParameters(), "slider_" + std::to_string(stepNumber), *slider);
-
+*/
         addAndMakeVisible(*slider); // Default size
         APCLOG("apcStepperTrack initialized...");
     }

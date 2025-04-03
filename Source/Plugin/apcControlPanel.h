@@ -31,14 +31,14 @@ public:
     }
 
     void timerCallback() {
-
-        for (int i = 0; i < columns.size(); ++i)
-        {
-            if (auto* step = columns.getUnchecked(processor.currentMIDIStep))  // Get the column at index `i`
-            {
-                step->setColumnforStep(processor.currentMIDIStep);
-            }
-        }
+//
+//        for (int i = 0; i < columns.size(); ++i)
+//        {
+//            if (auto* step = columns.getUnchecked(processor.currentMIDIStep))  // Get the column at index `i`
+//            {
+////                step->setColumnforStep(processor.currentMIDIStep);
+//            }
+//        }
 
 
     };

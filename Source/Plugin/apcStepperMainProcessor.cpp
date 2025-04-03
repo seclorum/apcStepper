@@ -199,8 +199,8 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 
     if (auto playHead = getPlayHead())
     {
-        std::optional<juce::AudioPlayHead::PositionInfo> posInfo = playHead->getPosition();
-        if (posInfo.has_value() && posInfo->getIsPlaying())
+        auto posInfo = playHead->getPosition();
+        if (posInfo && posInfo->getIsPlaying())
         {
             int newStep = static_cast<int>(posInfo->getPpqPosition().orFallback(0.0) / ppqPerStep) % numSteps;
             if (newStep != currentMIDIStep)
