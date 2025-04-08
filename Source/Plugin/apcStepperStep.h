@@ -108,7 +108,19 @@ public:
         // Apply layout
         columnFlexBox.performLayout(bounds.toFloat());
     }
-void timerCallBack() {
+void timerCallBack() const {
+        for (int i = 0; i < processor.numSteps; ++i) {
+            std::string parameterID = "c" + processor.addLeadingZeros(i);
+
+
+            if (auto* param = dynamic_cast<AudioParameterBool*>(processor.parameters.getParameter(parameterID))){
+                if (i == stepNumber)     param->setValueNotifyingHost(true); // true -> 1.0f, false -> 0.0f
+                else    param->setValueNotifyingHost(false); // true -> 1.0f, false -> 0.0f
+            }else{
+                DBG("Parameter " + parameterID + " not found or not a bool!");
+            }
+
+        }
 
     }
 

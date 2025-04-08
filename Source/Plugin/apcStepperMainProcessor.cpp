@@ -208,7 +208,6 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
             processedMidi.addEvent(msg, timeStamp);
     }
 
-<<<<<<< HEAD
     if (auto playHead = getPlayHead())
     {
         auto posInfo = playHead->getPosition();
@@ -232,57 +231,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
         }
     }
     midiMessages.swapWith(processedMidi);
-=======
-	// Process incoming MIDI
-	for (const auto metadata : midiMessages) {
-		auto message = metadata.getMessage();
-		auto timeStamp = metadata.samplePosition;
 
-		if (message.isMidiClock()) {
-			handleMidiClock(timeStamp);
-		} else if (transposeAmount != 0 || velocityScale != 1.0f) {
-			if (message.isNoteOn()) {
-				int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
-				float newVelocity = juce::jlimit(0.0f, 1.0f, message.getFloatVelocity() * velocityScale);
-				processedMidi.addEvent(juce::MidiMessage::noteOn(message.getChannel(), newNote, newVelocity), timeStamp);
-			} else if (message.isNoteOff()) {
-				int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
-				processedMidi.addEvent(juce::MidiMessage::noteOff(message.getChannel(), newNote), timeStamp);
-			} else {
-				processedMidi.addEvent(message, timeStamp);
-			}
-		} else {
-			processedMidi.addEvent(message, timeStamp);
-		}
-	}
-
-	// Handle sequencer
-	if (auto playHead = getPlayHead()) {
-		juce::AudioPlayHead::CurrentPositionInfo posInfo;
-		if (playHead->getCurrentPosition(posInfo) && posInfo.isPlaying) {
-			int newStepIndex = static_cast<int>(std::floor(posInfo.ppqPosition / ppqPerStep)) % numSteps;
-
-			if (newStepIndex != currentStepIndex) {
-				currentStepIndex = newStepIndex;
-
-				APCLOG("Step: " + std::to_string(currentStepIndex));
-
-				for (int instrument = 0; instrument < numInstruments; ++instrument) {
-
-					std::string paramameterId = "s" + addLeadingZeros(currentStepIndex)+"t"+addLeadingZeros(instrument)+"c";
-					parameters.getParameter(paramameterId)->setValueNotifyingHost(true);
-					if (midiGrid.at(currentStepIndex, instrument)) {
-						int midiNote = 36 + instrument;
-						processedMidi.addEvent(juce::MidiMessage::noteOn(1, midiNote, 0.8f), 0);
-						processedMidi.addEvent(juce::MidiMessage::noteOff(1, midiNote), buffer.getNumSamples() / 2);
-					}
-				}
-			}
-		}
-	}
-
-	midiMessages.swapWith(processedMidi);
->>>>>>> 2e1b386 (parameter set and get)
 }
 int apcStepperMainProcessor::getPreviousStep(int currentStepIndex) {
 	// Ensure input is within 1-8 range
@@ -290,23 +239,9 @@ int apcStepperMainProcessor::getPreviousStep(int currentStepIndex) {
 		return -1; // Error case
 	}
 
-<<<<<<< HEAD
-void apcStepperMainProcessor::prepareToPlay(double sampleRate_, int)
-{
-    sampleRate = sampleRate_;
-    currentMIDIStep = -1;
-=======
-	// If at 1, return 8; otherwise return one less
-	return (currentStepIndex == 1) ? 8 : currentStepIndex - 1;
 }
 void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
-    this->sampleRate = sampleRate;
 
-    midiSlider.resize(numSteps);
-    midiFatButton.resize(numSteps);
-
-    currentStepIndex = -1;
->>>>>>> 2e1b386 (parameter set and get)
     lastClockSample = -1;
     lastClockTime = 0.0;
     accumulatedInterval = 0.0;

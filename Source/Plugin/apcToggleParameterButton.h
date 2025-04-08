@@ -31,7 +31,7 @@ public:
 	}
 
 	void clicked() override {
-		isToggled = getToggleState();
+		isToggled = !isToggled;
 
 		int midiNote =mapRowColumnToNote(step,track); // Map row index to MIDI notes (C1 and up)
 		// !J! confirms that we can access MIDI from here:
@@ -41,7 +41,7 @@ public:
 	}
 
 	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-		g.fillAll( isToggled ?  current_attachment ?  currentColor : toggleColour : initialColour);
+		g.fillAll(  isToggled ? toggleColour : current_attachment ?  currentColor : initialColour);
 
 		auto drawable = juce::Drawable::createFromImageData(BinaryData::button_svg, BinaryData::button_svgSize);
 		if (drawable)
