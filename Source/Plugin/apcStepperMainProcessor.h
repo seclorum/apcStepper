@@ -35,6 +35,15 @@ public:
     void jumpPageLeft() { pageOffset = jmax(0, pageOffset - 8); }
     void jumpPageRight() { pageOffset = jmin(numSteps - 8, pageOffset + 8); }
 
+
+    int getPreviousStep(int currentStepIndex);
+
+    // !J! Merge processBlock and processBlockTEMPO
+	void processBlockTEMPO(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
+
+
+
+
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
     const juce::String getName() const override { return "apcStepper"; }

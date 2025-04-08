@@ -111,7 +111,7 @@ private:
     juce::FlexBox downButtons;
     juce::FlexBox rightPanelContainer;
     bool shiftMode = false;
-    apcStepperMainProcessor &processor;;
+    apcStepperMainProcessor &processor;
 
     void squareClicked(int index) {
         for (int i = 0; i < rows; ++i) {

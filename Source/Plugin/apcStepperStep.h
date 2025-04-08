@@ -108,6 +108,9 @@ public:
         // Apply layout
         columnFlexBox.performLayout(bounds.toFloat());
     }
+void timerCallBack() {
+
+    }
 
     void setColumnforStep(int step) {
         if (step == stepNumber) {

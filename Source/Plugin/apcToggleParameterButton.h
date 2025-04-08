@@ -24,19 +24,24 @@ public:
 
 		button_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
 						processor.getParameters(),buttonName,*this);
+		current_attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+						processor.getParameters(),'c'+processor.addLeadingZeros(step),*this);
+		currentColor = Colours::lightskyblue;
 
 	}
 
 	void clicked() override {
 		isToggled = getToggleState();
+
 		int midiNote =mapRowColumnToNote(step,track); // Map row index to MIDI notes (C1 and up)
 		// !J! confirms that we can access MIDI from here:
 		//isToggled ? processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 55))
 		//: processor.midiOutput->sendMessageNow(juce::MidiMessage::noteOn(6, midiNote, (juce::uint8) 00));
+
 	}
 
 	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-		g.fillAll(isToggled ? toggleColour : initialColour);
+		g.fillAll( isToggled ?  current_attachment ?  currentColor : toggleColour : initialColour);
 
 		auto drawable = juce::Drawable::createFromImageData(BinaryData::button_svg, BinaryData::button_svgSize);
 		if (drawable)
@@ -54,10 +59,13 @@ public:
 private:
 	juce::Colour initialColour;
 	juce::Colour toggleColour;
+	juce::Colour currentColor;
 	bool isToggled;
+	bool isCurrent;
 	juce::String buttonName;
 	apcStepperMainProcessor& processor;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> button_attachment;
+	std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> current_attachment;
 	int step;
 	int track;
 };

@@ -18,13 +18,22 @@ apcStepperMainProcessor::apcStepperMainProcessor()
     *transposeParam = 0;
     *velocityScaleParam = 1.0f;
 
-    for (int step = 0; step < numSteps; step++)
-        for (int track = 0; track < numInstruments; track++)
-        {
-            std::string paramID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(track);
-            parameters.addParameterListener(paramID, this);
-            midiGrid.assignName(paramID, step, track);
+    // Fixed: Undefined variables numSteps and numInstruments
+    int numSteps = 8;        // Defaulting to 8
+    int numInstruments = 8;  // Defaulting to 8
+
+    // Initialize step track parameters
+    for (int step = 0; step < numSteps; step++) {
+        for (int trackNr = 0; trackNr < numInstruments; trackNr++) { // numSteps was not declared, now fixed
+            std::string parameterID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(trackNr);
+            parameters.addParameterListener(parameterID, this);
+
+            midiGrid.assignName(parameterID,step,trackNr);
+
         }
+        std::string parameterID = "c" + addLeadingZeros(step);
+        parameters.addParameterListener(parameterID, this);
+    }
 
     parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
     midiFile.setTicksPerQuarterNote(96);
@@ -73,19 +82,21 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
         midiGrid.at(parameterID.toStdString()) = (newValue > 0.5f) ? 1 : 0;
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout()
-{
+juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout() {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", parameterVersion}, "Tempo", 0, 240, 98));
     layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", parameterVersion}, "Transpose", -24, 24, 0));
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", parameterVersion}, "Velocity Scale", juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f), 1.0f));
 
-    for (int step = 0; step < numSteps; ++step)
-        for (int track = 0; track < numInstruments; ++track)
-        {
+
+    for (int step = 0; step < numSteps; ++step) {
+        for (int track = 0; track < numInstruments; ++track) {
             juce::String paramID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(track);
             layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{paramID, parameterVersion}, paramID, false));
         }
+        juce::String paramID = "c" + addLeadingZeros(step);
+        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{paramID, parameterVersion}, paramID, false));
+    }
     return layout;
 }
 
@@ -197,6 +208,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
             processedMidi.addEvent(msg, timeStamp);
     }
 
+<<<<<<< HEAD
     if (auto playHead = getPlayHead())
     {
         auto posInfo = playHead->getPosition();
@@ -220,12 +232,81 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
         }
     }
     midiMessages.swapWith(processedMidi);
-}
+=======
+	// Process incoming MIDI
+	for (const auto metadata : midiMessages) {
+		auto message = metadata.getMessage();
+		auto timeStamp = metadata.samplePosition;
 
+		if (message.isMidiClock()) {
+			handleMidiClock(timeStamp);
+		} else if (transposeAmount != 0 || velocityScale != 1.0f) {
+			if (message.isNoteOn()) {
+				int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
+				float newVelocity = juce::jlimit(0.0f, 1.0f, message.getFloatVelocity() * velocityScale);
+				processedMidi.addEvent(juce::MidiMessage::noteOn(message.getChannel(), newNote, newVelocity), timeStamp);
+			} else if (message.isNoteOff()) {
+				int newNote = juce::jlimit(0, 127, message.getNoteNumber() + transposeAmount);
+				processedMidi.addEvent(juce::MidiMessage::noteOff(message.getChannel(), newNote), timeStamp);
+			} else {
+				processedMidi.addEvent(message, timeStamp);
+			}
+		} else {
+			processedMidi.addEvent(message, timeStamp);
+		}
+	}
+
+	// Handle sequencer
+	if (auto playHead = getPlayHead()) {
+		juce::AudioPlayHead::CurrentPositionInfo posInfo;
+		if (playHead->getCurrentPosition(posInfo) && posInfo.isPlaying) {
+			int newStepIndex = static_cast<int>(std::floor(posInfo.ppqPosition / ppqPerStep)) % numSteps;
+
+			if (newStepIndex != currentStepIndex) {
+				currentStepIndex = newStepIndex;
+
+				APCLOG("Step: " + std::to_string(currentStepIndex));
+
+				for (int instrument = 0; instrument < numInstruments; ++instrument) {
+
+					std::string paramameterId = "s" + addLeadingZeros(currentStepIndex)+"t"+addLeadingZeros(instrument)+"c";
+					parameters.getParameter(paramameterId)->setValueNotifyingHost(true);
+					if (midiGrid.at(currentStepIndex, instrument)) {
+						int midiNote = 36 + instrument;
+						processedMidi.addEvent(juce::MidiMessage::noteOn(1, midiNote, 0.8f), 0);
+						processedMidi.addEvent(juce::MidiMessage::noteOff(1, midiNote), buffer.getNumSamples() / 2);
+					}
+				}
+			}
+		}
+	}
+
+	midiMessages.swapWith(processedMidi);
+>>>>>>> 2e1b386 (parameter set and get)
+}
+int apcStepperMainProcessor::getPreviousStep(int currentStepIndex) {
+	// Ensure input is within 1-8 range
+	if (currentStepIndex < 1 || currentStepIndex > 8) {
+		return -1; // Error case
+	}
+
+<<<<<<< HEAD
 void apcStepperMainProcessor::prepareToPlay(double sampleRate_, int)
 {
     sampleRate = sampleRate_;
     currentMIDIStep = -1;
+=======
+	// If at 1, return 8; otherwise return one less
+	return (currentStepIndex == 1) ? 8 : currentStepIndex - 1;
+}
+void apcStepperMainProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
+    this->sampleRate = sampleRate;
+
+    midiSlider.resize(numSteps);
+    midiFatButton.resize(numSteps);
+
+    currentStepIndex = -1;
+>>>>>>> 2e1b386 (parameter set and get)
     lastClockSample = -1;
     lastClockTime = 0.0;
     accumulatedInterval = 0.0;
