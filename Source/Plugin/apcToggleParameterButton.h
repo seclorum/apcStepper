@@ -30,6 +30,17 @@ public:
 		currentColor = Colours::lightskyblue;
 
 	}
+	~apcToggleParameterButton() override
+	{
+		if (current_attachment)
+			current_attachment->removeListener(this);
+	}
+
+	void parameterValueChanged(int parameterIndex, float newValue) override
+	{
+		isCurrent = (newValue > 0.5f); // Update current state
+		repaint();
+	}
 
 	void clicked() override {
 		isToggled = getToggleState();
@@ -42,8 +53,13 @@ public:
 	}
 
 	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-		g.fillAll(  current_attachment ?  currentColor : isToggled ? toggleColour :  initialColour);
-
+		if (getToggleState()) {
+			g.fillAll(toggleColour); // Toggled on
+		} else if (isCurrent) {
+			g.fillAll(currentColor); // Current but not toggled
+		} else {
+			g.fillAll(initialColour); // Default state
+		}
 		auto drawable = juce::Drawable::createFromImageData(BinaryData::button_svg, BinaryData::button_svgSize);
 		if (drawable)
 			drawable->drawWithin(g, drawable->getBounds().toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
@@ -55,11 +71,6 @@ public:
 
 		return (step + track*8);
 
-	}
-	void parameterValueChanged(int parameterIndex, float newValue) override
-	{
-		isCurrent = (newValue > 0.5f);
-		repaint();
 	}
 
 	void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override
