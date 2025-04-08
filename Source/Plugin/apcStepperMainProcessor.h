@@ -65,7 +65,7 @@ public:
     static const int numSteps = 8;
     static const int numInstruments = 8;
     int currentMIDIStep = -1;
-    const int ppqPerStep = 1;
+    const float ppqPerStep = 1.0/4;
 
     int scrollOffset = 0;
     int pageOffset = 0;

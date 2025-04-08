@@ -61,7 +61,7 @@ public:
         */
         addAndMakeVisible(*slider); // Default size
         APCLOG("apcStepperTrack initialized...");
-        startTimer(250);
+        startTimer(100);
     }
 
     void resized() override {
