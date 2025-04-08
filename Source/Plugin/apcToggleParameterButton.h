@@ -53,10 +53,10 @@ public:
 	}
 
 	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {
-		if (getToggleState()) {
-			g.fillAll(toggleColour); // Toggled on
-		} else if (isCurrent) {
-			g.fillAll(currentColor); // Current but not toggled
+		if (isCurrent) {
+			g.fillAll(currentColor); // Toggled on
+		} else if (getToggleState()) {
+			g.fillAll(toggleColour); // Current but not toggled
 		} else {
 			g.fillAll(initialColour); // Default state
 		}

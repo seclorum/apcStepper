@@ -61,7 +61,7 @@ public:
         */
         addAndMakeVisible(*slider); // Default size
         APCLOG("apcStepperTrack initialized...");
-        startTimer(25);
+        startTimer(250);
     }
 
     void resized() override {
@@ -111,7 +111,6 @@ public:
     }
 
     void timerCallback() override {
-        APCLOG("step_" + std::to_string(stepNumber));
         for (int i = 0; i < processor.numSteps; ++i) {
             std::string parameterID = "c" + processor.addLeadingZeros(i);
 
