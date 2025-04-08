@@ -27,10 +27,10 @@ public:
         rightContainer = std::make_unique<apcRightPanel>(processor);
         addAndMakeVisible(rightContainer.get());
         APCLOG("Main initialized...");
-        startTimer(25); // !J!
+        //startTimer(25); // !J!
     }
 
-    void timerCallback() {
+    void timerCallback() override {
 
 
     };

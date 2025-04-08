@@ -10,7 +10,7 @@
 
 class apcStepperMainProcessor;
 
-class apcStepperStep : public juce::AudioProcessorEditor {
+class apcStepperStep : public juce::AudioProcessorEditor, private juce::Timer{
 public:
     static constexpr int rows = 8;
     static constexpr int padding = 2;
@@ -61,6 +61,7 @@ public:
 */
         addAndMakeVisible(*slider); // Default size
         APCLOG("apcStepperTrack initialized...");
+        startTimer(100);
     }
 
     void resized() override {
@@ -108,7 +109,8 @@ public:
         // Apply layout
         columnFlexBox.performLayout(bounds.toFloat());
     }
-void timerCallBack() const {
+void timerCallback() override {
+        APCLOG("step_" + std::to_string(stepNumber));
         for (int i = 0; i < processor.numSteps; ++i) {
             std::string parameterID = "c" + processor.addLeadingZeros(i);
 
