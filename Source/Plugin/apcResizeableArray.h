@@ -75,6 +75,15 @@ public:
     bool hasName(const std::string& name) const {
         return nameToIndex.find(name) != nameToIndex.end();
     }
+
+    std::pair<int, int> getPosition(const std::string& name) const {
+        auto it = nameToIndex.find(name);
+        if (it != nameToIndex.end()) {
+            return it->second;  // Returns {x, y}
+        }
+        // If name doesn't exist, return invalid position (-1, -1)
+        return {-1, -1};
+    }
 };
 
 #if 0

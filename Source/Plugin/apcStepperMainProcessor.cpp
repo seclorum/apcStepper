@@ -28,7 +28,7 @@ apcStepperMainProcessor::apcStepperMainProcessor()
             std::string parameterID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(trackNr);
             parameters.addParameterListener(parameterID, this);
 
-            midiGrid.assignName(parameterID,step,trackNr);
+            controlGrid.assignName(parameterID,step,trackNr);
 
         }
         std::string parameterID = "c" + addLeadingZeros(step);
@@ -78,8 +78,10 @@ bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
 void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
     //APCLOG("Parameter changed: " + parameterID + " = " + String(newValue));
-    if (midiGrid.hasName(parameterID.toStdString()))
-        midiGrid.at(parameterID.toStdString()) = (newValue > 0.5f) ? 1 : 0;
+    if (controlGrid.hasName(parameterID.toStdString())) {
+        auto pos = controlGrid.getPosition(parameterID.toStdString());
+        midiGrid.at(pos.first+pageOffset,pos.second+scrollOffset) = newValue;
+    }
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::createParameterLayout() {
