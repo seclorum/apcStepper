@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "apcResizeableArray.h"
+#include "apcNoteObject.h"
 
 class apcStepperMainEditor;
 
@@ -78,7 +79,7 @@ public:
     static constexpr int clocksPerQuarterNote = 24;
 
 private:
-    apcResizeableArray<int> midiGrid{numSteps, numInstruments, 0};
+    apcResizeableArray<apcNoteObject> midiGrid{numSteps, numInstruments, apcNoteObject()};
     apcResizeableArray<int> controlGrid{numSteps, numInstruments, 0};
     juce::AudioParameterInt* tempoParam;
     juce::AudioParameterInt* transposeParam;

@@ -80,7 +80,7 @@ void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, 
     //APCLOG("Parameter changed: " + parameterID + " = " + String(newValue));
     if (controlGrid.hasName(parameterID.toStdString())) {
         auto pos = controlGrid.getPosition(parameterID.toStdString());
-        midiGrid.at(pos.first+pageOffset,pos.second+scrollOffset) = newValue;
+        midiGrid.at(pos.first+pageOffset,pos.second+scrollOffset).noteOn = newValue;
     }
 }
 
@@ -222,7 +222,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
                 //APCLOG("Step: " + std::to_string(currentMIDIStep));
                 for (int instrument = 0; instrument < numInstruments; ++instrument)
                 {
-                    if (midiGrid.at(currentMIDIStep, instrument))
+                    if (midiGrid.at(currentMIDIStep, instrument).noteOn)
                     {
                         int midiNote = mapRowColumnToNote(instrument, currentMIDIStep);
                         processedMidi.addEvent(juce::MidiMessage::noteOn(1, midiNote, 0.8f), 0);

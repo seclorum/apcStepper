@@ -1,8 +1,7 @@
 #pragma once
 
-#include <juce_gui_basics/juce_gui_basics.h> // For juce::Component, juce::MouseListener, etc.
-#include <tracktion_engine/tracktion_engine.h> // For tracktion_engine::MidiClip
-// #include "Common.h" // Uncomment if Common.h provides additional necessary includes
+ // For tracktion_engine::MidiClip
+ #include "Common.h" // Uncomment if Common.h provides additional necessary includes
 
 class apcTrackView : public juce::Component, private juce::MouseListener
 {
