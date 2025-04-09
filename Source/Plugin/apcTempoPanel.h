@@ -27,7 +27,7 @@
 #include "melatonin_inspector/melatonin_inspector.h"
 #include "apcStepperMainProcessor.h"
 #include "apcStepperMainEditor.h"
-#include "ShiftToggleButton.h"
+#include "apcShiftToggleParameterButton.h"
 #include "apcToggleButton.h"
 #include "ToggleIconButton.h"
 

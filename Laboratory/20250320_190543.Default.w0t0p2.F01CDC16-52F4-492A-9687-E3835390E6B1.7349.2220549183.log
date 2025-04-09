@@ -1,18 +1,0 @@
-Last login: Sat Mar  1 15:29:58 on ttys002
-[1m[7m%[27m[1m[0m                                                                                                                                                                                                                                              [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro ~ % [K[?2004hddf -h[?2004l
-Filesystem        Size    Used   Avail Capacity iused ifree %iused  Mounted on
-/dev/disk3s3s1   3.6Ti    14Gi   3.4Ti     1%    412k  4.3G    0%   /
-devfs            203Ki   203Ki     0Bi   100%     702     0  100%   /dev
-/dev/disk3s6     3.6Ti    20Ki   3.4Ti     1%       0   36G    0%   /System/Volumes/VM
-/dev/disk3s4     3.6Ti    13Gi   3.4Ti     1%    1.7k   36G    0%   /System/Volumes/Preboot
-/dev/disk3s2     3.6Ti   703Mi   3.4Ti     1%     337   36G    0%   /System/Volumes/Update
-/dev/disk1s2     500Mi   6.0Mi   481Mi     2%       1  4.9M    0%   /System/Volumes/xarts
-/dev/disk1s1     500Mi   5.4Mi   481Mi     2%      35  4.9M    0%   /System/Volumes/iSCPreboot
-/dev/disk1s3     500Mi   3.1Mi   481Mi     1%      88  4.9M    0%   /System/Volumes/Hardware
-/dev/disk3s1     3.6Ti   251Gi   3.4Ti     7%    2.1M   36G    0%   /System/Volumes/Data
-map auto_home      0Bi     0Bi     0Bi   100%       0     0     -   /System/Volumes/Data/home
-/dev/disk3s5     3.6Ti   1.9Gi   3.4Ti     1%      76   36G    0%   /Volumes/Recovery
-/dev/disk2s1     5.0Gi   945Mi   4.1Gi    19%      34   43M    0%   /System/Volumes/Update/SFR/mnt1
-/dev/disk3s3     3.6Ti    14Gi   3.4Ti     1%    412k  4.3G    0%   /System/Volumes/Update/mnt1
-/dev/disk4s1     144Ki   100Ki    44Ki    70%       0     0     -   /Volumes/LAUNCHPAD X
-[1m[7m%[27m[1m[0m                                                                                                                                                                                                                                              [0m[27m[24m[Jtompeakwalcher@Toms-MacBook-Pro ~ % [K[?2004heexit[?2004l

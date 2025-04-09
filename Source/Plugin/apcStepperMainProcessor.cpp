@@ -98,6 +98,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout apcStepperMainProcessor::cre
         }
         juce::String paramID = "c" + addLeadingZeros(step);
         layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{paramID, parameterVersion}, paramID, false));
+        paramID = "r" + addLeadingZeros(step);
+        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{paramID, parameterVersion}, paramID, false));
     }
     return layout;
 }

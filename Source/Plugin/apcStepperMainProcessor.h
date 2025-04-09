@@ -16,7 +16,7 @@ public:
     juce::AudioProcessorValueTreeState parameters{*this, nullptr, "PARAMETERS", createParameterLayout()};
     std::unique_ptr<juce::MidiOutput> midiOutput;
     juce::StringArray midiOutputDevices;
-
+    int currentSelect = 0;
     bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 
     juce::AudioProcessorValueTreeState& getParameters() { return parameters; }

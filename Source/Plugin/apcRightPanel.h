@@ -1,28 +1,26 @@
-#pragma once
-
-#include "Common.h"
-
-#include "ShiftToggleButton.h"
-#include "apcToggleButton.h"
-#include "ToggleIconButton.h"
 #include "apcTempoPanel.h"
-
-class apcStepperMainProcessor;
 
 class apcRightPanel : public juce::AudioProcessorEditor {
 public:
     apcRightPanel(apcStepperMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
-        //Track Buttons with Shift option were generated
+
+
+        // Initialize FlexBox member variables
+
+
+        // Add rowButtons
         for (int i = 0; i < rows; ++i) {
-            rowButtons.add(
-                std::make_unique<ShiftToggleButton>(juce::Colours::grey, juce::Colours::blue, juce::Colours::orange,
-                                                    false));
-            addAndMakeVisible(rowButtons.getLast());
-            rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
-            rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(8));
+            std::string parameterID = "r" + processor.addLeadingZeros(i);
+            auto rowButton = std::make_unique<apcShiftToggleParameterButton>(parameterID, i, juce::Colours::grey, juce::Colours::blue, juce::Colours::orange, false, processor);
+            addAndMakeVisible(*rowButton);
+            rowButtons.add(std::move(rowButton));
+
+
         }
 
+
+        // ... (rest of constructor)
         tempoPanel = std::make_unique<apcTempoPanel>(processor);
         addAndMakeVisible(tempoPanel.get());
         playToggleButton = std::make_unique<ToggleIconButton>(juce::Colours::green, juce::Colours::darkgreen,
@@ -51,43 +49,45 @@ public:
             processor.saveMidiFile(midiFile);
         };
 
-        downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
-        downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
-        downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
-        downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
 
 
-        for (auto &button: rowButtons) {
-            addAndMakeVisible(button);
-        };
-        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4).withMargin(8));
-        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
-        rightPanelContainer.performLayout(getLocalBounds().toFloat());
-        APCLOG("RightPanel initialized...");;
+
+
     }
 
     void resized() override {
         auto bounds = getLocalBounds();
-
+        juce::FlexBox rightPanel;         // Member variable
+        juce::FlexBox downButtons;        // Member variable
+        juce::FlexBox rightPanelContainer;// Member variable
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
-        rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
-        rightPanel.alignItems = juce::FlexBox::AlignItems::stretch;
-        rightPanel.alignContent = juce::FlexBox::AlignContent::center;
+        rightPanel.justifyContent = juce::FlexBox::JustifyContent::flexEnd;
+        rightPanel.alignItems = juce::FlexBox::AlignItems::flexStart;
+        rightPanel.alignContent = juce::FlexBox::AlignContent::spaceBetween;
 
         rightPanelContainer.flexDirection = juce::FlexBox::Direction::column;
         rightPanelContainer.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
-        rightPanelContainer.alignItems = juce::FlexBox::AlignItems::stretch;
+        rightPanelContainer.alignItems = juce::FlexBox::AlignItems::flexStart;
 
         downButtons.flexDirection = juce::FlexBox::Direction::column;
         downButtons.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         downButtons.alignItems = juce::FlexBox::AlignItems::flexStart;
+        downButtons.items.add(juce::FlexItem(*tempoPanel).withFlex(1));
+        downButtons.items.add(juce::FlexItem(*playToggleButton).withFlex(1));
+        downButtons.items.add(juce::FlexItem(*stopToggleButton).withFlex(1));
+        downButtons.items.add(juce::FlexItem(*shiftToggleButton).withFlex(1));
+        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4).withMargin(8));
+        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
 
+        for (auto& button : rowButtons) {
+            rightPanel.items.add(juce::FlexItem(*button).withMaxHeight(getHeight()).withWidth(getWidth()/1.4).withMargin(juce::FlexItem::Margin(10)).withFlex(1));
+            // Set width dynamically
+        }
+        rightPanelContainer.performLayout(getLocalBounds().toFloat());
 
-
-        rightPanelContainer.performLayout(bounds.toFloat());
+        // Size and position other components manually if needed
 
         int squareSize = playToggleButton->getHeight();
-
         playToggleButton->setSize(squareSize, squareSize);
         stopToggleButton->setSize(squareSize, squareSize);
         shiftToggleButton->setSize(squareSize, squareSize);
@@ -101,21 +101,8 @@ public:
                                      shiftToggleButton->getY(), squareSize, squareSize);
 
 
+        APCLOG("RightPanel initialized...");
     }
-
-private:
-    static constexpr int rows = 8;
-    juce::OwnedArray<ShiftToggleButton> rowButtons;
-    std::unique_ptr<apcTempoPanel> tempoPanel;
-    std::unique_ptr<apcToggleButton> playToggleButton;
-    std::unique_ptr<apcToggleButton> stopToggleButton;
-    std::unique_ptr<apcToggleButton> shiftToggleButton;
-    juce::FlexBox rightPanel;
-    juce::FlexBox downButtons;
-    juce::FlexBox rightPanelContainer;
-    bool shiftMode = false;
-    apcStepperMainProcessor &processor;
-
     void squareClicked(int index) {
         for (int i = 0; i < rows; ++i) {
             if (i != index) {
@@ -130,4 +117,15 @@ private:
             button->setShift(shiftMode);
         }
     }
+
+private:
+    static constexpr int rows = 8;
+    juce::OwnedArray<apcShiftToggleParameterButton> rowButtons;
+    std::unique_ptr<apcTempoPanel> tempoPanel;
+    std::unique_ptr<apcToggleButton> playToggleButton;
+    std::unique_ptr<apcToggleButton> stopToggleButton;
+    std::unique_ptr<apcToggleButton> shiftToggleButton;
+
+    bool shiftMode = false;
+    apcStepperMainProcessor &processor;
 };
