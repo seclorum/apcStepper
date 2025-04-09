@@ -9,9 +9,7 @@ set(JUCE_ENABLE_LV2 FALSE)
 set(JUCE_ENABLE_UNITY FALSE)
 
 # Add JUCE modules
-# add_subdirectory(modules/juce)
-
-add_subdirectory(modules/tracktion_engine)
+add_subdirectory(modules/juce)
 add_subdirectory(modules/melatonin_inspector)
 
 set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
@@ -66,8 +64,6 @@ set(JUCE_MODULES
 		juce::juce_recommended_lto_flags
 		juce::juce_recommended_warning_flags
 		melatonin_inspector
-		tracktion_engine
-
 )
 
 # ==============================================================================

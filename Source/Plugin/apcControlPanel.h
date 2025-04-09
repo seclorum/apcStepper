@@ -26,15 +26,16 @@ public:
         }
         rightContainer = std::make_unique<apcRightPanel>(processor);
         addAndMakeVisible(rightContainer.get());
-        engine = std::make_unique<tracktion_engine::Engine>("MyApp");
-        edit = std::make_unique<tracktion_engine::Edit>(*engine, tracktion_engine::createEmptyEdit(*engine), nullptr);
+//        engine = std::make_unique<tracktion_engine::Engine>("MyApp");
+//        edit = std::make_unique<tracktion_engine::Edit>(*engine, tracktion_engine::createEmptyEdit(*engine), nullptr);
 
         // Ensure at least one track exists
-        edit->ensureNumberOfAudioTracks(1);
-        auto track = tracktion_engine::getAudioTracks(*edit)[0];
-        midiClip = track->insertMIDIClip({0.0, 4.0}, nullptr); // Example clip from 0 to 4 beats
+//        edit->ensureNumberOfAudioTracks(1);
+//        auto track = tracktion_engine::getAudioTracks(*edit)[0];
+//        midiClip = track->insertMIDIClip({0.0, 4.0}, nullptr); // Example clip from 0 to 4 beats
+//
+//        addAndMakeVisible(trackView);
 
-        addAndMakeVisible(trackView);
         APCLOG("Main initialized...");
         //startTimer(25); // !J!
     }
@@ -115,8 +116,8 @@ private:
 
     juce::Component emptySpace;
      std::unique_ptr<apcRightPanel> rightContainer;
-    std::unique_ptr<tracktion_engine::Engine> engine;
-    std::unique_ptr<tracktion_engine::Edit> edit;
-    tracktion_engine::MidiClip* midiClip = nullptr;
-    TrackView trackView; // Custom component for displaying MIDI tracks
+//    std::unique_ptr<tracktion_engine::Engine> engine;
+//    std::unique_ptr<tracktion_engine::Edit> edit;
+//    tracktion_engine::MidiClip* midiClip = nullptr;
+//    TrackView trackView; // Custom component for displaying MIDI tracks
 };
