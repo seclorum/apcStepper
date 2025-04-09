@@ -20,7 +20,7 @@ public:
                                                     false));
             addAndMakeVisible(rowButtons.getLast());
             rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
-            rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(2));
+            rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(8));
         }
 
         tempoPanel = std::make_unique<apcTempoPanel>(processor);
@@ -60,8 +60,8 @@ public:
         for (auto &button: rowButtons) {
             addAndMakeVisible(button);
         };
-        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(7).withMargin(8));
-        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(3).withMargin(8));
+        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4).withMargin(8));
+        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
         rightPanelContainer.performLayout(getLocalBounds().toFloat());
         APCLOG("RightPanel initialized...");;
     }
@@ -70,8 +70,9 @@ public:
         auto bounds = getLocalBounds();
 
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
-        rightPanel.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+        rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
         rightPanel.alignItems = juce::FlexBox::AlignItems::stretch;
+        rightPanel.alignContent = juce::FlexBox::AlignContent::center;
 
         rightPanelContainer.flexDirection = juce::FlexBox::Direction::column;
         rightPanelContainer.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
@@ -82,8 +83,8 @@ public:
         downButtons.alignItems = juce::FlexBox::AlignItems::flexStart;
 
 
-        rightPanelContainer.performLayout(bounds.toFloat());
 
+        rightPanelContainer.performLayout(bounds.toFloat());
 
         int squareSize = playToggleButton->getHeight();
 
@@ -98,6 +99,8 @@ public:
                                     stopToggleButton->getY(), squareSize, squareSize);
         shiftToggleButton->setBounds(shiftToggleButton->getX() + (bounds.getWidth() / 2) - (squareSize / 2),
                                      shiftToggleButton->getY(), squareSize, squareSize);
+
+
     }
 
 private:

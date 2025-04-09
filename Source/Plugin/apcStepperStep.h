@@ -87,11 +87,11 @@ public:
 
         // Add row toggle button
         controlFlexBox.items.add(
-            juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth() - 12));
+            juce::FlexItem(*rowToggle).withFlex(1).withWidth(bounds.getWidth() - 12).withMargin(8));
 
         // Add vertical slider
         controlFlexBox.items.add(
-            juce::FlexItem(*slider).withFlex(5).withWidth(getWidth()));
+            juce::FlexItem(*slider).withFlex(5).withWidth(getWidth()).withMargin(8));
 
         // Create main column FlexBox
         juce::FlexBox columnFlexBox;
@@ -101,6 +101,7 @@ public:
 
         // Add rowFlexBox (squares) with flex 4
         columnFlexBox.items.add(juce::FlexItem(rowFlexBox).withFlex(4));
+        columnFlexBox.items.add(juce::FlexItem().withMargin(8));
 
         // Add controlFlexBox (row toggle & slider) with flex 2
         columnFlexBox.items.add(juce::FlexItem(controlFlexBox).withFlex(2));
