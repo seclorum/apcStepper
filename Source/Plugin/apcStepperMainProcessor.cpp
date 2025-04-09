@@ -77,7 +77,7 @@ bool apcStepperMainProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
 
 void apcStepperMainProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
-    APCLOG("Parameter changed: " + parameterID + " = " + String(newValue));
+    //APCLOG("Parameter changed: " + parameterID + " = " + String(newValue));
     if (midiGrid.hasName(parameterID.toStdString()))
         midiGrid.at(parameterID.toStdString()) = (newValue > 0.5f) ? 1 : 0;
 }
@@ -217,7 +217,7 @@ void apcStepperMainProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
             if (newStep != currentMIDIStep)
             {
                 currentMIDIStep = newStep;
-                APCLOG("Step: " + std::to_string(currentMIDIStep));
+                //APCLOG("Step: " + std::to_string(currentMIDIStep));
                 for (int instrument = 0; instrument < numInstruments; ++instrument)
                 {
                     if (midiGrid.at(currentMIDIStep, instrument))
