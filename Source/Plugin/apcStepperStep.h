@@ -62,19 +62,7 @@ public:
         APCLOG("apcStepperTrack initialized...");
         startTimer(100);
     }
-    void paint(juce::Graphics& g) override
-    {
-        // Calculate the bounds of the FlexBox (or use the full component bounds)
-        juce::Rectangle<float> flexBounds = controlFlexBox.performLayout()
 
-        // Draw the background
-        g.setColour(juce::Colours::darkgrey); // Example color
-        g.fillRoundedRectangle(flexBounds, 8.0f); // Rounded rectangle background
-
-        // Optional: Add a border
-        g.setColour(juce::Colours::white);
-        g.drawRoundedRectangle(flexBounds, 8.0f, 1.0f);
-    }
     void resized() override {
         auto bounds = getLocalBounds();
         float squareSize = bounds.getHeight() / (rows + 2) - 2 * padding; // Fit squares + row toggle
@@ -92,7 +80,7 @@ public:
         }
 
         // Create a FlexBox for rowToggle and slider
-
+        juce::FlexBox controlFlexBox;
         controlFlexBox.flexDirection = juce::FlexBox::Direction::column;
         controlFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         controlFlexBox.alignItems = juce::FlexBox::AlignItems::center;
@@ -153,6 +141,6 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> fatButton_attachment;
 
     std::unique_ptr<RowToggle> rowToggle;
-    juce::FlexBox controlFlexBox;
+
     const int stepNumber;
 };

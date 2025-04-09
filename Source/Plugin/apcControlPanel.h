@@ -71,6 +71,12 @@ public:
         // Calculate square size using the dummy component's bounds
 
     }
+    void paint(juce::Graphics& g) override {
+        g.fillAll(juce::Colour(0xff041937));
+        if (auto drawable = juce::Drawable::createFromImageData(BinaryData::back_svg, BinaryData::back_svgSize)) {
+            drawable->drawWithin(g, getLocalBounds().toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
+        }
+    }
 
 private:
     apcStepperMainProcessor &processor;

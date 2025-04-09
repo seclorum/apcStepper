@@ -164,6 +164,7 @@ target_compile_definitions(apcStepper
 
 juce_add_binary_data(Assets
 		SOURCES
+		Assets/back.svg
 		Assets/cuttlefish.jpg
 		Assets/shadow.png
 		Assets/playcircle.svg

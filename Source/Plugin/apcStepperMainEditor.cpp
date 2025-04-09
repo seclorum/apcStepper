@@ -47,6 +47,7 @@ apcStepperMainEditor::~apcStepperMainEditor() = default;
 void apcStepperMainEditor::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xff0D47A1)); // Ensure background is white
+
 }
 
 void apcStepperMainEditor::resized()
