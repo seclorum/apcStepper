@@ -58,7 +58,7 @@ public:
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
         }
 
-        mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4));
+        mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4).withMargin(8));
 
         mainFlexBox.items.add(juce::FlexItem(*rightContainer).withFlex(1));
 
@@ -74,7 +74,29 @@ public:
     void paint(juce::Graphics& g) override {
         g.fillAll(juce::Colour(0xff041937));
         if (auto drawable = juce::Drawable::createFromImageData(BinaryData::back_svg, BinaryData::back_svgSize)) {
-            drawable->drawWithin(g, getLocalBounds().toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
+            juce::Rectangle<float> targetBounds = getLocalBounds().toFloat();
+
+            // Get the SVG's intrinsic bounds (viewport-like bounds)
+            juce::Rectangle<float> svgBounds = drawable->getDrawableBounds();
+
+            // Calculate the scaling factor to fit the SVG within the target bounds while preserving aspect ratio
+            float scaleX = targetBounds.getWidth() / svgBounds.getWidth();
+            float scaleY =  targetBounds.getHeight() / svgBounds.getHeight();
+
+            // Calculate the scaled size of the SVG
+            float scaledWidth = svgBounds.getWidth() * scaleX;
+            float scaledHeight = svgBounds.getHeight() * scaleY;
+
+            // Center the SVG in the target bounds
+            juce::Rectangle<float> placedBounds(
+                0,
+                0,
+                scaledWidth,
+                scaledHeight
+            );
+
+            // Draw the SVG within the calculated bounds
+            drawable->drawWithin(g, placedBounds, juce::RectanglePlacement::stretchToFit, 1.0f);
         }
     }
 

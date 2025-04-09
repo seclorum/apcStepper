@@ -20,7 +20,7 @@ public:
                                                     false));
             addAndMakeVisible(rowButtons.getLast());
             rowButtons[i]->onClick = [this, i]() { if (!this->shiftMode) squareClicked(i); };
-            rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(6));
+            rightPanel.items.add(juce::FlexItem(*rowButtons.getLast()).withFlex(1).withMargin(2));
         }
 
         tempoPanel = std::make_unique<apcTempoPanel>(processor);
@@ -60,8 +60,8 @@ public:
         for (auto &button: rowButtons) {
             addAndMakeVisible(button);
         };
-        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(4));
-        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(2));
+        rightPanelContainer.items.add(juce::FlexItem(rightPanel).withFlex(7).withMargin(8));
+        rightPanelContainer.items.add(juce::FlexItem(downButtons).withFlex(3).withMargin(8));
         rightPanelContainer.performLayout(getLocalBounds().toFloat());
         APCLOG("RightPanel initialized...");;
     }
@@ -70,18 +70,18 @@ public:
         auto bounds = getLocalBounds();
 
         rightPanel.flexDirection = juce::FlexBox::Direction::column;
-        rightPanel.justifyContent = juce::FlexBox::JustifyContent::center;
+        rightPanel.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         rightPanel.alignItems = juce::FlexBox::AlignItems::stretch;
 
         rightPanelContainer.flexDirection = juce::FlexBox::Direction::column;
-        rightPanelContainer.justifyContent = juce::FlexBox::JustifyContent::center;
+        rightPanelContainer.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
         rightPanelContainer.alignItems = juce::FlexBox::AlignItems::stretch;
 
         downButtons.flexDirection = juce::FlexBox::Direction::column;
         downButtons.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         downButtons.alignItems = juce::FlexBox::AlignItems::flexStart;
 
-        downButtons.performLayout(bounds.toFloat());
+
         rightPanelContainer.performLayout(bounds.toFloat());
 
 
