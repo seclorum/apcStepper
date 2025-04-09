@@ -31,7 +31,7 @@ public:
         g.setFont(juce::Font(getHeight() * 0.7f, juce::Font::bold)); // Scale font size
 
         juce::Rectangle<float> textBounds = getLocalBounds().toFloat();
-        g.drawFittedText(getButtonText(), getLocalBounds(), juce::Justification::centred, 1); // Draw centered and scale if needed
+        g.drawFittedText(getButtonText(), getLocalBounds().reduced(5,0), juce::Justification::centred, 1); // Draw centered and scale if needed
 
     }
 

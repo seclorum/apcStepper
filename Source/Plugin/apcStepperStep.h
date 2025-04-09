@@ -17,11 +17,10 @@ public:
 
     apcStepperStep(apcStepperMainProcessor &p, const int s)
         : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
-        // Define row colors for each step in the sequence
+        juce::Colour red900 = juce::Colour(0xffB71C1C); juce::Colour pink900 = juce::Colour(0xff880E4F); juce::Colour purple900 = juce::Colour(0xff4A148C); juce::Colour deepPurple900 = juce::Colour(0xff311B92); juce::Colour indigo900 = juce::Colour(0xff1A237E); juce::Colour blue900 = juce::Colour(0xff0D47A1); juce::Colour lightBlue900 = juce::Colour(0xff01579B); juce::Colour cyan900 = juce::Colour(0xff006064); juce::Colour teal900 = juce::Colour(0xff00695C); juce::Colour green900 = juce::Colour(0xff1B5E20); juce::Colour lightGreen900 = juce::Colour(0xff33691E); juce::Colour lime900 = juce::Colour(0xff827717); juce::Colour yellow900 = juce::Colour(0xffF57F17); juce::Colour amber900 = juce::Colour(0xffFF6F00); juce::Colour orange900 = juce::Colour(0xffE65100); juce::Colour deepOrange900 = juce::Colour(0xffBF360C); juce::Colour brown900 = juce::Colour(0xff3E2723); juce::Colour grey900 = juce::Colour(0xff212121); juce::Colour blueGrey900 = juce::Colour(0xff263238);
+
         juce::Array<juce::Colour> rowColours = {
-            juce::Colours::red, juce::Colours::orange, juce::Colours::yellow, juce::Colours::green,
-            juce::Colours::blue, juce::Colours::indigo, juce::Colours::violet, juce::Colours::azure,
-            juce::Colours::azure
+           red900,pink900,purple900,orange900,lightBlue900,indigo900,teal900,deepPurple900,deepOrange900
         };
 
 
@@ -30,7 +29,7 @@ public:
         for (int row = 0; row < rows; row++) {
             auto square = std::make_unique<apcToggleParameterButton>(
                 "s" + processor.addLeadingZeros(stepNumber) + "t" + processor.addLeadingZeros(row),
-                stepNumber, row, juce::Colours::lightgrey, rowColours[row], processor);
+                stepNumber, row, Colours::aliceblue, rowColours[row], processor);
 
             //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
             addAndMakeVisible(*square);
@@ -63,7 +62,19 @@ public:
         APCLOG("apcStepperTrack initialized...");
         startTimer(100);
     }
+    void paint(juce::Graphics& g) override
+    {
+        // Calculate the bounds of the FlexBox (or use the full component bounds)
+        juce::Rectangle<float> flexBounds = controlFlexBox.performLayout()
 
+        // Draw the background
+        g.setColour(juce::Colours::darkgrey); // Example color
+        g.fillRoundedRectangle(flexBounds, 8.0f); // Rounded rectangle background
+
+        // Optional: Add a border
+        g.setColour(juce::Colours::white);
+        g.drawRoundedRectangle(flexBounds, 8.0f, 1.0f);
+    }
     void resized() override {
         auto bounds = getLocalBounds();
         float squareSize = bounds.getHeight() / (rows + 2) - 2 * padding; // Fit squares + row toggle
@@ -81,7 +92,7 @@ public:
         }
 
         // Create a FlexBox for rowToggle and slider
-        juce::FlexBox controlFlexBox;
+
         controlFlexBox.flexDirection = juce::FlexBox::Direction::column;
         controlFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
         controlFlexBox.alignItems = juce::FlexBox::AlignItems::center;
@@ -142,6 +153,6 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> fatButton_attachment;
 
     std::unique_ptr<RowToggle> rowToggle;
-
+    juce::FlexBox controlFlexBox;
     const int stepNumber;
 };

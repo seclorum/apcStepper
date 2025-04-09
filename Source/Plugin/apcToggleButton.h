@@ -23,7 +23,7 @@ public:
         g.fillAll(isToggled ? toggleColour : initialColour);
 
         if (auto drawable = juce::Drawable::createFromImageData(BinaryData::button_svg, BinaryData::button_svgSize)) {
-            drawable->drawWithin(g, drawable->getDrawableBounds(), juce::RectanglePlacement::fillDestination, 1.0f);
+            drawable->drawWithin(g, getLocalBounds().toFloat(), juce::RectanglePlacement::stretchToFit, 1.0f);
         }
     }
 

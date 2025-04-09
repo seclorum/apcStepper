@@ -1,45 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Generator: Adobe Illustrator 29.3.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 151)  -->
-  <defs>
-    <style>
-      .st0 {
-        stroke: #878787;
-      }
-
-      .st0, .st1, .st2, .st3 {
-        fill: none;
-        stroke-linecap: round;
-        stroke-miterlimit: 10;
-        stroke-width: 4px;
-      }
-
-      .st4 {
-        fill: url(#radial-gradient);
-      }
-
-      .st1 {
-        stroke: #595a5a;
-      }
-
-      .st2 {
-        stroke: #b0b0b0;
-      }
-
-      .st3 {
-        stroke: #444243;
-      }
-    </style>
-    <radialGradient id="radial-gradient" cx="100" cy="100" fx="218.93" fy="197.26" r="153.64" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#231f20" stop-opacity=".5"/>
-      <stop offset=".62" stop-color="#3b3838" stop-opacity=".44"/>
-      <stop offset=".86" stop-color="#939191" stop-opacity=".24"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect class="st4" x="-53.64" y="-53.64" width="307.27" height="307.27"/>
-  <line class="st0" x1="2" x2="2" y2="200"/>
-  <line class="st1" x1="200.09" y1=".42" x2="200.09" y2="200.42"/>
-  <line class="st2" x1="201.25" y1="1.16" x2="1.25" y2="1.16"/>
-  <line class="st3" x1="200.84" y1="199.25" x2=".84" y2="199.25"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 29.3.1, SVG Export Plug-In . SVG Version: 9.03 Build 55982)  -->
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 800 800" style="enable-background:new 0 0 800 800;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{opacity:0.48;fill:#FFFFFF;stroke:#000000;stroke-width:36;stroke-miterlimit:10;}
+	.st2{opacity:0.44;fill:#FFFFFF;stroke:#FFFFFF;stroke-width:36;stroke-miterlimit:10;}
+</style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="375.2227" y1="-42.86" x2="427.4288" y2="920.58">
+	<stop  offset="0.0878" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+	<stop  offset="0.296" style="stop-color:#FFFFFF;stop-opacity:0"/>
+	<stop  offset="0.3774" style="stop-color:#DCDEDF;stop-opacity:0.0752"/>
+	<stop  offset="0.5881" style="stop-color:#929496;stop-opacity:0.2699"/>
+	<stop  offset="0.7594" style="stop-color:#5E5F61;stop-opacity:0.428"/>
+	<stop  offset="0.8825" style="stop-color:#2F2F30;stop-opacity:0.5418"/>
+	<stop  offset="0.9455" style="stop-color:#000000;stop-opacity:0.6"/>
+</linearGradient>
+<polygon class="st0" points="796.19,0.43 796.19,799.57 2.25,799.57 2.25,0.43 "/>
+<line class="st1" x1="2.25" y1="800.02" x2="809" y2="798.98"/>
+<line class="st2" x1="797.78" y1="0" x2="2.22" y2="1"/>
 </svg>
