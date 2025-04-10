@@ -71,11 +71,34 @@ set(JUCE_MODULES
 # ==============================================================================
 project(apcAPP VERSION 1.0)
 
+
+# Automatically add all application source files
+file(GLOB_RECURSE APP_SOURCE_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp
+)
+
+# Assets are shared between the App and the Plugin builds, so delcare it early
+juce_add_binary_data(Assets
+		SOURCES
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/back.svg
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/Conthrax-SemiBold.otf
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/cuttlefish.jpg
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/shadow.png
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/playcircle.svg
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/stopcircle.svg
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/shift.svg
+		${CMAKE_CURRENT_SOURCE_DIR}/Assets/button.svg
+)
+
 juce_add_gui_app(
 		apcAPP
 		PRODUCT_NAME "apcStepper"
 		COMPANY_NAME "enabled.io"
-		BUNDLE_ID "io.enabled.apc.Stepper"
+		BUNDLE_ID "io.enabled.apps.trackdeck"
 		TARGETED_DEVICE_FAMILY "2" # 1 = iPhone, 2 = iPad, "1,2" = Universal
 		IPHONE_SCREEN_ORIENTATION "Landscape" # or "Landscape", "PortraitAndLandscape"
 		MICROPHONE_PERMISSION_ENABLED TRUE
@@ -85,13 +108,11 @@ juce_add_gui_app(
 		IPAD_SCREEN_ORIENTATIONS "LandscapeLeft;LandscapeRight" # Specific to iPad
 )
 
-# Automatically add all application source files
-file(GLOB_RECURSE APP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h)
 
 target_sources(apcAPP PRIVATE ${APP_SOURCE_FILES})
 
 # Link JUCE modules
-target_link_libraries(apcAPP PRIVATE ${JUCE_MODULES})
+target_link_libraries(apcAPP PRIVATE ${JUCE_MODULES} Assets)
 
 # iOS-specific settings
 if(IOS)
@@ -160,18 +181,6 @@ target_compile_definitions(apcStepper
 		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
 		BUILD_TAG="${GIT_TAG}"
 		PRODUCT_NAME_WITHOUT_VERSION="apcStepper"
-)
-
-juce_add_binary_data(Assets
-		SOURCES
-		Assets/back.svg
-		Assets/Conthrax-SemiBold.otf
-		Assets/cuttlefish.jpg
-		Assets/shadow.png
-		Assets/playcircle.svg
-		Assets/stopcircle.svg
-		Assets/shift.svg
-		Assets/button.svg
 )
 
 # Link JUCE modules
