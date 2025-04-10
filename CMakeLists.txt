@@ -69,10 +69,10 @@ set(JUCE_MODULES
 # ==============================================================================
 # APPLICATION: trackDeck (iOS GUI App)
 # ==============================================================================
-project(apcAPP VERSION 1.0)
+project(trackDeckApp VERSION 1.0)
 
 juce_add_gui_app(
-		apcAPP
+		trackDeckAPP
 		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
 		BUNDLE_ID "io.enabled.apps.trackDeck"
@@ -88,10 +88,10 @@ juce_add_gui_app(
 # Automatically add all application source files
 file(GLOB_RECURSE APP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h)
 
-target_sources(apcAPP PRIVATE ${APP_SOURCE_FILES})
+target_sources(trackDeckAPP PRIVATE ${APP_SOURCE_FILES})
 
 # Link JUCE modules
-target_link_libraries(apcAPP PRIVATE ${JUCE_MODULES})
+target_link_libraries(trackDeckAPP PRIVATE ${JUCE_MODULES})
 
 # iOS-specific settings
 if(IOS)
@@ -102,19 +102,19 @@ if(IOS)
 	set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "iOS architectures")
 
 	# Add iOS-specific compile definitions
-	target_compile_definitions(apcAPP PRIVATE
+	target_compile_definitions(trackDeckAPP PRIVATE
 			JUCE_IOS=1
 			JUCE_STANDALONE_APPLICATION=1
 	)
 
 	# Ensure the app is signed (required for iOS builds)
-	set_target_properties(apcAPP PROPERTIES
+	set_target_properties(trackDeckAPP PROPERTIES
 			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
 			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "YOUR_TEAM_ID" # Replace with your Apple Developer Team ID
 	)
 
 	# Add custom Info.plist entries if needed
-	juce_set_custom_xcode_plist_properties(apcAPP
+	juce_set_custom_xcode_plist_properties(trackDeckAPP
 			"UIFileSharingEnabled" "NO"
 			"UIBackgroundModes" "audio" # Example: Enable background audio if needed
 	)
@@ -131,7 +131,7 @@ juce_add_plugin(
 		trackDeck
 		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
-		BUNDLE_ID "io.enabled.apc.Stepper"
+		BUNDLE_ID "io.enabled.plugins.trackDeck"
 		IS_SYNTH TRUE
 		NEEDS_MIDI_INPUT TRUE
 		NEEDS_MIDI_OUTPUT TRUE
