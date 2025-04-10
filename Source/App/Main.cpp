@@ -23,13 +23,8 @@
 #include <juce_product_unlocking/juce_product_unlocking.h>
 #include <juce_video/juce_video.h>
 
-#include "../Plugin/apcStepperMainEditor.h"
-#include "../Plugin/apcStepperMainProcessor.h"
 #include "../Plugin/apcControlPanel.h"
 #include "../Plugin/apcLog.h"
-
-
-
 
 using namespace juce;
 

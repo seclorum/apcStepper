@@ -98,11 +98,7 @@ juce_add_gui_app(
 		trackDeckAPP
 		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
-<<<<<<< HEAD
 		BUNDLE_ID "io.enabled.apps.trackDeck"
-=======
-		BUNDLE_ID "io.enabled.apps.trackdeck"
->>>>>>> origin/appPluginIntegration
 		TARGETED_DEVICE_FAMILY "2" # 1 = iPhone, 2 = iPad, "1,2" = Universal
 		IPHONE_SCREEN_ORIENTATION "Landscape" # or "Landscape", "PortraitAndLandscape"
 		MICROPHONE_PERMISSION_ENABLED TRUE
@@ -116,11 +112,7 @@ juce_add_gui_app(
 target_sources(trackDeckAPP PRIVATE ${APP_SOURCE_FILES})
 
 # Link JUCE modules
-<<<<<<< HEAD
 target_link_libraries(trackDeckAPP PRIVATE ${JUCE_MODULES})
-=======
-target_link_libraries(apcAPP PRIVATE ${JUCE_MODULES} Assets)
->>>>>>> origin/appPluginIntegration
 
 # iOS-specific settings
 if(IOS)

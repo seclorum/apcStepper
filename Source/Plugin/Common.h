@@ -35,14 +35,8 @@
 #include "melatonin_inspector/melatonin_inspector.h"
 //#include <tracktion_engine/tracktion_engine.h>
 
-
-
-
-
 #include "BinaryData.h"
 
 #include "apcLog.h"
-
-
 
 #endif //APCSEQUENCER_COMMON_H
