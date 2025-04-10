@@ -26,7 +26,7 @@
 #include <vector>
 #include <memory>
 
-#include "MIDIArpeggiatorEditor.h"
+//#include "MIDIArpeggiatorEditor.h"
 
 #include "apcAboutBox.h"
 #include "melatonin_inspector/melatonin_inspector.h"
