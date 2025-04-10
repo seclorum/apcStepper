@@ -610,7 +610,7 @@ private:
     {
         juce::PropertiesFile::Options opt;
 
-        opt.applicationName = "apcStepper";
+        opt.applicationName = "trackDeck";
         opt.commonToAllUsers = false;
         opt.doNotSave = false;
         opt.filenameSuffix = ".props";
@@ -645,7 +645,7 @@ class StepperApplication : public juce::JUCEApplication
 {
 public:
 
-    const juce::String getApplicationName() override { return "apcStepper"; }
+    const juce::String getApplicationName() override { return "trackDeck"; }
     const juce::String getApplicationVersion() override  { return "1.0.0"; }
 
     void initialise(const juce::String&) override

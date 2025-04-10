@@ -6,16 +6,16 @@
 
 #include <BinaryData.h>
 
-#include "apcStepperMainProcessor.h"
+#include "trackDeckMainProcessor.h"
 
-//#include "apcStepperMainEditor.h"
+//#include "trackDeckMainEditor.h"
 //#include "ShiftToggleButton.h"
 //#include "apcToggleButton.h"
 //#include "ToggleIconButton.h"
 static const int apcPARAMETER_V1 = 0x01;
 class apcToggleParameterButton : public juce::TextButton,private juce::AudioProcessorParameter::Listener{
 public:
-	apcToggleParameterButton(std::string buttonName,int step, int track,juce::Colour initialColour, juce::Colour toggleColour, apcStepperMainProcessor& p)
+	apcToggleParameterButton(std::string buttonName,int step, int track,juce::Colour initialColour, juce::Colour toggleColour, trackDeckMainProcessor& p)
 			: juce::TextButton(buttonName), buttonName(buttonName),step(step),track(track),initialColour(initialColour),
 			  toggleColour(toggleColour), processor(p), isToggled(false)
 	{
@@ -85,7 +85,7 @@ private:
 	bool isToggled;
 	bool isCurrent;
 	juce::String buttonName;
-	apcStepperMainProcessor& processor;
+	trackDeckMainProcessor& processor;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> button_attachment;
 	juce::AudioProcessorParameter* current_attachment = nullptr;
 	int step;

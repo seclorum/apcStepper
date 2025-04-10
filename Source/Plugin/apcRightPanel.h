@@ -2,7 +2,7 @@
 
 class apcRightPanel : public juce::AudioProcessorEditor {
 public:
-    apcRightPanel(apcStepperMainProcessor &p)
+    apcRightPanel(trackDeckMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
 
 
@@ -127,5 +127,5 @@ private:
     std::unique_ptr<apcToggleButton> shiftToggleButton;
 
     bool shiftMode = false;
-    apcStepperMainProcessor &processor;
+    trackDeckMainProcessor &processor;
 };

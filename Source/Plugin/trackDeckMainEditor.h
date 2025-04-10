@@ -32,19 +32,19 @@
 #include "melatonin_inspector/melatonin_inspector.h"
 
 // Forward declarations to avoid unnecessary includes
-class apcStepperMainProcessor;
-class apcStepperMainEditor;
+class trackDeckMainProcessor;
+class trackDeckMainEditor;
 
 using namespace juce;
 
 //==============================================================================
 // Editor for the APC Sequencer Processor
-class apcStepperMainEditor : public juce::AudioProcessorEditor
+class trackDeckMainEditor : public juce::AudioProcessorEditor
 {
 
 public:
-    explicit apcStepperMainEditor(apcStepperMainProcessor& processor);
-    ~apcStepperMainEditor() override;
+    explicit trackDeckMainEditor(trackDeckMainProcessor& processor);
+    ~trackDeckMainEditor() override;
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -58,11 +58,11 @@ private:
 	melatonin::Inspector inspector{ *this };
 #endif
 
-    apcStepperMainProcessor& processor;
+    trackDeckMainProcessor& processor;
 
 
     // Tabbed UI Component
     std::unique_ptr<TabbedComponent> tabbedComponent;
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainEditor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(trackDeckMainEditor)
 };

@@ -4,14 +4,14 @@
 #include "apcResizeableArray.h"
 #include "apcNoteObject.h"
 
-class apcStepperMainEditor;
+class trackDeckMainEditor;
 
-class apcStepperMainProcessor : public juce::AudioProcessor,
+class trackDeckMainProcessor : public juce::AudioProcessor,
                                public juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    apcStepperMainProcessor();
-    ~apcStepperMainProcessor() override;
+    trackDeckMainProcessor();
+    ~trackDeckMainProcessor() override;
 
     juce::AudioProcessorValueTreeState parameters{*this, nullptr, "PARAMETERS", createParameterLayout()};
     std::unique_ptr<juce::MidiOutput> midiOutput;
@@ -47,7 +47,7 @@ public:
 
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
-    const juce::String getName() const override { return "apcStepper"; }
+    const juce::String getName() const override { return "trackDeck"; }
 
     bool acceptsMidi() const override { return true; }
     bool producesMidi() const override { return true; }
@@ -96,5 +96,5 @@ private:
 
     static constexpr int parameterVersion = 1;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcStepperMainProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(trackDeckMainProcessor)
 };

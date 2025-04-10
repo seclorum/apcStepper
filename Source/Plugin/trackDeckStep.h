@@ -8,14 +8,14 @@
 #include "apcToggleButton.h"
 #include "apcToggleParameterButton.h"
 
-class apcStepperMainProcessor;
+class trackDeckMainProcessor;
 
-class apcStepperStep : public juce::AudioProcessorEditor, private juce::Timer {
+class trackDeckStep : public juce::AudioProcessorEditor, private juce::Timer {
 public:
     static constexpr int rows = 8;
     static constexpr int padding = 2;
 
-    apcStepperStep(apcStepperMainProcessor &p, const int s)
+    trackDeckStep(trackDeckMainProcessor &p, const int s)
         : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
         juce::Colour red900 = juce::Colour(0xffB71C1C); juce::Colour pink900 = juce::Colour(0xff880E4F); juce::Colour purple900 = juce::Colour(0xff4A148C); juce::Colour deepPurple900 = juce::Colour(0xff311B92); juce::Colour indigo900 = juce::Colour(0xff1A237E); juce::Colour blue900 = juce::Colour(0xff0D47A1); juce::Colour lightBlue900 = juce::Colour(0xff01579B); juce::Colour cyan900 = juce::Colour(0xff006064); juce::Colour teal900 = juce::Colour(0xff00695C); juce::Colour green900 = juce::Colour(0xff1B5E20); juce::Colour lightGreen900 = juce::Colour(0xff33691E); juce::Colour lime900 = juce::Colour(0xff827717); juce::Colour yellow900 = juce::Colour(0xffF57F17); juce::Colour amber900 = juce::Colour(0xffFF6F00); juce::Colour orange900 = juce::Colour(0xffE65100); juce::Colour deepOrange900 = juce::Colour(0xffBF360C); juce::Colour brown900 = juce::Colour(0xff3E2723); juce::Colour grey900 = juce::Colour(0xff212121); juce::Colour blueGrey900 = juce::Colour(0xff263238);
 
@@ -59,7 +59,7 @@ public:
                         processor.getParameters(), "slider_" + std::to_string(stepNumber), *slider);
         */
         addAndMakeVisible(*slider); // Default size
-        APCLOG("apcStepperTrack initialized...");
+        APCLOG("trackDeckTrack initialized...");
         startTimer(25);
     }
 
@@ -133,7 +133,7 @@ public:
     }
 
 private:
-    apcStepperMainProcessor &processor;
+    trackDeckMainProcessor &processor;
     juce::OwnedArray<apcToggleParameterButton> squares;
     juce::Image shadowImage;
     std::unique_ptr<juce::Slider> slider;

@@ -4,24 +4,24 @@
 
 #include "Common.h"
 
-#include "apcStepperStep.h"
+#include "trackDeckStep.h"
 #include "apcToggleParameterButton.h"
 #include "apcRightPanel.h"
 
 
-class apcStepperMainProcessor;
+class trackDeckMainProcessor;
 
 class apcControlPanel : public juce::AudioProcessorEditor, private juce::Timer {
 public:
     static constexpr int rows = 8;
     static constexpr int cols = 8;
 
-    apcControlPanel(apcStepperMainProcessor &p)
+    apcControlPanel(trackDeckMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
 
         // Initialize columns
         for (int i = 0; i < cols; ++i) {
-            columns.add(std::make_unique<apcStepperStep>(processor,i));
+            columns.add(std::make_unique<trackDeckStep>(processor,i));
             addAndMakeVisible(columns.getLast());
         }
         rightContainer = std::make_unique<apcRightPanel>(processor);
@@ -111,8 +111,8 @@ public:
     }
 
 private:
-    apcStepperMainProcessor &processor;
-    juce::OwnedArray<apcStepperStep> columns;
+    trackDeckMainProcessor &processor;
+    juce::OwnedArray<trackDeckStep> columns;
 
     juce::Component emptySpace;
      std::unique_ptr<apcRightPanel> rightContainer;

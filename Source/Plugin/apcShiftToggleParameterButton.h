@@ -5,7 +5,7 @@
 
 class apcShiftToggleParameterButton : public juce::TextButton, private juce::RangedAudioParameter::Listener {
 public:
-    apcShiftToggleParameterButton(std::string buttonName, int track, juce::Colour initialColour, juce::Colour toggleColour, juce::Colour toggleShiftColour, bool isShift, apcStepperMainProcessor& p)
+    apcShiftToggleParameterButton(std::string buttonName, int track, juce::Colour initialColour, juce::Colour toggleColour, juce::Colour toggleShiftColour, bool isShift, trackDeckMainProcessor& p)
         : juce::TextButton(buttonName), buttonName(buttonName), track(track), initialColor(initialColour), toggleColour(toggleColour), toggleShiftColour(toggleShiftColour), isShift(isShift), processor(p) {
         setClickingTogglesState(true);
         current_attachment = processor.getParameters().getParameter("r" + processor.addLeadingZeros(track));
@@ -70,5 +70,5 @@ private:
     juce::Colour toggleColour;
     juce::Colour toggleShiftColour;
     juce::RangedAudioParameter* current_attachment = nullptr;
-    apcStepperMainProcessor& processor;
+    trackDeckMainProcessor& processor;
 };

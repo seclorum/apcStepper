@@ -15,8 +15,8 @@ add_subdirectory(modules/melatonin_inspector)
 set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
 
 # Define the destination directory in the build folder
-set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/apcStepper_artefacts/Debug/Standalone/Assets")
-set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/apcStepper_artefacts/Release/Standalone/Assets")
+set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/trackDeck_artefacts/Debug/Standalone/Assets")
+set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/trackDeck_artefacts/Release/Standalone/Assets")
 
 # Message to verify source directory
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -67,15 +67,15 @@ set(JUCE_MODULES
 )
 
 # ==============================================================================
-# APPLICATION: apcStepper (iOS GUI App)
+# APPLICATION: trackDeck (iOS GUI App)
 # ==============================================================================
 project(apcAPP VERSION 1.0)
 
 juce_add_gui_app(
 		apcAPP
-		PRODUCT_NAME "apcStepper"
+		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
-		BUNDLE_ID "io.enabled.apc.Stepper"
+		BUNDLE_ID "io.enabled.apps.trackDeck"
 		TARGETED_DEVICE_FAMILY "2" # 1 = iPhone, 2 = iPad, "1,2" = Universal
 		IPHONE_SCREEN_ORIENTATION "Landscape" # or "Landscape", "PortraitAndLandscape"
 		MICROPHONE_PERMISSION_ENABLED TRUE
@@ -121,15 +121,15 @@ if(IOS)
 endif()
 
 # ==============================================================================
-# PLUGIN: apcStepper
+# PLUGIN: trackDeck
 # ==============================================================================
-project(apcStepper VERSION 1.0.0)
+project(trackDeck VERSION 1.0.0)
 
 set(FORMATS Standalone AU VST3 AUv3) # AUv3 is iOS-compatible
 
 juce_add_plugin(
-		apcStepper
-		PRODUCT_NAME "apcStepper"
+		trackDeck
+		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
 		BUNDLE_ID "io.enabled.apc.Stepper"
 		IS_SYNTH TRUE
@@ -146,10 +146,10 @@ juce_add_plugin(
 # Automatically add all plugin source files
 file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
 
-target_sources(apcStepper PRIVATE ${PLUGIN_SOURCE_FILES})
+target_sources(trackDeck PRIVATE ${PLUGIN_SOURCE_FILES})
 
 # Set plugin compile definitions
-target_compile_definitions(apcStepper
+target_compile_definitions(trackDeck
 		INTERFACE
 		JUCE_WEB_BROWSER=0
 		JUCE_USE_CURL=0
@@ -159,7 +159,7 @@ target_compile_definitions(apcStepper
 		VERSION="${PROJECT_VERSION}"
 		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
 		BUILD_TAG="${GIT_TAG}"
-		PRODUCT_NAME_WITHOUT_VERSION="apcStepper"
+		PRODUCT_NAME_WITHOUT_VERSION="trackDeck"
 )
 
 juce_add_binary_data(Assets
@@ -175,14 +175,14 @@ juce_add_binary_data(Assets
 )
 
 # Link JUCE modules
-target_link_libraries(apcStepper PRIVATE ${JUCE_MODULES} Assets)
+target_link_libraries(trackDeck PRIVATE ${JUCE_MODULES} Assets)
 
 # iOS-specific settings for the plugin (if targeting iOS)
 if(IOS)
-	target_compile_definitions(apcStepper PRIVATE
+	target_compile_definitions(trackDeck PRIVATE
 			JUCE_IOS=1
 	)
-	set_target_properties(apcStepper PROPERTIES
+	set_target_properties(trackDeck PROPERTIES
 			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
 			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "XXX" # !J! TODO: Work with Tom to get enabled.io Team set up
 	)
@@ -191,6 +191,6 @@ endif()
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if(APPLE AND NOT IOS)
 	message("Building on macOS (Darwin)")
-	target_link_options(apcStepper INTERFACE -Wl)
+	target_link_options(trackDeck INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
 endif()

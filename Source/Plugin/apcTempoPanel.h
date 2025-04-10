@@ -25,17 +25,17 @@
 
 #include <array>
 #include "melatonin_inspector/melatonin_inspector.h"
-#include "apcStepperMainProcessor.h"
-#include "apcStepperMainEditor.h"
+#include "trackDeckMainProcessor.h"
+#include "trackDeckMainEditor.h"
 #include "apcShiftToggleParameterButton.h"
 #include "apcToggleButton.h"
 #include "ToggleIconButton.h"
 
-class apcStepperMainProcessor;
+class trackDeckMainProcessor;
 using namespace juce;
 class apcTempoPanel : public juce::AudioProcessorEditor {
 public:
-    apcTempoPanel(apcStepperMainProcessor &p)
+    apcTempoPanel(trackDeckMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
         tempoFlexPanel.flexDirection = juce::FlexBox::Direction::column;
         tempoFlexPanel.justifyContent = juce::FlexBox::JustifyContent::center;
@@ -88,7 +88,7 @@ private:
     // Attachments used to bind to parameters in the processor
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
     juce::FlexBox tempoFlexPanel;
-    apcStepperMainProcessor &processor;
+    trackDeckMainProcessor &processor;
 
 
 
