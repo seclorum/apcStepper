@@ -110,15 +110,45 @@ if(IOS)
 	# Ensure the app is signed (required for iOS builds)
 	set_target_properties(trackDeckAPP PROPERTIES
 			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "YOUR_TEAM_ID" # Replace with your Apple Developer Team ID
-	)
-
-	# Add custom Info.plist entries if needed
-	juce_set_custom_xcode_plist_properties(trackDeckAPP
-			"UIFileSharingEnabled" "NO"
-			"UIBackgroundModes" "audio" # Example: Enable background audio if needed
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # Replace with your Apple Developer Team ID
+			XCODE_ATTRIBUTE_UIFileSharingEnabled "NO"
+			XCODE_ATTRIBUTE_UIBackgroundModes "audio"
 	)
 endif()
+
+# Add this after the existing trackDeckAPP target definition to create an Xcode-specific iOS target for iPad
+juce_add_gui_app(
+		trackDeckAPP_iOS_Xcode
+		PRODUCT_NAME "trackDeck"
+		COMPANY_NAME "enabled.io"
+		BUNDLE_ID "io.enabled.apps.trackDeck"
+		TARGETED_DEVICE_FAMILY "2" # iPad only
+		IPHONE_SCREEN_ORIENTATION "Landscape"
+		MICROPHONE_PERMISSION_ENABLED TRUE
+		DOCUMENT_BROWSER_ENABLED FALSE
+		FILE_SHARING_ENABLED FALSE
+		REQUIRES_FULL_SCREEN TRUE
+		IPAD_SCREEN_ORIENTATIONS "LandscapeLeft;LandscapeRight"
+)
+
+target_sources(trackDeckAPP_iOS_Xcode PRIVATE ${APP_SOURCE_FILES})
+target_link_libraries(trackDeckAPP_iOS_Xcode PRIVATE ${JUCE_MODULES})
+
+# iOS Xcode-specific settings
+set_target_properties(trackDeckAPP_iOS_Xcode PROPERTIES
+		XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "13.0"
+		XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+		XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "YOUR_TEAM_ID" # Replace with your Apple Developer Team ID
+		CMAKE_OSX_ARCHITECTURES "arm64"
+		GENERATOR "Xcode" # Forces Xcode generator instead of Ninja
+		XCODE_ATTRIBUTE_UIFileSharingEnabled "NO"
+		XCODE_ATTRIBUTE_UIBackgroundModes "audio"
+)
+
+target_compile_definitions(trackDeckAPP_iOS_Xcode PRIVATE
+		JUCE_IOS=1
+		JUCE_STANDALONE_APPLICATION=1
+)
 
 # ==============================================================================
 # PLUGIN: trackDeck
