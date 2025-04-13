@@ -48,7 +48,16 @@ public:
                 APCLOG("Failed to delete existing file!");
             processor.saveMidiFile(midiFile);
         };
+        stopToggleButton->onClick = [this]() {
 
+            processor.scrollGridDown();
+        };
+        playToggleButton->onClick = [this]() {
+            juce::File midiFile("/Users/tompeakwalcher/Documents/tom_first.mid");
+            if (midiFile.existsAsFile() && !midiFile.deleteFile())
+                APCLOG("Failed to delete existing file!");
+            processor.saveMidiFile(midiFile);
+        };
 
 
 

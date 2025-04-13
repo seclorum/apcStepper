@@ -18,9 +18,6 @@ trackDeckMainProcessor::trackDeckMainProcessor()
     *transposeParam = 0;
     *velocityScaleParam = 1.0f;
 
-    // Fixed: Undefined variables numSteps and numInstruments
-    int numSteps = 8;        // Defaulting to 8
-    int numInstruments = 8;  // Defaulting to 8
 
     // Initialize step track parameters
     for (int step = 0; step < numSteps; step++) {
@@ -31,10 +28,17 @@ trackDeckMainProcessor::trackDeckMainProcessor()
             controlGrid.assignName(parameterID,step,trackNr);
 
         }
+
+
+    }
+    for (int step = 0; step < 16; step++) {
         std::string parameterID = "c" + addLeadingZeros(step);
         parameters.addParameterListener(parameterID, this);
     }
-
+    for (int trackNr = 0; trackNr < 8; trackNr++) {
+        std::string parameterID = "i" + addLeadingZeros(trackNr);
+        parameters.addParameterListener(parameterID, this);
+    }
     parameters.state.setProperty("parameterVersion", parameterVersion, nullptr);
     midiFile.setTicksPerQuarterNote(96);
     trackSequence = std::make_unique<juce::MidiMessageSequence>();
@@ -90,7 +94,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout trackDeckMainProcessor::crea
     layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", parameterVersion}, "Transpose", -24, 24, 0));
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", parameterVersion}, "Velocity Scale", juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f), 1.0f));
 
-
+    for (int track = 0; track < numInstruments; ++track) {
+        std::string paramID = "i" + addLeadingZeros(track);
+        layout.add(std::make_unique<juce::AudioParameterFloat>(
+juce::ParameterID{paramID, parameterVersion}, // Parameter ID
+paramID,                                      // Parameter name
+0.0f,                                         // Minimum value
+16.0f,                                         // Maximum value
+track));
+    }
     for (int step = 0; step < numSteps; ++step) {
         for (int track = 0; track < numInstruments; ++track) {
             juce::String paramID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(track);
@@ -98,8 +110,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout trackDeckMainProcessor::crea
         }
         juce::String paramID = "c" + addLeadingZeros(step);
         layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{paramID, parameterVersion}, paramID, false));
-        paramID = "r" + addLeadingZeros(step);
-        layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{paramID, parameterVersion}, paramID, false));
+
+                                             // Default value
+
     }
     return layout;
 }

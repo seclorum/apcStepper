@@ -31,11 +31,24 @@ public:
     void handleMidiClock(int timeStamp);
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override;
 
-    void scrollGridUp() { scrollOffset = jmax(0, scrollOffset - 1); }
-    void scrollGridDown() { scrollOffset = jmin(numSteps - 8, scrollOffset + 1); }
+    void scrollGridUp() { scrollOffset = jmax(0, scrollOffset - 1); redrawGrid();}
+    void scrollGridDown() { scrollOffset = jmin(numSteps - 8, scrollOffset + 1); redrawGrid();}
     void jumpPageLeft() { pageOffset = jmax(0, pageOffset - 8); }
     void jumpPageRight() { pageOffset = jmin(numSteps - 8, pageOffset + 8); }
+    void redrawGrid(){ for (int step = 0; step < numSteps; ++step) {
+        for (int track = 0; track < 8; ++track) {
+            auto parameterID = "s" + addLeadingZeros(step) + "t" + addLeadingZeros(track);
+            parameters.getParameter(parameterID)->setValueNotifyingHost(midiGrid.at(step,track+scrollOffset).noteOn);
+            controlGrid.at(step,track) = midiGrid.at(step,track+scrollOffset).noteOn;
 
+        }
+    }
+        for (int instrument = 0; instrument < 8; ++instrument) {
+
+            auto parameterID = "i" + addLeadingZeros(instrument);
+            parameters.getParameter(parameterID)->setValueNotifyingHost(instrument+scrollOffset);
+        }
+    }
 
     int getPreviousStep(int currentStepIndex);
 
@@ -63,8 +76,8 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-    static const int numSteps = 8;
-    static const int numInstruments = 8;
+    static const int numSteps = 16;
+    static const int numInstruments = 16;
     int currentMIDIStep = -1;
     const float ppqPerStep = 1.0/4; // !J! TODO: put this in a GUI
 

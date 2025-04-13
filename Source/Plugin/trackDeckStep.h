@@ -17,19 +17,13 @@ public:
 
     trackDeckStep(trackDeckMainProcessor &p, const int s)
         : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
-        juce::Colour red900 = juce::Colour(0xffB71C1C); juce::Colour pink900 = juce::Colour(0xff880E4F); juce::Colour purple900 = juce::Colour(0xff4A148C); juce::Colour deepPurple900 = juce::Colour(0xff311B92); juce::Colour indigo900 = juce::Colour(0xff1A237E); juce::Colour blue900 = juce::Colour(0xff0D47A1); juce::Colour lightBlue900 = juce::Colour(0xff01579B); juce::Colour cyan900 = juce::Colour(0xff006064); juce::Colour teal900 = juce::Colour(0xff00695C); juce::Colour green900 = juce::Colour(0xff1B5E20); juce::Colour lightGreen900 = juce::Colour(0xff33691E); juce::Colour lime900 = juce::Colour(0xff827717); juce::Colour yellow900 = juce::Colour(0xffF57F17); juce::Colour amber900 = juce::Colour(0xffFF6F00); juce::Colour orange900 = juce::Colour(0xffE65100); juce::Colour deepOrange900 = juce::Colour(0xffBF360C); juce::Colour brown900 = juce::Colour(0xff3E2723); juce::Colour grey900 = juce::Colour(0xff212121); juce::Colour blueGrey900 = juce::Colour(0xff263238);
-
-        juce::Array<juce::Colour> rowColours = {
-           red900,pink900,purple900,orange900,lightBlue900,indigo900,teal900,deepPurple900,deepOrange900
-        };
-
 
         // Initialize row squares (1 column of ToggleSquares)
 
         for (int row = 0; row < rows; row++) {
             auto square = std::make_unique<apcToggleParameterButton>(
                 "s" + processor.addLeadingZeros(stepNumber) + "t" + processor.addLeadingZeros(row),
-                stepNumber, row, Colours::aliceblue, rowColours[row], processor);
+                stepNumber, row, Colours::aliceblue, processor);
 
             //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
             addAndMakeVisible(*square);

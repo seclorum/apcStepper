@@ -14,7 +14,7 @@ class trackDeckMainProcessor;
 class apcControlPanel : public juce::AudioProcessorEditor, private juce::Timer {
 public:
     static constexpr int rows = 8;
-    static constexpr int cols = 8;
+    static constexpr int cols = 16;
 
     apcControlPanel(trackDeckMainProcessor &p)
         : AudioProcessorEditor(&p), processor(p) {
@@ -82,7 +82,7 @@ public:
 
     }
     void paint(juce::Graphics& g) override {
-        g.fillAll(juce::Colour(0xff041937));
+        g.fillAll(juce::Colour(0xff000000));
         if (auto drawable = juce::Drawable::createFromImageData(BinaryData::back_svg, BinaryData::back_svgSize)) {
             juce::Rectangle<float> targetBounds = getLocalBounds().toFloat();
 
