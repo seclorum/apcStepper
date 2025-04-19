@@ -95,6 +95,7 @@ private:
     apcResizeableArray<apcNoteObject> midiGrid{numSteps, numInstruments, apcNoteObject()};
     apcResizeableArray<int> controlGrid{numSteps, numInstruments, 0};
     juce::AudioParameterInt* tempoParam;
+    juce::AudioParameterInt* trackParam;
     juce::AudioParameterInt* transposeParam;
     juce::AudioParameterFloat* velocityScaleParam;
     juce::MidiFile midiFile;

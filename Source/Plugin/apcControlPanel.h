@@ -9,14 +9,18 @@
 #include "apcToggleParameterButton.h"
 #include "apcRightPanel.h"
 #include "tdTrack.h"
+
 class trackDeckMainProcessor;
 
-class apcControlPanel : public juce::AudioProcessorEditor, private juce::Timer {
+class apcControlPanel : public juce::AudioProcessorEditor,
+                       private juce::Timer,
+                       private juce::RangedAudioParameter::Listener
+{
 public:
     static constexpr int rows = 8;
     static constexpr int cols = 16;
 
-    apcControlPanel(trackDeckMainProcessor &p)
+    apcControlPanel(trackDeckMainProcessor& p)
         : AudioProcessorEditor(&p), processor(p)
     {
         // Initialize columns
@@ -25,46 +29,70 @@ public:
             addAndMakeVisible(rowContainer.getLast());
         }
         controllerBar = std::make_unique<tdTrackControllerBar>(processor, 99);
-
         addAndMakeVisible(*controllerBar);
 
         // Initialize rightContainer and tdEditBar
         tdEditBar.reset(new class tdEditBar()); // Should work with full definition
-
         addAndMakeVisible(tdEditBar.get());
 
+        current_attachment = processor.getParameters().getParameter("currentTrack");
+        if (current_attachment)
+            current_attachment->addListener(this);
+
         APCLOG("Main initialized...");
-        //startTimer(25); // Uncomment if needed
+        // startTimer(25); // Uncomment if needed
     }
 
-    void timerCallback() override {
+    ~apcControlPanel() override
+    {
+        if (current_attachment)
+            current_attachment->removeListener(this);
+    }
+
+    // Implement pure virtual functions from RangedAudioParameter::Listener
+    void parameterValueChanged(int parameterIndex, float newValue) override
+    {
+        // Handle parameter changes (e.g., update UI)
+        if (current_attachment && current_attachment->getParameterIndex() == parameterIndex) {
+            currentTrack = static_cast<int>(newValue); // Update currentTrack based on parameter
+            resized(); // Trigger layout update to reflect new track selection
+        }
+    }
+
+    void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override
+    {
+        // Handle gesture changes (optional, can be empty if not needed)
+    }
+
+
+    void timerCallback() override
+    {
         // Empty for now
     }
 
-    void resized() override {
+    void resized() override
+    {
         auto bounds = getLocalBounds();
 
         juce::FlexBox mainFlexBox;
-        juce::FlexBox stepperFlexBox;
         juce::FlexBox gridFlexBox;
 
         mainFlexBox.flexDirection = juce::FlexBox::Direction::column;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
-
         gridFlexBox.flexDirection = juce::FlexBox::Direction::column;
         gridFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
+
         int i = 0;
-        for (auto &row : rowContainer) {
+        for (auto& row : rowContainer) {
             gridFlexBox.items.add(juce::FlexItem(*row).withFlex(1));
-            if (i==8) gridFlexBox.items.add(juce::FlexItem(*controllerBar).withFlex(3));
+            if (i == currentTrack) {
+                gridFlexBox.items.add(juce::FlexItem(*controllerBar).withFlex(3));
+            }
             ++i;
         }
-
-
-
 
         // Add tdEditBar to the layout with explicit height
         mainFlexBox.items.add(juce::FlexItem(*tdEditBar.get()).withFlex(3));
@@ -72,41 +100,27 @@ public:
 
         mainFlexBox.performLayout(bounds.toFloat());
 
-        APCLOG("apcControl Panel resized.");
+        APCLOG("apcControlPanel resized.");
     }
 
-    void paint(juce::Graphics& g) override {
+    void paint(juce::Graphics& g) override
+    {
         auto totalBounds = getLocalBounds().toFloat();
         g.fillAll(juce::Colour(0xff000000));
-        juce::Colour darkestgrey = juce::Colour::fromFloatRGBA(0.2f, 0.2f, .2f, 0.5f);       // Blue with 50% alpha
-        juce::Colour darkergrey = juce::Colour::fromFloatRGBA(0.4f, 0.4f, 0.4f, 0.5f);  // Light Blue with 50% alpha
+        juce::Colour darkestgrey = juce::Colour::fromFloatRGBA(0.2f, 0.2f, 0.2f, 0.5f);
+        juce::Colour darkergrey = juce::Colour::fromFloatRGBA(0.4f, 0.4f, 0.4f, 0.5f);
 
-        // Number of rectangles and margin.
         const int numRects = 4;
-        const float margin = 8.0f; // Adjust for desired margin
-
-        // Calculate the width of each rectangle, accounting for the margin.
-        float rectWidth = ((totalBounds.getWidth()-16)*0.8f / numRects);
-
-        // Calculate the starting X position, to take into account the left margin
+        const float margin = 8.0f;
+        float rectWidth = ((totalBounds.getWidth() - 16) * 0.8f / numRects);
         float startX = totalBounds.getX();
-        // Calculate the height of each rectangle (full height).
         float rectHeight = totalBounds.getHeight();
 
-        // Loop through and draw the rectangles.
-        for (int i = 0; i < numRects; ++i)
-        {
-            // Alternate colors.
+        for (int i = 0; i < numRects; ++i) {
             juce::Colour currentColour = (i % 2 == 0) ? darkergrey : darkestgrey;
             g.setColour(currentColour);
-
-            // Calculate the x position of the current rectangle.
-            float rectX =  i * rectWidth + 8;
-
-            // Create the rectangle.
+            float rectX = i * rectWidth + 8;
             juce::Rectangle<float> rect(rectX, totalBounds.getY(), rectWidth, rectHeight);
-
-            // Fill the rectangle.
             g.fillRect(rect);
         }
 
@@ -120,15 +134,22 @@ public:
             juce::Rectangle<float> placedBounds(0, 0, scaledWidth, scaledHeight);
             drawable->drawWithin(g, placedBounds, juce::RectanglePlacement::stretchToFit, 1.0f);
         }
-
     }
 
 private:
-    trackDeckMainProcessor &processor;
+    trackDeckMainProcessor& processor;
     juce::OwnedArray<tdTrack> rowContainer;
     juce::Component emptySpace;
     std::unique_ptr<tdTrackControllerBar> controllerBar;
     std::unique_ptr<apcRightPanel> rightContainer;
-    std::unique_ptr<tdEditBar> tdEditBar; // Correct declaration
-};
+    int currentTrack = 8;
+    std::unique_ptr<tdEditBar> tdEditBar;
+    juce::RangedAudioParameter* current_attachment = nullptr;
 
+    // Example: Add muteButton if needed
+    juce::TextButton muteButton {"Mute"};
+    // Add ButtonAttachment if needed
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> muteAttachment;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(apcControlPanel)
+};

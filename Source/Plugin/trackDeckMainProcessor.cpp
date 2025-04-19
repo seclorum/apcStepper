@@ -5,6 +5,7 @@ trackDeckMainProcessor::trackDeckMainProcessor()
     : AudioProcessor(getBusesProperties())
 {
     tempoParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("tempo"));
+    trackParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("currentTrack"));
     transposeParam = dynamic_cast<juce::AudioParameterInt*>(parameters.getParameter("transpose"));
     velocityScaleParam = dynamic_cast<juce::AudioParameterFloat*>(parameters.getParameter("velocityScale"));
 
@@ -15,6 +16,7 @@ trackDeckMainProcessor::trackDeckMainProcessor()
     }
 
     *tempoParam = 98;
+    *trackParam = 8;
     *transposeParam = 0;
     *velocityScaleParam = 1.0f;
 
@@ -91,6 +93,7 @@ void trackDeckMainProcessor::parameterChanged(const juce::String& parameterID, f
 juce::AudioProcessorValueTreeState::ParameterLayout trackDeckMainProcessor::createParameterLayout() {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"tempo", parameterVersion}, "Tempo", 0, 240, 98));
+    layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"currentTrack", parameterVersion}, "Tempo", 0, 240, 98));
     layout.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"transpose", parameterVersion}, "Transpose", -24, 24, 0));
     layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"velocityScale", parameterVersion}, "Velocity Scale", juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f), 1.0f));
 
