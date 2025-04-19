@@ -41,6 +41,10 @@ public:
         rowFlexBox.flexDirection = juce::FlexBox::Direction::row;
         rowFlexBox.justifyContent = juce::FlexBox::JustifyContent::center;
         rowFlexBox.alignItems = juce::FlexBox::AlignItems::center;
+        juce::FlexBox rowFlexContainer;
+        rowFlexContainer.flexDirection = juce::FlexBox::Direction::row;
+        rowFlexContainer.justifyContent = juce::FlexBox::JustifyContent::center;
+        rowFlexContainer.alignItems = juce::FlexBox::AlignItems::center;
 
         // Add squares to rowFlexBox
         for (auto &square: squares) {
@@ -48,9 +52,13 @@ public:
                 juce::FlexItem(*square).withWidth(squareSize).withHeight(squareSize).withFlex(1).withMargin(6));
         }
 
+        rowFlexContainer.items.add(
+                        juce::FlexItem(rowFlexBox).withFlex(12));
+        rowFlexContainer.items.add(
+                 juce::FlexItem().withFlex(1));
 
 
-        rowFlexBox.performLayout(bounds.toFloat());
+        rowFlexContainer.performLayout(bounds.toFloat());
     }
 
 

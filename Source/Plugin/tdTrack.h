@@ -31,9 +31,7 @@ public:
 
             APCLOG("step_" + std::to_string(instrumentNumber) + "_track_" + std::to_string(col));
         }
-        muteButton = std::make_unique<apcToggleParameterButton>(
-                "m" + processor.addLeadingZeros(instrumentNumber),
-                instrumentNumber, instrumentNumber, Colours::aliceblue, processor);
+        muteButton = std::make_unique<apcToggleButton>(Colours::darkgrey, Colours::darkred);
 
         //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
         addAndMakeVisible(*muteButton);
@@ -54,7 +52,7 @@ public:
         // Add squares to rowFlexBox
         for (auto &square: squares) {
             rowFlexBox.items.add(
-                juce::FlexItem(*square).withWidth(squareSize).withHeight(squareSize).withFlex(1).withMargin(6));
+                juce::FlexItem(*square).withFlex(1).withMargin(6));
         }
 
 
@@ -89,7 +87,7 @@ private:
     trackDeckMainProcessor &processor;
     juce::OwnedArray<apcToggleParameterButton> squares;
     juce::Image shadowImage;
-    std::unique_ptr<apcToggleParameterButton> muteButton;
+    std::unique_ptr<apcToggleButton> muteButton;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> slider_attachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> fatButton_attachment;

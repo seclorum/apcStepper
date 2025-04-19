@@ -56,16 +56,18 @@ public:
         gridFlexBox.flexDirection = juce::FlexBox::Direction::column;
         gridFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
-
+        int i = 0;
         for (auto &row : rowContainer) {
             gridFlexBox.items.add(juce::FlexItem(*row).withFlex(1));
+            if (i==8) gridFlexBox.items.add(juce::FlexItem(*controllerBar).withFlex(3));
+            ++i;
         }
-        gridFlexBox.items.add(juce::FlexItem(*controllerBar).withFlex(3).withMargin(8));
+
 
 
 
         // Add tdEditBar to the layout with explicit height
-        mainFlexBox.items.add(juce::FlexItem(*tdEditBar.get()).withFlex(1));
+        mainFlexBox.items.add(juce::FlexItem(*tdEditBar.get()).withFlex(3));
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(7));
 
         mainFlexBox.performLayout(bounds.toFloat());
