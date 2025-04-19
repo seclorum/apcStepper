@@ -201,18 +201,28 @@ inline void tdEditBar::reorderRectangles(ColorRectangle* source, ColorRectangle*
 {
     int sourceIndex = rectangles.indexOf(source);
     int targetIndex = rectangles.indexOf(target);
-    if (sourceIndex >= 0 && targetIndex >= 0)
+
+    if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
     {
-        rectangles.remove(sourceIndex);
-        rectangles.insert(targetIndex, source);
+        rectangles.move(sourceIndex, targetIndex); // Reorder the OwnedArray
+
+        // Explicitly reorder the children of the bar component
+        int currentSourceIndexInBar = bar.getIndexOfChildComponent(source);
+        int currentTargetIndexInBar = bar.getIndexOfChildComponent(target);
+
+        if (currentSourceIndexInBar != -1 && currentTargetIndexInBar != -1)
+        {
+            bar.removeChildComponent(source);
+            bar.addChildComponent(source, targetIndex < currentTargetIndexInBar ? currentTargetIndexInBar : currentTargetIndexInBar + 1);
+        }
+
         updateBarLayout();
     }
     else
     {
-        APCLOG("Error: Invalid indices in reorderRectangles");
+        APCLOG("Error: Invalid indices or same element in reorderRectangles");
     }
 }
-
 inline void tdEditBar::updateBarLayout()
 {
     float maxRectWidth = bar.getWidth() / 10.0f;
