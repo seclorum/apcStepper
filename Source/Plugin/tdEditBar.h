@@ -35,37 +35,252 @@ private:
     juce::Point<int> dragStartPos;
     tdEditBar* parentBar;
 
-    // Buttons and editor
     juce::TextButton addButton{ "+" };
     juce::TextButton duplicateButton{ "|" };
     juce::TextButton deleteButton{ "-" };
     juce::TextButton editButton{ "Edit" };
-    juce::TextEditor labelEditor; // Inline editor for label
+    juce::TextEditor labelEditor;
 };
+
 class tdEditBar
     : public juce::Component
-    , public juce::DragAndDropContainer {
+    , public juce::DragAndDropContainer
+    , public juce::Timer
+    , private juce::ScrollBar::Listener {
 public:
     class BarComponent : public juce::Component {
     public:
-        void paint(juce::Graphics& g) override;
+        BarComponent(tdEditBar* parent) : parentBar(parent) {
+            setInterceptsMouseClicks(true, true);
+        }
+
+        void paint(juce::Graphics& g) override {}
+
+        void mouseDown(const juce::MouseEvent& e) override {
+            if (e.mods.isLeftButtonDown() && parentBar) {
+                auto* viewport = findParentComponentOfClass<juce::Viewport>();
+                if (viewport) {
+                    float clickX = e.getPosition().x + viewport->getViewPositionX();
+                    int clickedIndex = parentBar->getIndexAtPosition(clickX);
+                    parentBar->handleBarClick(clickedIndex);
+                }
+            }
+        }
+
+    private:
+        tdEditBar* parentBar;
     };
 
-    tdEditBar();
+    tdEditBar() : bar(this) {
+        addAndMakeVisible(viewport);
+        viewport.setViewedComponent(&bar, false);
+        viewport.setScrollBarsShown(false, false);
+        viewport.getHorizontalScrollBar().addListener(this); // Register scroll listener
+        for (int sel = 0; sel < 3; ++sel) {
+            auto square = std::make_unique<DraggableRangeSelector>(this);
+            addAndMakeVisible(*square);
+            rangeSelectors.add(std::move(square));
+        }
 
-    void paint(juce::Graphics& g) override;
-    void resized() override;
+        juce::Typeface::Ptr temp = juce::Typeface::createSystemTypefaceFor(BinaryData::ConthraxSemiBold_otf, BinaryData::ConthraxSemiBold_otfSize);
+        if (temp != nullptr) {
+            typeface = temp;
+            customFont = juce::Font(typeface);
+        }
 
-    void addRectangle(int insertIndex = -1); // Modified to support specific index
-    void duplicateRectangle(GreyRectangle* source, int insertIndex);
-    void removeRectangle(GreyRectangle* rect);
-    void reorderRectangles(GreyRectangle* source, GreyRectangle* target);
-    void updateBarLayout();
+        addRectangle();
+        updateBarLayout();
+    }
 
-    const juce::OwnedArray<GreyRectangle>& getRectangles() const;
-    BarComponent& getBarComponent();
+    ~tdEditBar() override {
+       viewport.getHorizontalScrollBar().removeListener(this);
+    }
+
+    void paint(juce::Graphics& g) override {
+        g.fillAll(juce::Colours::darkgrey);
+    }
+
+    void resized() override {
+        juce::FlexBox mainBox;
+        mainBox.flexDirection = juce::FlexBox::Direction::column;
+        mainBox.alignItems = juce::FlexBox::AlignItems::stretch;
+
+        for (auto* square : rangeSelectors) {
+            mainBox.items.add(juce::FlexItem(*square).withHeight(20).withMargin(4));
+        }
+        mainBox.items.add(juce::FlexItem(viewport).withFlex(1.0f).withMargin(8));
+
+        mainBox.performLayout(getLocalBounds().toFloat());
+        updateBarLayout();
+    }
+
+    void addRectangle(int insertIndex = -1) {
+        int greyValue = rectangleCount * 255.0f / 15;
+        if (greyValue > 255) greyValue = 255;
+        juce::Colour newGrey(static_cast<juce::uint8>(greyValue),
+                             static_cast<juce::uint8>(greyValue),
+                             static_cast<juce::uint8>(greyValue),
+                             static_cast<juce::uint8>(128));
+
+        juce::String newLabel;
+        if (rectangleCount < 26) {
+            newLabel = juce::String::charToString('A' + rectangleCount);
+        }
+        else {
+            int first = rectangleCount / 26 - 1;
+            int second = rectangleCount % 26;
+            newLabel = juce::String::charToString('A' + first) + juce::String::charToString('A' + second);
+        }
+
+        auto* rect = new GreyRectangle(newGrey, newLabel, customFont.withHeight(20.0f), this);
+        if (insertIndex >= 0 && insertIndex <= rectangles.size()) {
+            rectangles.insert(insertIndex, rect);
+        }
+        else {
+            rectangles.add(rect);
+        }
+        bar.addAndMakeVisible(*rect);
+        ++rectangleCount;
+        APCLOG("Added rectangle: " + newLabel + ", count: " + juce::String(rectangleCount));
+        viewport.setScrollBarsShown(false, rectangles.size() > 10);
+        updateBarLayout();
+    }
+
+    void duplicateRectangle(GreyRectangle* source, int insertIndex) {
+        if (source) {
+            auto* newRect = new GreyRectangle(source->getColor(), source->getLabel(), customFont.withHeight(20.0f), this);
+            rectangles.insert(insertIndex, newRect);
+            bar.addAndMakeVisible(*newRect);
+            ++rectangleCount;
+            APCLOG("Duplicated rectangle at index: " + juce::String(insertIndex));
+            viewport.setScrollBarsShown(false, rectangles.size() > 10);
+            updateBarLayout();
+        }
+    }
+
+    void removeRectangle(GreyRectangle* rect) {
+        if (rect && rectangles.contains(rect)) {
+            rectangles.removeObject(rect);
+            APCLOG("Removed rectangle, new count: " + juce::String(rectangles.size()));
+            viewport.setScrollBarsShown(false, rectangles.size() > 10);
+            updateBarLayout();
+        }
+    }
+
+    void reorderRectangles(GreyRectangle* source, GreyRectangle* target) {
+        int sourceIndex = rectangles.indexOf(source);
+        int targetIndex = rectangles.indexOf(target);
+
+        if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex) {
+            rectangles.move(sourceIndex, targetIndex);
+            int currentSourceIndexInBar = bar.getIndexOfChildComponent(source);
+            int currentTargetIndexInBar = bar.getIndexOfChildComponent(target);
+
+            if (currentSourceIndexInBar != -1 && currentTargetIndexInBar != -1) {
+                bar.removeChildComponent(source);
+                bar.addChildComponent(source, targetIndex < currentTargetIndexInBar ? currentTargetIndexInBar : currentTargetIndexInBar + 1);
+            }
+
+            APCLOG("Reordered rectangles from " + juce::String(sourceIndex) + " to " + juce::String(targetIndex));
+            updateBarLayout();
+        }
+        else {
+            APCLOG("Error: Invalid indices or same element in reorderRectangles");
+        }
+    }
+
+    void updateBarLayout() {
+        float maxRectWidth = getWidth() / 10.0f; // Fixed width, no shrinking
+        int rectCount = juce::jmax(1, rectangles.size());
+        bar.setSize(maxRectWidth * rectCount, 100);
+        int index = 0;
+        for (auto* rect : rectangles) {
+            rect->setBounds(index * maxRectWidth, 0, maxRectWidth, bar.getHeight());
+            ++index;
+        }
+        APCLOG("Updated bar layout: width=" + juce::String(bar.getWidth()) + ", height=" + juce::String(bar.getHeight()) + ", rectCount=" + juce::String(rectangles.size()));
+        bar.repaint();
+        for (auto* selector : rangeSelectors) {
+            selector->resized();
+            selector->repaint();
+        }
+    }
+
+    void handleBarClick(int clickedIndex) {
+        if (!rangeSelectors.isEmpty()) {
+            auto* selector = rangeSelectors[0];
+            int currentLength = selector->getEndIndex() - selector->getStartIndex() + 1;
+            int maxIndex = rectangles.size();
+            int newStart, newEnd;
+
+            float maxRectWidth = getWidth() / 10.0f;
+            float clickX = clickedIndex * maxRectWidth;
+            float midPoint = viewport.getViewPositionX() + viewport.getWidth() / 2.0f;
+
+            if (clickX < midPoint) {
+                newStart = 0;
+                newEnd = juce::jmin(currentLength - 1, maxIndex - 1);
+            }
+            else {
+                newEnd = maxIndex - 1;
+                newStart = juce::jmax(0, newEnd - currentLength + 1);
+            }
+
+            selector->setRange(newStart, newEnd);
+            selector->highlightRange(true);
+
+            float startX = newStart * maxRectWidth;
+            float endX = (newEnd + 1) * maxRectWidth;
+            float viewWidth = viewport.getWidth();
+            if (startX < viewport.getViewPositionX()) {
+                viewport.setViewPosition(startX, 0);
+            }
+            else if (endX > viewport.getViewPositionX() + viewWidth) {
+                viewport.setViewPosition(endX - viewWidth, 0);
+            }
+
+            APCLOG("Bar click: index=" + juce::String(clickedIndex) + ", new range=[" + juce::String(newStart) + "," + juce::String(newEnd) + "]");
+        }
+    }
+
+    int getIndexAtPosition(float x) const {
+        float maxRectWidth = getWidth() / 10.0f;
+        if (maxRectWidth > 0) {
+            int index = juce::roundToInt(x / maxRectWidth);
+            return juce::jlimit(0, static_cast<int>(rectangles.size()), index);
+        }
+        return 0;
+    }
+
+    const juce::OwnedArray<GreyRectangle>& getRectangles() const {
+        return rectangles;
+    }
+
+    BarComponent& getBarComponent() {
+        return bar;
+    }
 
 private:
+    // Viewport::Listener implementation
+    void visibleAreaChanged(const juce::Rectangle<int>&)  {
+        // Start timer to detect scroll end
+        startTimer(100);
+        APCLOG("Scroll event: view position=" + juce::String(viewport.getViewPositionX()));
+    }
+
+    void scrollBarMoved(juce::ScrollBar* scrollBarThatHasMoved, double newRangeStart) override {
+        //startTimer(100);
+        updateBarLayout();
+        APCLOG("ScrollBar moved: position=" + juce::String(newRangeStart));
+    }
+
+    void timerCallback() override {
+        stopTimer();
+        updateBarLayout();
+        APCLOG("Scroll ended, updated layout");
+    }
+
+
     class DraggableRangeSelector : public juce::Component, public juce::ChangeBroadcaster {
     public:
         DraggableRangeSelector(tdEditBar* parentBar)
@@ -79,8 +294,7 @@ private:
         }
 
         void paint(juce::Graphics& g) override {
-            g.fillAll(juce::Colours::black);
-            g.setColour(juce::Colours::grey);
+            g.setColour(highlighted ? juce::Colours::lightblue : juce::Colours::grey);
             if (startIndex >= 0 && endIndex >= 0) {
                 float startX = getPositionOfIndex(startIndex);
                 float endX = getPositionOfIndex(endIndex + 1);
@@ -103,6 +317,25 @@ private:
 
         int getStartIndex() const { return startIndex; }
         int getEndIndex() const { return endIndex; }
+
+        void setRange(int newStart, int newEnd) {
+            startIndex = juce::jlimit(0, parent->getRectangles().size(), newStart);
+            endIndex = juce::jlimit(startIndex, parent->getRectangles().size(), newEnd);
+            resized();
+            repaint();
+            sendChangeMessage();
+        }
+
+        void highlightRange(bool enable) {
+            highlighted = enable;
+            repaint();
+            if (enable) {
+                juce::Timer::callAfterDelay(500, [this] {
+                    highlighted = false;
+                    repaint();
+                });
+            }
+        }
 
         void addChangeListener(juce::ChangeListener* listener) {
             juce::ChangeBroadcaster::addChangeListener(listener);
@@ -207,28 +440,31 @@ private:
         tdEditBar* parent;
         int startIndex;
         int endIndex;
+        bool highlighted = false;
         std::unique_ptr<LeftHandle> leftHandle;
         std::unique_ptr<RightHandle> rightHandle;
 
         float getPositionOfIndex(int index) const {
             if (parent) {
                 const auto& rectangles = parent->getRectangles();
-                float barWidth = static_cast<float>(parent->getBarComponent().getWidth());
-                float rectWidth = barWidth / 10.0f;
+                float rectWidth = parent->getWidth() / 10.0f; // Fixed width
+                auto* viewport = parent->getBarComponent().findParentComponentOfClass<juce::Viewport>();
+                float scrollOffset = viewport ? viewport->getViewPositionX() : 0.0f;
                 if (index >= 0 && index <= rectangles.size()) {
-                    return index * rectWidth;
+                    return index * rectWidth - scrollOffset;
                 }
-                return index < 0 ? 0.0f : rectWidth * rectangles.size();
+                return index < 0 ? -scrollOffset : (rectWidth * rectangles.size() - scrollOffset);
             }
             return 0.0f;
         }
 
         int getIndexAtPosition(float x) const {
             if (parent) {
-                float barWidth = static_cast<float>(parent->getBarComponent().getWidth());
-                float rectWidth = barWidth / 10.0f;
+                float rectWidth = parent->getWidth() / 10.0f; // Fixed width
+                auto* viewport = parent->getBarComponent().findParentComponentOfClass<juce::Viewport>();
+                float scrollOffset = viewport ? viewport->getViewPositionX() : 0.0f;
                 if (rectWidth > 0) {
-                    int index = juce::roundToInt(x / rectWidth);
+                    int index = juce::roundToInt((x + scrollOffset) / rectWidth);
                     return juce::jlimit(0, static_cast<int>(parent->getRectangles().size()), index);
                 }
             }
@@ -236,16 +472,16 @@ private:
         }
     };
 
-    OwnedArray<DraggableRangeSelector> rangeSelectors;
-    DraggableRangeSelector rangeSelector;
+    juce::Viewport viewport;
+    juce::OwnedArray<DraggableRangeSelector> rangeSelectors;
     BarComponent bar;
     juce::OwnedArray<GreyRectangle> rectangles;
     juce::Typeface::Ptr typeface;
     juce::Font customFont;
-    int rectangleCount = 0; // Tracks total rectangles added
+    int rectangleCount = 0;
 };
 
-// Implementation of GreyRectangle methods
+// Implementation of GreyRectangle methods (unchanged)
 inline GreyRectangle::GreyRectangle(juce::Colour greyTone, juce::String label, juce::Font font, tdEditBar* parent)
     : color(greyTone), textLabel(label), fontToUse(font), parentBar(parent) {
     setInterceptsMouseClicks(true, true);
@@ -255,7 +491,6 @@ inline GreyRectangle::GreyRectangle(juce::Colour greyTone, juce::String label, j
     addAndMakeVisible(editButton);
     addAndMakeVisible(labelEditor);
 
-    // Initialize editor
     labelEditor.setText(textLabel);
     labelEditor.setVisible(false);
     labelEditor.setFont(fontToUse);
@@ -263,7 +498,6 @@ inline GreyRectangle::GreyRectangle(juce::Colour greyTone, juce::String label, j
     labelEditor.setColour(juce::TextEditor::backgroundColourId, juce::Colours::white);
     labelEditor.setColour(juce::TextEditor::textColourId, juce::Colours::black);
 
-    // Button callbacks
     addButton.onClick = [this] {
         int index = parentBar->getRectangles().indexOf(this);
         parentBar->addRectangle(index + 1);
@@ -277,11 +511,10 @@ inline GreyRectangle::GreyRectangle(juce::Colour greyTone, juce::String label, j
     };
     editButton.onClick = [this] {
         labelEditor.setVisible(true);
-        labelEditor.setText(textLabel); // Reset to current label
+        labelEditor.setText(textLabel);
         labelEditor.grabKeyboardFocus();
     };
 
-    // Editor callbacks
     labelEditor.onReturnKey = [this] {
         juce::String newLabel = labelEditor.getText();
         if (!newLabel.isEmpty()) {
@@ -290,7 +523,7 @@ inline GreyRectangle::GreyRectangle(juce::Colour greyTone, juce::String label, j
         labelEditor.setVisible(false);
     };
     labelEditor.onEscapeKey = [this] {
-        labelEditor.setVisible(false); // Cancel editing
+        labelEditor.setVisible(false);
     };
     labelEditor.onFocusLost = [this] {
         juce::String newLabel = labelEditor.getText();
@@ -305,7 +538,6 @@ inline void GreyRectangle::paint(juce::Graphics& g) {
     g.fillAll(color);
     g.setColour(juce::Colours::white);
     g.setFont(fontToUse);
-    // Draw label in top portion if editor is not visible
     if (!labelEditor.isVisible()) {
         g.drawText(textLabel, getLocalBounds().removeFromTop(30).toFloat(), juce::Justification::centred);
     }
@@ -325,7 +557,6 @@ inline void GreyRectangle::resized() {
     fb.items.add(juce::FlexItem(editButton).withWidth(30).withHeight(20).withMargin(2));
     fb.performLayout(getLocalBounds().withTop(30).reduced(5));
 
-    // Position editor in label area
     labelEditor.setBounds(getLocalBounds().removeFromTop(30).reduced(5));
 }
 
@@ -393,143 +624,8 @@ inline juce::String GreyRectangle::getLabel() const { return textLabel; }
 
 inline void GreyRectangle::setLabel(const juce::String& newLabel) {
     textLabel = newLabel;
-    labelEditor.setText(newLabel); // Sync editor with label
+    labelEditor.setText(newLabel);
     repaint();
-}
-
-
-
-// Implementation of tdEditBar methods
-inline tdEditBar::tdEditBar() : rangeSelector(this) {
-    for (int sel = 0; sel < 3; ++sel) {
-        auto square = std::make_unique<DraggableRangeSelector>(this);
-        addAndMakeVisible(*square);
-        rangeSelectors.add(std::move(square));
-    };
-    addAndMakeVisible(bar);
-
-    bar.setColour(0, juce::Colours::black);
-
-    juce::Typeface::Ptr temp = juce::Typeface::createSystemTypefaceFor(BinaryData::ConthraxSemiBold_otf, BinaryData::ConthraxSemiBold_otfSize);
-    if (temp != nullptr) {
-        typeface = temp;
-        customFont = juce::Font(typeface);
-    }
-
-    // Add one initial rectangle
-    addRectangle();
-}
-
-inline void tdEditBar::paint(juce::Graphics& g) {
-    g.fillAll(juce::Colours::darkgrey);
-}
-
-inline void tdEditBar::resized() {
-    juce::FlexBox mainBox;
-    juce::FlexBox mainBoxContainer;
-    mainBox.flexDirection = juce::FlexBox::Direction::column;
-    mainBoxContainer.flexDirection = juce::FlexBox::Direction::column;
-    for (auto* square : rangeSelectors) {
-        mainBox.items.add(juce::FlexItem(*square).withHeight(20).withMargin(4));
-    }
-    mainBox.alignItems = juce::FlexBox::AlignItems::stretch;
-    mainBoxContainer.items.add(juce::FlexItem(mainBox).withFlex(1.0f).withMargin(4));
-    mainBoxContainer.items.add(juce::FlexItem(bar).withFlex(2.0f).withMargin(8));
-    mainBoxContainer.alignItems = juce::FlexBox::AlignItems::stretch;
-    mainBoxContainer.performLayout(getLocalBounds().toFloat());
-
-    updateBarLayout();
-}
-
-inline void tdEditBar::addRectangle(int insertIndex) {
-    int greyValue = rectangleCount * 255.0f / 15;
-    if (greyValue > 255) greyValue = 255;
-    juce::Colour newGrey(static_cast<juce::uint8>(greyValue),
-                         static_cast<juce::uint8>(greyValue),
-                         static_cast<juce::uint8>(greyValue),
-                         static_cast<juce::uint8>(128));
-
-    juce::String newLabel;
-    if (rectangleCount < 26) {
-        newLabel = juce::String::charToString('A' + rectangleCount);
-    }
-    else {
-        int first = rectangleCount / 26 - 1;
-        int second = rectangleCount % 26;
-        newLabel = juce::String::charToString('A' + first) + juce::String::charToString('A' + second);
-    }
-
-    auto* rect = new GreyRectangle(newGrey, newLabel, customFont.withHeight(20.0f), this);
-    if (insertIndex >= 0 && insertIndex <= rectangles.size()) {
-        rectangles.insert(insertIndex, rect);
-    }
-    else {
-        rectangles.add(rect);
-    }
-    bar.addAndMakeVisible(*rect);
-    ++rectangleCount;
-    updateBarLayout();
-}
-
-inline void tdEditBar::duplicateRectangle(GreyRectangle* source, int insertIndex) {
-    if (source) {
-        auto* newRect = new GreyRectangle(source->getColor(), source->getLabel(), customFont.withHeight(20.0f), this);
-        rectangles.insert(insertIndex, newRect);
-        bar.addAndMakeVisible(*newRect);
-        updateBarLayout();
-    }
-}
-
-inline void tdEditBar::removeRectangle(GreyRectangle* rect) {
-    if (rect && rectangles.contains(rect)) {
-        rectangles.removeObject(rect);
-        updateBarLayout();
-    }
-}
-
-inline void tdEditBar::reorderRectangles(GreyRectangle* source, GreyRectangle* target) {
-    int sourceIndex = rectangles.indexOf(source);
-    int targetIndex = rectangles.indexOf(target);
-
-    if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex) {
-        rectangles.move(sourceIndex, targetIndex);
-        int currentSourceIndexInBar = bar.getIndexOfChildComponent(source);
-        int currentTargetIndexInBar = bar.getIndexOfChildComponent(target);
-
-        if (currentSourceIndexInBar != -1 && currentTargetIndexInBar != -1) {
-            bar.removeChildComponent(source);
-            bar.addChildComponent(source, targetIndex < currentTargetIndexInBar ? currentTargetIndexInBar : currentTargetIndexInBar + 1);
-        }
-
-        updateBarLayout();
-    }
-    else {
-        APCLOG("Error: Invalid indices or same element in reorderRectangles");
-    }
-}
-
-inline void tdEditBar::updateBarLayout() {
-    float maxRectWidth = bar.getWidth() / 10.0f;
-    int index = 0;
-    for (auto* rect : rectangles) {
-        rect->setBounds(index * maxRectWidth, 0, maxRectWidth, bar.getHeight());
-        ++index;
-    }
-    bar.repaint();
-    rangeSelector.resized(); // Update range selector handles
-}
-
-inline const juce::OwnedArray<GreyRectangle>& tdEditBar::getRectangles() const {
-    return rectangles;
-}
-
-inline tdEditBar::BarComponent& tdEditBar::getBarComponent() {
-    return bar;
-}
-
-// Implementation of tdEditBar::BarComponent methods
-inline void tdEditBar::BarComponent::paint(juce::Graphics& g) {
-    g.fillAll(juce::Colours::black);
 }
 
 #endif // TD_EDIT_BAR_H
