@@ -139,27 +139,38 @@ private:
             float actualMax = slider.getRange().getEnd();
             auto actualRange = slider.getRange();
 
-            g.setColour(juce::Colours::black);
+            juce::Colour startColour = juce::Colour(0x00FFFFFF); // Light grey
+            juce::Colour endColour = juce::Colour(0x88FFFFFF);  // Slightly lighter grey
+
+            // Create the gradient.
+            juce::ColourGradient gradient(startColour, x, y, // Start color and position
+                                            endColour, x, y + height, // End color and position
+                                            false); // Not premultiplied
+
+            // Set the fill to use the gradient.
+            g.setGradientFill(gradient);
+
+            // Draw the rectangle with the gradient fill.
             g.fillRect(x, y, width, height);
+
+            // Optional: Draw a black border around the rectangle for better visibility
+            g.setColour(juce::Colours::black);
+            g.drawRect(x, y, width, height);
 
             if (actualRange.getLength() > 0) {
                 float normalizedPos = (slider.getValue() - actualMin) / actualRange.getLength();
                 int fillHeight = juce::roundToInt(height * normalizedPos);;
 
-                juce::ColourGradient gradient;
+                juce::Colour colour;
                 if (&slider == owner->slider1.get()) {
-                    gradient = juce::ColourGradient(
-                        juce::Colour(0xff8b0000), (float) x, (float) (y + height),
-                        juce::Colour(0xffff4500), (float) x, (float) y, false);
+                    colour = juce::Colour(0x33FFFFFF);
                 } else {
-                    gradient = juce::ColourGradient(
-                        juce::Colour(0xff00008b), (float) x, (float) (y + height),
-                        juce::Colour(0xffadd8e6), (float) x, (float) y, false);
+                    colour = juce::Colour(0x33000000);
                 }
-                g.setGradientFill(gradient);
+                g.setColour(colour);
                 g.fillRect(x, y + height - fillHeight, width, fillHeight);
 
-                g.setColour(juce::Colours::white);
+                g.setColour(juce::Colours::lightgrey);
                 int handleHeight = 2;
                 int handleY = y + height - fillHeight - handleHeight / 2;
                 handleY = juce::jlimit(y, y + height - handleHeight, handleY);
