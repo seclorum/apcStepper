@@ -17,12 +17,12 @@ public:
         setScrollWheelEnabled(true);
     }
 
-    void mouseDown(const juce::MouseEvent& event) override {
+    void mouseDown(const juce::MouseEvent &event) override {
         DBG("CustomSlider MouseDown! Value: " + juce::String(getValue()));
         juce::Slider::mouseDown(event);
     }
 
-    void mouseDrag(const juce::MouseEvent& event) override {
+    void mouseDrag(const juce::MouseEvent &event) override {
         DBG("CustomSlider MouseDrag! Value: " + juce::String(getValue()));
         juce::Slider::mouseDrag(event);
     }
@@ -35,7 +35,6 @@ public:
     tdTrackController(trackDeckMainProcessor &p, const int s)
         : AudioProcessorEditor(&p), processor(p), stepNumber(s),
           customSliderLookAndFeel(std::make_unique<CustomSliderLookAndFeel>(this)) {
-
         setInterceptsMouseClicks(true, true);
         //onMouseDown = [] { DBG("Editor MouseDown!"); };
 
@@ -56,32 +55,6 @@ public:
         if (slider2) slider2->setLookAndFeel(nullptr);
     }
 
-    void configureSlider(juce::Slider* slider) {
-        slider->setSliderStyle(juce::Slider::LinearVertical);
-        slider->setRange(0.0, 128.0, 1.0);
-        slider->setValue(64.0);
-        slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-        slider->setLookAndFeel(customSliderLookAndFeel.get());
-        slider->setSliderSnapsToMousePosition(true);
-        slider->setScrollWheelEnabled(true);
-        slider->setEnabled(true);
-        slider->setBounds(getLocalBounds());
-        slider->setInterceptsMouseClicks(true, true);
-        slider->onDragStart = [slider] {
-            DBG("Slider drag started!");
-            //slider->startContinuousRepaints(20); // Add this line
-        };
-        slider->onValueChange = [slider] {
-            DBG("Slider value changed to: " + juce::String(slider->getValue()));
-            slider->repaint(); // This is still important for final updates
-        };
-        slider->onDragEnd = [slider] {
-            DBG("Slider drag ended!");
-            //slider->stopContinuousRepaints(); // Add this line
-            slider->repaint(); // Ensure final repaint
-        };
-    }
-
     void resized() override {
         auto bounds = getLocalBounds();
 
@@ -96,9 +69,11 @@ public:
         float sliderHeight = bounds.getHeight() * 0.9f;
 
         sliderFlexBox.items.add(
-            juce::FlexItem(*slider1).withWidth(sliderWidth).withHeight(sliderHeight).withFlex(1).withMargin(juce::FlexItem::Margin(2)));
+            juce::FlexItem(*slider1).withWidth(sliderWidth).withHeight(sliderHeight).withFlex(1).withMargin(
+                juce::FlexItem::Margin(2)));
         sliderFlexBox.items.add(
-            juce::FlexItem(*slider2).withWidth(sliderWidth).withHeight(sliderHeight).withFlex(1).withMargin(juce::FlexItem::Margin(2)));
+            juce::FlexItem(*slider2).withWidth(sliderWidth).withHeight(sliderHeight).withFlex(1).withMargin(
+                juce::FlexItem::Margin(2)));
 
         sliderFlexBox.performLayout(bounds.toFloat());
 
@@ -106,10 +81,35 @@ public:
         DBG("Slider2 bounds: " + slider2->getBounds().toString());
     }
 
+    void configureSlider(juce::Slider *slider) {
+        slider->setSliderStyle(juce::Slider::LinearVertical);
+        slider->setRange(0.0, 128.0, 1.0);
+        slider->setValue(64.0);
+        slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+        slider->setSliderSnapsToMousePosition(true);
+        slider->setScrollWheelEnabled(true);
+        slider->setEnabled(true);
+        slider->setBounds(getLocalBounds());
+        slider->setInterceptsMouseClicks(true, true);
+        slider->setLookAndFeel(customSliderLookAndFeel.get());
+        slider->onValueChange = [this, slider] {
+            //DBG("Slider value changed to: " + juce::String(slider->getValue()));
+            juce::LookAndFeel *currentLF = &slider->getLookAndFeel();
+            //DBG("onValueChange - LookAndFeel for slider " + juce::String(slider == slider1.get() ? 1 : 2) + " is: " + juce::String(reinterpret_cast<intptr_t>(currentLF), 16));
+            if (auto *lf = dynamic_cast<CustomSliderLookAndFeel *>(currentLF)) {
+                lf->valueChanged(slider);
+            } else {
+                //DBG("onValueChange - dynamic_cast failed for slider " + juce::String(slider == slider1.get() ? 1 : 2));
+                slider->repaint(); // Fallback
+            }
+        };
+    }
+
     void timerCallback() override {
         for (int i = 0; i < processor.numSteps; ++i) {
             std::string parameterID = "c" + processor.addLeadingZeros(i);
-            if (auto *param = dynamic_cast<juce::AudioParameterBool *>(processor.parameters.getParameter(parameterID))) {
+            if (auto *param = dynamic_cast<juce::AudioParameterBool *>(processor.parameters.
+                getParameter(parameterID))) {
                 if (i == processor.currentMIDIStep) param->setValueNotifyingHost(1.0f);
                 else param->setValueNotifyingHost(0.0f);
             } else {
@@ -129,36 +129,32 @@ public:
 private:
     class CustomSliderLookAndFeel : public juce::LookAndFeel_V4 {
     public:
-        CustomSliderLookAndFeel(tdTrackController* parent) : owner(parent) {}
+        CustomSliderLookAndFeel(tdTrackController *parent) : owner(parent) {
+        }
 
-        void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height,
-                      float sliderPos, float minSliderPos, float maxSliderPos,
-                      const juce::Slider::SliderStyle style, juce::Slider& slider) override {
-
-            auto range = slider.getRange();
-            float actualMin = range.getStart();
-            float actualMax = range.getEnd();
-            float actualRange = actualMax - actualMin;
-            DBG("drawLinearSlider - actualMin: " + juce::String(actualMin) + ", actualMax: " + juce::String(actualMax) + ", actualRange: " + juce::String(actualRange));
+        void drawLinearSlider(juce::Graphics &g, int x, int y, int width, int height,
+                              float sliderPos, float minSliderPos, float maxSliderPos,
+                              const juce::Slider::SliderStyle style, juce::Slider &slider) override {
+            float actualMin = slider.getRange().getStart();
+            float actualMax = slider.getRange().getEnd();
+            auto actualRange = slider.getRange();
 
             g.setColour(juce::Colours::black);
             g.fillRect(x, y, width, height);
 
-            if (actualRange > 0) {
-                float normalizedPos = (slider.getValue() - actualMin) / actualRange;
-                int fillHeight = juce::roundToInt(height * normalizedPos);
-                DBG("Slider value: " + juce::String(slider.getValue()) + ", normalizedPos: " + juce::String(normalizedPos) +
-                    ", fillHeight: " + juce::String(fillHeight));
+            if (actualRange.getLength() > 0) {
+                float normalizedPos = (slider.getValue() - actualMin) / actualRange.getLength();
+                int fillHeight = juce::roundToInt(height * normalizedPos);;
 
                 juce::ColourGradient gradient;
                 if (&slider == owner->slider1.get()) {
                     gradient = juce::ColourGradient(
-                        juce::Colour(0xff8b0000), (float)x, (float)(y + height),
-                        juce::Colour(0xffff4500), (float)x, (float)y, false);
+                        juce::Colour(0xff8b0000), (float) x, (float) (y + height),
+                        juce::Colour(0xffff4500), (float) x, (float) y, false);
                 } else {
                     gradient = juce::ColourGradient(
-                        juce::Colour(0xff00008b), (float)x, (float)(y + height),
-                        juce::Colour(0xffadd8e6), (float)x, (float)y, false);
+                        juce::Colour(0xff00008b), (float) x, (float) (y + height),
+                        juce::Colour(0xffadd8e6), (float) x, (float) y, false);
                 }
                 g.setGradientFill(gradient);
                 g.fillRect(x, y + height - fillHeight, width, fillHeight);
@@ -167,18 +163,20 @@ private:
                 int handleHeight = 2;
                 int handleY = y + height - fillHeight - handleHeight / 2;
                 handleY = juce::jlimit(y, y + height - handleHeight, handleY);
-                DBG("handleY: " + juce::String(handleY));
                 g.fillRect(x, handleY, width, handleHeight);
             } else {
-                // Handle the case where the range is zero (shouldn't happen with your setup)
-                DBG("Error: Slider range is zero!");
-                // You might want to draw a default state or log an error.
+                DBG("Error: Slider range is zero in drawLinearSlider!");
             }
-            APCLOG("CustomSliderLookAndFeel drawn");
+        }
+
+        void valueChanged(juce::Slider *slider) {
+            if (slider) {
+                slider->repaint(); // Request a repaint
+            }
         }
 
     private:
-        tdTrackController* owner;
+        tdTrackController *owner;
     };
 
     trackDeckMainProcessor &processor;
