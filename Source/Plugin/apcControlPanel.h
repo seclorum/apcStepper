@@ -75,7 +75,39 @@ public:
     }
 
     void paint(juce::Graphics& g) override {
+        auto totalBounds = getLocalBounds().toFloat();
         g.fillAll(juce::Colour(0xff000000));
+        juce::Colour blue = juce::Colour::fromFloatRGBA(0.2f, 0.2f, .2f, 0.5f);       // Blue with 50% alpha
+        juce::Colour lightBlue = juce::Colour::fromFloatRGBA(0.4f, 0.4f, 0.4f, 0.5f);  // Light Blue with 50% alpha
+
+        // Number of rectangles and margin.
+        const int numRects = 4;
+        const float margin = 8.0f; // Adjust for desired margin
+
+        // Calculate the width of each rectangle, accounting for the margin.
+        float rectWidth = ((totalBounds.getWidth()-16)*0.8f / numRects);
+
+        // Calculate the starting X position, to take into account the left margin
+        float startX = totalBounds.getX();
+        // Calculate the height of each rectangle (full height).
+        float rectHeight = totalBounds.getHeight();
+
+        // Loop through and draw the rectangles.
+        for (int i = 0; i < numRects; ++i)
+        {
+            // Alternate colors.
+            juce::Colour currentColour = (i % 2 == 0) ? blue : lightBlue;
+            g.setColour(currentColour);
+
+            // Calculate the x position of the current rectangle.
+            float rectX =  i * rectWidth + 8;
+
+            // Create the rectangle.
+            juce::Rectangle<float> rect(rectX, totalBounds.getY(), rectWidth, rectHeight);
+
+            // Fill the rectangle.
+            g.fillRect(rect);
+        }
 
         if (auto drawable = juce::Drawable::createFromImageData(BinaryData::back_svg, BinaryData::back_svgSize)) {
             juce::Rectangle<float> targetBounds = getLocalBounds().toFloat();
