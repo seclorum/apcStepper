@@ -33,7 +33,7 @@ trackDeckMainEditor::trackDeckMainEditor(trackDeckMainProcessor& p)
         addAndMakeVisible(tabbedComponent.get());
     }
 
-    setSize(800, 600); // Ensure editor has a set size
+    setSize(1240, 800); // Ensure editor has a set size
 	setResizeLimits(540, 420, 1200, 900);
 
 	setResizable(true, true );

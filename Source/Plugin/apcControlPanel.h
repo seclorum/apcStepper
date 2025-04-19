@@ -76,8 +76,7 @@ public:
 
     void paint(juce::Graphics& g) override {
         g.fillAll(juce::Colour(0xff000000));
-        // SVG painting disabled to ensure tdEditBar visibility
-        /*
+
         if (auto drawable = juce::Drawable::createFromImageData(BinaryData::back_svg, BinaryData::back_svgSize)) {
             juce::Rectangle<float> targetBounds = getLocalBounds().toFloat();
             juce::Rectangle<float> svgBounds = drawable->getDrawableBounds();
@@ -88,7 +87,7 @@ public:
             juce::Rectangle<float> placedBounds(0, 0, scaledWidth, scaledHeight);
             drawable->drawWithin(g, placedBounds, juce::RectanglePlacement::stretchToFit, 1.0f);
         }
-        */
+
     }
 
 private:

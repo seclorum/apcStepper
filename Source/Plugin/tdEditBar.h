@@ -29,7 +29,7 @@ public:
     void paint(juce::Graphics& g) override
     {
         // Remove debug color to avoid covering children
-        // g.fillAll(juce::Colours::darkgrey);
+        g.fillAll(juce::Colours::darkgrey);
     }
 
     void resized() override

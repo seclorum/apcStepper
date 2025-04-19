@@ -13,7 +13,7 @@ class trackDeckMainProcessor;
 class trackDeckStep : public juce::AudioProcessorEditor, private juce::Timer {
 public:
     static constexpr int rows = 8;
-    static constexpr int padding = 2;
+    static constexpr int padding = 6.0f;
 
     trackDeckStep(trackDeckMainProcessor &p, const int s)
         : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
@@ -59,7 +59,7 @@ public:
 
     void resized() override {
         auto bounds = getLocalBounds();
-        float squareSize = bounds.getHeight() / (rows + 2) - 2 * padding; // Fit squares + row toggle
+        float squareSize = bounds.getWidth() - padding; // Fit squares + row toggle
 
         // Create a FlexBox for the squares (step grid)
         juce::FlexBox rowFlexBox;
