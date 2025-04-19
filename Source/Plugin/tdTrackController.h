@@ -10,27 +10,13 @@
 
 class trackDeckMainProcessor;
 
-class trackDeckStep : public juce::AudioProcessorEditor, private juce::Timer {
+class tdTrackController : public juce::AudioProcessorEditor, private juce::Timer {
 public:
-    static constexpr int rows = 8;
+
     static constexpr int padding = 6.0f;
 
-    trackDeckStep(trackDeckMainProcessor &p, const int s)
+    tdTrackController(trackDeckMainProcessor &p, const int s)
         : AudioProcessorEditor(&p), processor(p), stepNumber(s) {
-
-        // Initialize row squares (1 column of ToggleSquares)
-
-        for (int row = 0; row < rows; row++) {
-            auto square = std::make_unique<apcToggleParameterButton>(
-                "s" + processor.addLeadingZeros(stepNumber) + "t" + processor.addLeadingZeros(row),
-                stepNumber, row, Colours::aliceblue, processor);
-
-            //APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
-            addAndMakeVisible(*square);
-            squares.add(std::move(square));
-
-            APCLOG("step_" + std::to_string(stepNumber) + "_track_" + std::to_string(row));
-        }
 
         // Row toggle button
         rowToggle = std::make_unique<RowToggle>(juce::Colours::yellowgreen, Colours::lightblue);
@@ -62,16 +48,6 @@ public:
         float squareSize = bounds.getWidth() - padding; // Fit squares + row toggle
 
         // Create a FlexBox for the squares (step grid)
-        juce::FlexBox rowFlexBox;
-        rowFlexBox.flexDirection = juce::FlexBox::Direction::column;
-        rowFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
-        rowFlexBox.alignItems = juce::FlexBox::AlignItems::center;
-
-        // Add squares to rowFlexBox
-        for (auto &square: squares) {
-            rowFlexBox.items.add(
-                juce::FlexItem(*square).withWidth(squareSize).withHeight(squareSize).withFlex(1).withMargin(6));
-        }
 
         // Create a FlexBox for rowToggle and slider
         juce::FlexBox controlFlexBox;
@@ -94,11 +70,10 @@ public:
         columnFlexBox.alignItems = juce::FlexBox::AlignItems::center;
 
         // Add rowFlexBox (squares) with flex 4
-        columnFlexBox.items.add(juce::FlexItem(rowFlexBox).withFlex(4));
-        columnFlexBox.items.add(juce::FlexItem().withMargin(8));
+
 
         // Add controlFlexBox (row toggle & slider) with flex 2
-        columnFlexBox.items.add(juce::FlexItem(controlFlexBox).withFlex(2));
+        columnFlexBox.items.add(juce::FlexItem(controlFlexBox).withFlex(1));
 
         // Apply layout
         columnFlexBox.performLayout(bounds.toFloat());
