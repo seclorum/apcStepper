@@ -413,7 +413,6 @@ inline void tdEditBar::duplicateLastRectangle() {
         auto *newRect = new GreyRectangle(lastRect->getColor(), lastRect->getLabel(), customFont.withHeight(20.0f));
         rectangles.add(newRect);
         bar.addAndMakeVisible(*newRect);
-        ++rectangleCount;
         updateBarLayout();
     }
 }
