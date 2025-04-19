@@ -5,6 +5,7 @@
 #include "Common.h"
 
 #include "trackDeckStep.h"
+#include "tdEditBar.h"
 #include "apcToggleParameterButton.h"
 #include "apcRightPanel.h"
 
@@ -50,13 +51,17 @@ public:
         auto bounds = getLocalBounds();
 
         juce::FlexBox mainFlexBox;
+        juce::FlexBox stepperFlexBox;
         juce::FlexBox rightPanel;
         juce::FlexBox gridFlexBox;
-
         juce::FlexBox downButtons;
-        mainFlexBox.flexDirection = juce::FlexBox::Direction::row;
+
+        mainFlexBox.flexDirection = juce::FlexBox::Direction::column;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         mainFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
+        stepperFlexBox.flexDirection = juce::FlexBox::Direction::row;
+        stepperFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+        stepperFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
         //Keep align items center so the buttons are vertically centered.
 
@@ -68,11 +73,12 @@ public:
             gridFlexBox.items.add(juce::FlexItem(*column).withFlex(1).withHeight(bounds.getHeight()));
         }
 
-        mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4).withMargin(8));
+        stepperFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(4).withMargin(8));
 
-        mainFlexBox.items.add(juce::FlexItem(*rightContainer).withFlex(1));
+        stepperFlexBox.items.add(juce::FlexItem(*rightContainer).withFlex(1));
 
-
+        mainFlexBox.items.add(juce::FlexItem(*tdEditBar).withFlex(1));
+        mainFlexBox.items.add(juce::FlexItem(stepperFlexBox).withFlex(4));
         mainFlexBox.performLayout(bounds.toFloat());
         // Add dummy component
 
@@ -116,6 +122,7 @@ private:
 
     juce::Component emptySpace;
      std::unique_ptr<apcRightPanel> rightContainer;
+     std::unique_ptr<tdEditBar> tdEditBar;
 //    std::unique_ptr<tracktion_engine::Engine> engine;
 //    std::unique_ptr<tracktion_engine::Edit> edit;
 //    tracktion_engine::MidiClip* midiClip = nullptr;

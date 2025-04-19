@@ -82,7 +82,8 @@ public:
         g.restoreState();
         g.saveState();
         g.reduceClipRegion(bounds.getX(), bounds.getY(), w, h - y_split);
-        g.setColour(isToggled ? juce::Colours::lightgrey : juce::Colours::darkgrey);
+        if (isCurrent) g.setColour(Colours::red);
+            else g.setColour(isToggled ? juce::Colours::lightgrey : juce::Colours::darkgrey);
         g.fillRoundedRectangle(bounds, cornerRadius);
 
         g.restoreState();
