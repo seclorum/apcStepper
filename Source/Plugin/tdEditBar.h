@@ -24,9 +24,6 @@ public:
         addAndMakeVisible(bar);
 
         bar.setColour(0, juce::Colours::black);
-        setOpaque(true);
-
-        setSize(800, 200);
     }
 
     void paint(juce::Graphics& g) override

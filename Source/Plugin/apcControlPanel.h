@@ -66,7 +66,7 @@ public:
         stepperFlexBox.items.add(juce::FlexItem(*rightContainer.get()).withFlex(1));
 
         // Add tdEditBar to the layout with explicit height
-        mainFlexBox.items.add(juce::FlexItem(*tdEditBar.get()).withFlex(1).withHeight(bounds.getHeight() * 0.2f));
+        mainFlexBox.items.add(juce::FlexItem(*tdEditBar.get()).withFlex(1));
         mainFlexBox.items.add(juce::FlexItem(stepperFlexBox).withFlex(4));
 
         mainFlexBox.performLayout(bounds.toFloat());
