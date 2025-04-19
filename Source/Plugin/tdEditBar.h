@@ -236,6 +236,7 @@ private:
         }
     };
 
+    OwnedArray<DraggableRangeSelector> rangeSelectors;
     DraggableRangeSelector rangeSelector;
     BarComponent bar;
     juce::OwnedArray<GreyRectangle> rectangles;
@@ -400,7 +401,11 @@ inline void GreyRectangle::setLabel(const juce::String& newLabel) {
 
 // Implementation of tdEditBar methods
 inline tdEditBar::tdEditBar() : rangeSelector(this) {
-    addAndMakeVisible(rangeSelector);
+    for (int sel = 0; sel < 3; ++sel) {
+        auto square = std::make_unique<DraggableRangeSelector>(this);
+        addAndMakeVisible(*square);
+        rangeSelectors.add(std::move(square));
+    };
     addAndMakeVisible(bar);
 
     bar.setColour(0, juce::Colours::black);
@@ -421,11 +426,17 @@ inline void tdEditBar::paint(juce::Graphics& g) {
 
 inline void tdEditBar::resized() {
     juce::FlexBox mainBox;
+    juce::FlexBox mainBoxContainer;
     mainBox.flexDirection = juce::FlexBox::Direction::column;
-    mainBox.items.add(juce::FlexItem(rangeSelector).withHeight(30).withMargin(10));
-    mainBox.items.add(juce::FlexItem(bar).withFlex(1.0f).withMargin(10));
+    mainBoxContainer.flexDirection = juce::FlexBox::Direction::column;
+    for (auto* square : rangeSelectors) {
+        mainBox.items.add(juce::FlexItem(*square).withHeight(20).withMargin(4));
+    }
     mainBox.alignItems = juce::FlexBox::AlignItems::stretch;
-    mainBox.performLayout(getLocalBounds().toFloat());
+    mainBoxContainer.items.add(juce::FlexItem(mainBox).withFlex(1.0f).withMargin(4));
+    mainBoxContainer.items.add(juce::FlexItem(bar).withFlex(2.0f).withMargin(8));
+    mainBoxContainer.alignItems = juce::FlexBox::AlignItems::stretch;
+    mainBoxContainer.performLayout(getLocalBounds().toFloat());
 
     updateBarLayout();
 }
