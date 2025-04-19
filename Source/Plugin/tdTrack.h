@@ -31,11 +31,7 @@ public:
         muteButton->addListener(this);
 
         // Attach mute button to the track's mute parameter
-        muteAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
-            processor.getParameters(),
-            "mute" + processor.addLeadingZeros(instrumentNumber), // e.g., "mute00"
-            *muteButton
-        );
+
 
         // Attach to currentTrack parameter for track selection
         current_attachment = processor.getParameters().getParameter("currentTrack");
