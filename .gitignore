@@ -31,3 +31,4 @@ apcSequencer/modules/
 apcSequencer/modules/**
 **/*.DS_Store
 reaperTestProjects/Backups/*-bak
+ios-build**/**
