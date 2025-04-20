@@ -9,12 +9,14 @@
 #include "apcToggleParameterButton.h"
 #include "apcRightPanel.h"
 #include "tdTrack.h"
+#include "tdSongList.h"
 
 class trackDeckMainProcessor;
 
 class apcControlPanel : public juce::AudioProcessorEditor,
                        private juce::Timer,
-                       private juce::RangedAudioParameter::Listener
+                       private juce::RangedAudioParameter::Listener,
+                        public juce::DragAndDropContainer
 {
 public:
     static constexpr int rows = 8;
@@ -30,6 +32,8 @@ public:
         }
         controllerBar = std::make_unique<tdTrackControllerBar>(processor, 99);
         addAndMakeVisible(*controllerBar);
+        songList = std::make_unique<CustomListComponent>();
+        addAndMakeVisible(*songList);
 
         // Initialize rightContainer and tdEditBar
         tdEditBar.reset(new class tdEditBar()); // Should work with full definition
@@ -76,6 +80,7 @@ public:
 
         juce::FlexBox mainFlexBox;
         juce::FlexBox gridFlexBox;
+        juce::FlexBox controlFlexBox;
 
         mainFlexBox.flexDirection = juce::FlexBox::Direction::column;
         mainFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
@@ -84,6 +89,10 @@ public:
         gridFlexBox.flexDirection = juce::FlexBox::Direction::column;
         gridFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
         gridFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
+
+        controlFlexBox.flexDirection = juce::FlexBox::Direction::row;
+        controlFlexBox.justifyContent = juce::FlexBox::JustifyContent::flexStart;
+        controlFlexBox.alignItems = juce::FlexBox::AlignItems::stretch;
 
         int i = 0;
         for (auto& row : rowContainer) {
@@ -98,7 +107,10 @@ public:
         mainFlexBox.items.add(juce::FlexItem(*tdEditBar.get()).withFlex(3));
         mainFlexBox.items.add(juce::FlexItem(gridFlexBox).withFlex(7));
 
-        mainFlexBox.performLayout(bounds.toFloat());
+        controlFlexBox.items.add(juce::FlexItem(mainFlexBox).withFlex(4));
+        controlFlexBox.items.add(juce::FlexItem(*songList).withFlex(1));
+
+        controlFlexBox.performLayout(bounds.toFloat());
 
         APCLOG("apcControlPanel resized.");
     }
@@ -141,6 +153,7 @@ private:
     juce::OwnedArray<tdTrack> rowContainer;
     juce::Component emptySpace;
     std::unique_ptr<tdTrackControllerBar> controllerBar;
+    std::unique_ptr<CustomListComponent> songList;
     std::unique_ptr<apcRightPanel> rightContainer;
     int currentTrack = 8;
     std::unique_ptr<tdEditBar> tdEditBar;
