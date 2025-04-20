@@ -1,0 +1,92 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b67fc741ff679bbed3d2967855ffbc5184"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b6e28b3b114a7deb44b18ea0d4f653a47f"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b6d42b7c7b758f4b406e54c668720ab4fc"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b65d8f93ebcd88c2861bb89fbe9aa0aa89"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b60c6ec27cbdab2fcabe061545d6cacf4f"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b6bc6a0dbd31d4fd7c3a80da78953a9d1c"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b6788b6046d1757c39ad08f177f18868ec"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b66ae894ae6ff8d11096397df33f4ee765"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b6174bd57d2b46754617e83f1bb15f1aec"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b694ea5c20365c9a5da9067565793f1ce6"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b66836420170b4d54670beadadd7f2460f"
+    },
+    {
+      "guid" : "6130cf12e2d93faf98d380f67e0d53b6ddb9459c15c36263a294df09fc8300e5"
+    }
+  ],
+  "containerPath" : "/Users/jayvaughan/Documents/Development/Plugins/apcStepper/ios-build/apcStepper.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx15.2",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/jayvaughan/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/jayvaughan/Library/Developer/Xcode/DerivedData/apcStepper-aucnzhcxqrwjgnbevowhkcxqqmel/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/jayvaughan/Library/Developer/Xcode/DerivedData/apcStepper-aucnzhcxqrwjgnbevowhkcxqqmel/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO",
+          "ONLY_ACTIVE_ARCH" : "YES"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

@@ -7,13 +7,16 @@
 #include "apcControlPanel.h"
 #include "apcLog.h"
 
+#ifdef USE_MELATONIN_INSPECTOR
+#include <melatonin_inspector/melatonin_inspector.h>
+#endif
 
 
 trackDeckMainEditor::trackDeckMainEditor(trackDeckMainProcessor& p)
     : juce::AudioProcessorEditor(p), processor(p)
 {
 
-#ifdef MELATONIN
+#ifdef USE_MELATONIN_INSPECTOR
     inspector.setVisible(true);
     inspector.toggle(true);
 #endif

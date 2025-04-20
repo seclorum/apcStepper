@@ -10,7 +10,16 @@ set(JUCE_ENABLE_UNITY FALSE)
 
 # Add JUCE modules
 add_subdirectory(modules/juce)
-add_subdirectory(modules/melatonin_inspector)
+
+# Include Melatonin Inspector only for Debug builds
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	include(FetchContent)
+	FetchContent_Declare(melatonin_inspector
+			GIT_REPOSITORY https://github.com/sudara/melatonin_inspector.git
+			GIT_TAG origin/main
+			SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/melatonin_inspector)
+	FetchContent_MakeAvailable(melatonin_inspector)
+endif()
 
 set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
 
@@ -190,6 +199,8 @@ target_compile_definitions(trackDeck
 		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
 		BUILD_TAG="${GIT_TAG}"
 		PRODUCT_NAME_WITHOUT_VERSION="trackDeck"
+		# Define USE_MELATONIN_INSPECTOR for Debug builds
+		$<$<CONFIG:Debug>:USE_MELATONIN_INSPECTOR>
 )
 
 juce_add_binary_data(Assets
@@ -223,4 +234,8 @@ if(APPLE AND NOT IOS)
 	message("Building on macOS (Darwin)")
 	target_link_options(trackDeck INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
+	# Link melatonin_inspector only for Debug builds
+	if(CMAKE_BUILD_TYPE MATCHES Debug)
+		target_link_libraries(trackDeck INTERFACE melatonin_inspector)
+	endif()
 endif()
