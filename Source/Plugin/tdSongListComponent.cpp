@@ -1,4 +1,5 @@
-#include "tdSongList.h"
+#include "tdSongListComponent.h"
+#include "tdLookAndFeel.h"
 
 // =========================
 // ===== TD SONG LIST ======
@@ -6,31 +7,34 @@
 
 tdSongList::tdSongList(bool isRange) : isRangeMode(isRange) {
     DBG("tdSongList::tdSongList");
-    // Initialize toggle button
     toggleButton.setButtonText(isRange ? "Range" : "Pattern");
     toggleButton.onClick = [this] {
         isRangeMode = !isRangeMode;
         toggleButton.setButtonText(isRangeMode ? "Range" : "Pattern");
         updateComboBox();
     };
+    toggleLookAndFeel = std::make_unique<tdLookAndFeel>();
+    toggleButton.setLookAndFeel(toggleLookAndFeel.get());
     addAndMakeVisible(toggleButton);
 
-    // Initialize combo box
     comboBox.setTextWhenNothingSelected("Select...");
     comboBox.setJustificationType(juce::Justification::centredLeft);
+    comboLookAndFeel = std::make_unique<tdLookAndFeel>();
+    comboBox.setLookAndFeel(comboLookAndFeel.get());
     addAndMakeVisible(comboBox);
 
-    // Initialize delete button
     deleteButton.setButtonText("-");
     deleteButton.onClick = [this] { deleteButtonClicked(); };
     addAndMakeVisible(deleteButton);
 
-    // Update combo box
     updateComboBox();
-
-    // Set minimum size and properties
     setSize(200, 80);
     setOpaque(true);
+}
+
+tdSongList::~tdSongList() {
+    toggleButton.setLookAndFeel(nullptr);
+    comboBox.setLookAndFeel(nullptr);
 }
 
 void tdSongList::paint(juce::Graphics& g) {
@@ -38,8 +42,6 @@ void tdSongList::paint(juce::Graphics& g) {
     g.fillAll(juce::Colour::fromFloatRGBA(0.47f, 0.27f, 0.27f, 0.44f));
     g.setColour(juce::Colours::grey);
     g.drawRect(getLocalBounds(), 1);
-
-    // Highlight if drop target
     if (isDragOver) {
         g.setColour(juce::Colours::yellow.withAlpha(0.3f));
         g.fillRect(getLocalBounds());
@@ -53,17 +55,12 @@ void tdSongList::resized() {
     auto bounds = getLocalBounds().reduced(5);
     bounds.setHeight(80);
     setSize(std::max(getWidth(), 200), 80);
-
     auto deleteButtonBounds = bounds.removeFromRight(30).withHeight(30);
     deleteButton.setBounds(deleteButtonBounds);
-
     auto buttonBounds = bounds.removeFromLeft(100).withHeight(30);
     toggleButton.setBounds(buttonBounds);
-    DBG("ToggleButton bounds: " << buttonBounds.toString());
-
     auto comboBoxBounds = bounds.withHeight(30);
     comboBox.setBounds(comboBoxBounds);
-    DBG("ComboBox bounds: " << comboBoxBounds.toString());
 }
 
 bool tdSongList::isInterestedInDragSource(const SourceDetails& details) {
@@ -89,7 +86,6 @@ void tdSongList::itemDropped(const SourceDetails& details) {
 }
 
 void tdSongList::mouseDown(const juce::MouseEvent& e) {
-    // Optional: Handle selection or other mouse-down behavior
     if (e.mods.isLeftButtonDown()) {
         DBG("tdSongList::mouseDown - Clicked on " << getName());
     }
@@ -97,20 +93,15 @@ void tdSongList::mouseDown(const juce::MouseEvent& e) {
 
 void tdSongList::mouseDrag(const juce::MouseEvent& e) {
     if (!e.mods.isLeftButtonDown() || e.getDistanceFromDragStart() < 5) {
-        return; // Wait for a small drag distance to confirm intent
+        return;
     }
-
     auto* container = findParentComponentOfClass<juce::DragAndDropContainer>();
     if (!container) {
         DBG("tdSongList::mouseDrag - Error: No DragAndDropContainer parent found for " << getName());
         return;
     }
-
-    // Create a ScaledImage from the component's appearance
     juce::Image snapshot = createComponentSnapshot(getLocalBounds());
     juce::ScaledImage dragImage(snapshot, 1.0f);
-
-    DBG("tdSongList::mouseDrag - Starting drag for " << getName());
     container->startDragging(juce::var("ListItem"), this, dragImage, true, nullptr, &e.source);
 }
 
@@ -140,20 +131,18 @@ void tdSongList::deleteButtonClicked() {
 // ===== CUSTOM LIST =======
 // =========================
 
-CustomListComponent::CustomListComponent() {
-    DBG("CustomListComponent::CustomListComponent");
-    // Initialize content component
+
+tdSongListComponent::tdSongListComponent() {
+    DBG("tdSongListComponent::tdSongListComponent");
     content = std::make_unique<juce::Component>();
     content->setName("ContentComponent");
 
-    // Configure viewport
     viewport.setViewedComponent(content.get(), false);
     viewport.setScrollBarsShown(true, false);
     viewport.setScrollBarThickness(10);
     viewport.setName("Viewport");
     addAndMakeVisible(viewport);
 
-    // Initialize add button
     addButton = std::make_unique<juce::TextButton>("[+]");
     addButton->setName("AddButton");
     addButton->setColour(juce::TextButton::buttonColourId, juce::Colours::darkgrey);
@@ -165,27 +154,36 @@ CustomListComponent::CustomListComponent() {
     };
     content->addAndMakeVisible(*addButton);
 
-    // Add starting items
     DBG("Adding initial items");
     addNewItem();
     addNewItem();
     addNewItem();
 }
 
-void CustomListComponent::resized() {
-    DBG("CustomListComponent::resized");
+void tdSongListComponent::paint(juce::Graphics& g) {
+    DBG("tdSongListComponent::paint");
+    g.fillAll(juce::Colours::black.withAlpha(0.44f));
+    if (isDragOver) {
+        g.setColour(juce::Colours::yellow.withAlpha(0.3f));
+        g.fillRect(getLocalBounds());
+        g.setColour(juce::Colours::yellow);
+        g.drawRect(getLocalBounds(), 2);
+    }
+}
+
+void tdSongListComponent::resized() {
+    DBG("tdSongListComponent::resized");
     viewport.setBounds(getLocalBounds().reduced(5));
     updateLayout();
 }
 
-void CustomListComponent::updateLayout() {
-    DBG("CustomListComponent::updateLayout");
+void tdSongListComponent::updateLayout() {
+    DBG("tdSongListComponent::updateLayout");
     const int itemHeight = 80;
     const int itemSpacing = 5;
     const int buttonHeight = 40;
     const int margin = 5;
 
-    // Calculate content width
     int contentWidth = viewport.getWidth() - viewport.getScrollBarThickness();
     if (contentWidth <= 0) {
         contentWidth = 300;
@@ -194,53 +192,35 @@ void CustomListComponent::updateLayout() {
     contentWidth = std::max(contentWidth, 200);
 
     int y = margin;
-
-    // Layout tdSongList items
-    DBG("Laying out " << items.size() << " items");
     for (auto* item : items) {
         if (item) {
             item->setBounds(margin, y, contentWidth - 2 * margin, itemHeight);
             item->setVisible(true);
-            DBG("Item " << items.indexOf(item) << " bounds: " << item->getBounds().toString());
             y += itemHeight + itemSpacing;
-        } else {
-            DBG("Error: Null item in items array");
         }
     }
 
-    // Place [+] button
     if (addButton) {
         addButton->setBounds(margin, y, contentWidth - 2 * margin, buttonHeight);
         addButton->setVisible(true);
-        DBG("AddButton bounds: " << addButton->getBounds().toString());
         y += buttonHeight + margin;
-    } else {
-        DBG("Error: addButton is null");
     }
 
-    // Set content size
     content->setSize(contentWidth, y);
-    DBG("Content size: " << content->getWidth() << "x" << content->getHeight());
-    DBG("Viewport size: " << viewport.getWidth() << "x" << viewport.getHeight());
-    DBG("Viewport view position: " << viewport.getViewPosition().toString());
-
-    // Show top of content
     viewport.setViewPosition(0, 0);
 }
 
-void CustomListComponent::addNewItem() {
-    DBG("CustomListComponent::addNewItem");
+void tdSongListComponent::addNewItem() {
+    DBG("tdSongListComponent::addNewItem");
     auto* newItem = new tdSongList();
     newItem->onItemDropped = [this](tdSongList* target, tdSongList* source) {
         if (source && target && source != target && items.contains(source) && items.contains(target)) {
             int sourceIndex = items.indexOf(source);
             int targetIndex = items.indexOf(target);
             DBG("Moving item from index " << sourceIndex << " to " << targetIndex);
-            items.remove(sourceIndex, false); // Remove without deleting
-            items.insert(targetIndex,source);   // Insert at target index
+            items.remove(sourceIndex, false);
+            items.insert(targetIndex, source);
             updateLayout();
-        } else {
-            DBG("Invalid drag-and-drop: source or target not in items");
         }
     };
     newItem->onDeleteButtonClicked = [this](tdSongList* itemToDelete) {
@@ -253,52 +233,39 @@ void CustomListComponent::addNewItem() {
     updateLayout();
 }
 
-bool CustomListComponent::isInterestedInDragSource(const SourceDetails& details) {
+bool tdSongListComponent::isInterestedInDragSource(const SourceDetails& details) {
     return details.description.toString() == "ListItem";
 }
 
-void CustomListComponent::itemDragEnter(const SourceDetails&) {
+void tdSongListComponent::itemDragEnter(const SourceDetails&) {
     isDragOver = true;
     repaint();
 }
 
-void CustomListComponent::itemDragExit(const SourceDetails&) {
+void tdSongListComponent::itemDragExit(const SourceDetails&) {
     isDragOver = false;
     repaint();
 }
 
-void CustomListComponent::itemDropped(const SourceDetails& details) {
+void tdSongListComponent::itemDropped(const SourceDetails& details) {
     isDragOver = false;
     auto* source = dynamic_cast<tdSongList*>(details.sourceComponent.get());
     if (source && items.contains(source)) {
         int sourceIndex = items.indexOf(source);
-        items.remove(sourceIndex, false); // Remove without deleting
-        items.add(source);                // Append to end
+        items.remove(sourceIndex, false);
+        items.add(source);
         DBG("Appended item to end, total items: " << items.size());
         updateLayout();
     }
     repaint();
 }
 
-void CustomListComponent::deleteItem(tdSongList* itemToDelete) {
+void tdSongListComponent::deleteItem(tdSongList* itemToDelete) {
     if (itemToDelete && items.contains(itemToDelete)) {
         DBG("Deleting item: " << items.indexOf(itemToDelete));
         content->removeChildComponent(itemToDelete);
         items.removeObject(itemToDelete);
         updateLayout();
         repaint();
-    } else {
-        DBG("Error: Invalid item to delete");
-    }
-}
-
-void CustomListComponent::paint(juce::Graphics& g) {
-    DBG("CustomListComponent::paint");
-    g.fillAll(juce::Colours::black.withAlpha(0.44f));
-    if (isDragOver) {
-        g.setColour(juce::Colours::yellow.withAlpha(0.3f));
-        g.fillRect(getLocalBounds());
-        g.setColour(juce::Colours::yellow);
-        g.drawRect(getLocalBounds(), 2);
     }
 }

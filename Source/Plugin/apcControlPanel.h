@@ -9,7 +9,7 @@
 #include "apcToggleParameterButton.h"
 #include "apcRightPanel.h"
 #include "tdTrack.h"
-#include "tdSongList.h"
+#include "tdSongListComponent.h"
 
 class trackDeckMainProcessor;
 
@@ -32,7 +32,7 @@ public:
         }
         controllerBar = std::make_unique<tdTrackControllerBar>(processor, 99);
         addAndMakeVisible(*controllerBar);
-        songList = std::make_unique<CustomListComponent>();
+        songList = std::make_unique<tdSongListComponent>();
         addAndMakeVisible(*songList);
 
         // Initialize rightContainer and tdEditBar
@@ -153,7 +153,7 @@ private:
     juce::OwnedArray<tdTrack> rowContainer;
     juce::Component emptySpace;
     std::unique_ptr<tdTrackControllerBar> controllerBar;
-    std::unique_ptr<CustomListComponent> songList;
+    std::unique_ptr<tdSongListComponent> songList;
     std::unique_ptr<apcRightPanel> rightContainer;
     int currentTrack = 8;
     std::unique_ptr<tdEditBar> tdEditBar;

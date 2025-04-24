@@ -1,13 +1,12 @@
 #pragma once
 #include "Common.h"
 
+class tdLookAndFeel;
+
 class tdSongList : public juce::Component, public juce::DragAndDropTarget {
 public:
-    std::function<void(tdSongList*, tdSongList*)> onItemDropped;
-    std::function<void(tdSongList*)> onDeleteButtonClicked;
-
     tdSongList(bool isRange = false);
-    ~tdSongList() override = default;
+    ~tdSongList() override;
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -18,20 +17,28 @@ public:
     void mouseDown(const juce::MouseEvent& e) override;
     void mouseDrag(const juce::MouseEvent& e) override;
 
+    std::function<void(tdSongList*, tdSongList*)> onItemDropped;
+    std::function<void(tdSongList*)> onDeleteButtonClicked;
+
 private:
     juce::ToggleButton toggleButton;
     juce::ComboBox comboBox;
     juce::TextButton deleteButton;
     bool isRangeMode;
     bool isDragOver = false;
+    std::unique_ptr<tdLookAndFeel> toggleLookAndFeel;
+    std::unique_ptr<tdLookAndFeel> comboLookAndFeel;
 
     void updateComboBox();
     void deleteButtonClicked();
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(tdSongList)
 };
-class CustomListComponent : public juce::Component, public juce::DragAndDropTarget {
+
+class tdSongListComponent : public juce::Component, public juce::DragAndDropTarget {
 public:
-    CustomListComponent();
-    ~CustomListComponent() override = default;
+    tdSongListComponent();
+    ~tdSongListComponent() override = default;
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -50,4 +57,6 @@ private:
     bool isDragOver = false;
 
     void deleteItem(tdSongList* itemToDelete);
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(tdSongListComponent)
 };
