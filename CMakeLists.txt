@@ -17,7 +17,7 @@ include(FetchContent)
 FetchContent_Declare(
 		juce
 		GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-		GIT_TAG origin/develop
+		GIT_TAG 8.0.2
 		SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/juce
 )
 FetchContent_MakeAvailable(juce)
