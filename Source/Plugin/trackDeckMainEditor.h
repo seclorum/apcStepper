@@ -27,6 +27,7 @@
 
 #ifdef USE_MELATONIN_INSPECTOR
 #include <melatonin_inspector/melatonin_inspector.h>
+#warning "Melatonin Inspector is configured for this build."
 #endif
 
 #include "MIDIArpeggiatorEditor.h"
