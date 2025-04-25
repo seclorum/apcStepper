@@ -72,7 +72,6 @@ set(JUCE_MODULES
 		juce::juce_recommended_config_flags
 		juce::juce_recommended_lto_flags
 		juce::juce_recommended_warning_flags
-		melatonin_inspector
 )
 
 # ==============================================================================
@@ -218,6 +217,11 @@ juce_add_binary_data(Assets
 # Link JUCE modules
 target_link_libraries(trackDeck PRIVATE ${JUCE_MODULES} Assets)
 
+# Link melatonin_inspector only for Debug builds
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_link_libraries(trackDeck INTERFACE melatonin_inspector)
+endif()
+
 # iOS-specific settings for the plugin (if targeting iOS)
 if(IOS)
 	target_compile_definitions(trackDeck PRIVATE
@@ -234,8 +238,4 @@ if(APPLE AND NOT IOS)
 	message("Building on macOS (Darwin)")
 	target_link_options(trackDeck INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
-	# Link melatonin_inspector only for Debug builds
-	if(CMAKE_BUILD_TYPE MATCHES Debug)
-		target_link_libraries(trackDeck INTERFACE melatonin_inspector)
-	endif()
 endif()

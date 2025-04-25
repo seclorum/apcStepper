@@ -32,14 +32,11 @@
 #include <juce_product_unlocking/juce_product_unlocking.h>
 #include <juce_video/juce_video.h>
 
-#include "melatonin_inspector/melatonin_inspector.h"
-//#include <tracktion_engine/tracktion_engine.h>
-
-
-
-
-
 #include "BinaryData.h"
+
+#ifdef USE_MELATONIN_INSPECTOR
+#include <melatonin_inspector/melatonin_inspector.h>
+#endif
 
 #include "apcLog.h"
 

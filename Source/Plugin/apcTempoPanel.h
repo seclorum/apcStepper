@@ -24,7 +24,11 @@
 #include <juce_video/juce_video.h>
 
 #include <array>
-#include "melatonin_inspector/melatonin_inspector.h"
+
+#ifdef USE_MELATONIN_INSPECTOR
+#include <melatonin_inspector/melatonin_inspector.h>
+#endif
+
 #include "trackDeckMainProcessor.h"
 #include "trackDeckMainEditor.h"
 #include "apcShiftToggleParameterButton.h"
@@ -90,8 +94,10 @@ private:
     juce::FlexBox tempoFlexPanel;
     trackDeckMainProcessor &processor;
 
-
-
+#ifdef USE_MELATONIN_INSPECTOR
+    #warning "MELATONIN INSPECTOR IS CONFIGURED TO BE INCLUDED IN BUILD"
+    melatonin::Inspector inspector { *this, true };
+#endif
 
 };
 
