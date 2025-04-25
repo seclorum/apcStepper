@@ -3,14 +3,16 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 cmake_minimum_required(VERSION 3.15)
 
-# Project setup
-project(trackDeck VERSION 1.0.0 LANGUAGES CXX)
+# Project setup (Include C to fix CMAKE_C_COMPILE_OBJECT issue)
+project(trackDeck VERSION 1.0.0 LANGUAGES CXX C)
 
 # JUCE and Tracktion Engine setup
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED YES)
 
-# Fetch JUCE from develop branch
+# Fetch JUCE from stable release 8.0.2
 include(FetchContent)
 FetchContent_Declare(
 		juce
@@ -219,9 +221,10 @@ if(IOS)
 	)
 endif()
 
-# C++17 workaround
+# C++17 and C11 workaround
 foreach(target trackDeck trackDeckPlugin trackDeck_SharedCode)
 	if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
 		target_compile_options(${target} PRIVATE -std=c++17)
+		target_compile_options(${target} PRIVATE -std=c11)
 	endif()
 endforeach()
