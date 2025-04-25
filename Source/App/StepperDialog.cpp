@@ -68,7 +68,7 @@ namespace trackDeck
     void StepperDialog::initializePluginHosting()
     {
         formatManager->addDefaultFormats(); // Adds AU, VST3, etc.
-
+#if 0 // TODO: Test plugin
         const juce::String pluginId = "io.enabled.plugins.trackDeck"; // Match BUNDLE_ID
         auto* pluginList = formatManager->getKnownPluginList();
         auto pluginTypes = pluginList->getTypesForIdentifier(pluginId);
@@ -86,9 +86,10 @@ namespace trackDeck
                             juce::Logger::writeToLog("Failed to load plugin: " + error);
                     });
         }
-
         if (auto plugin = engine.getPluginManager().createPlugin(pluginId))
             juce::Logger::writeToLog("Tracktion plugin loaded successfully: " + plugin->getName());
+#endif
+
     }
 
     void StepperDialog::loadSettings()

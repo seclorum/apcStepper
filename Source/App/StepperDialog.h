@@ -35,7 +35,7 @@ namespace trackDeck
         void loadSettings();
         void saveSettings();
 
-        tracktion_engine::Engine engine{"trackDeck"};
+        tracktion::Engine engine{"trackDeck"};
         std::unique_ptr<juce::AudioPluginFormatManager> formatManager;
         MidiControls midiControls;
         juce::TextButton launchStopButton;

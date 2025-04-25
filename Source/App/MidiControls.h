@@ -34,7 +34,7 @@ namespace trackDeck
                                private juce::AsyncUpdater
     {
     public:
-        explicit MidiControls(tracktion_engine::Engine& engine);
+        explicit MidiControls(tracktion::Engine& engine);
         ~MidiControls() override;
 
         void paint(juce::Graphics& g) override;
@@ -75,7 +75,7 @@ namespace trackDeck
         void updateDeviceLists();
         void addLabelAndSetStyle(juce::Label& label);
 
-        tracktion_engine::Engine& engine;
+        tracktion::Engine& engine;
         juce::Label midiInputLabel{"Midi Input Label", "MIDI Input:"};
         juce::Label midiOutputLabel{"Midi Output Label", "MIDI Output:"};
         juce::Label incomingMidiLabel{"Incoming Midi Label", "Received MIDI messages:"};

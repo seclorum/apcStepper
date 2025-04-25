@@ -22,7 +22,7 @@ namespace trackDeck
     }
 
 //==============================================================================
-    MidiControls::MidiControls(tracktion_engine::Engine& e)
+    MidiControls::MidiControls(tracktion::Engine& e)
             : engine(e),
               midiKeyboard(keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
               midiInputSelector(std::make_unique<MidiDeviceListBox>("Midi Input Selector", *this, true)),
@@ -138,6 +138,8 @@ namespace trackDeck
 
     void MidiControls::MidiDeviceListBox::selectedRowsChanged(int)
     {
+
+#if 0
         auto newSelectedItems = getSelectedRows();
         if (newSelectedItems != lastSelectedItems)
         {
@@ -151,6 +153,8 @@ namespace trackDeck
 
             lastSelectedItems = newSelectedItems;
         }
+#endif
+
     }
 
     void MidiControls::MidiDeviceListBox::syncSelectedItemsWithDeviceList(const juce::ReferenceCountedArray<MidiDeviceListEntry>& midiDevices)
@@ -205,18 +209,22 @@ namespace trackDeck
 
     void MidiControls::sendToOutputs(const juce::MidiMessage& msg)
     {
-        // Use Tracktion Engine to process MIDI message
-        tracktion_engine::MidiMessage midiMsg(msg, msg.getTimeStamp());
+        // TODO: Use Tracktion Engine to process MIDI message
+        juce::MidiMessage midiMsg(msg, msg.getTimeStamp());
+
         if (midiMsg.isNoteOn())
             midiMsg.setVelocity(72.0f / 127.0f); // Normalize velocity (72 = specific color)
 
         auto rawData = midiMsg.getRawData();
         auto dataSize = midiMsg.getRawDataSize();
+#if 0
         juce::MidiMessage newMessage(rawData.get(), dataSize, midiMsg.getTimeStamp());
 
         for (const auto& midiOutput : midiOutputs)
             if (midiOutput->outDevice)
                 midiOutput->outDevice->sendMessageNow(newMessage);
+#endif
+
     }
 
     void MidiControls::openDevice(bool isInput, int index)
@@ -261,7 +269,7 @@ namespace trackDeck
         return false;
     }
 
-    MidiControls::MidiDeviceListEntry::Ptr MidiControls::findDevice(juce::MidiDeviceInfo device, bool isInputDevice) const
+    MidiDeviceListEntry::Ptr MidiControls::findDevice(juce::MidiDeviceInfo device, bool isInputDevice) const
     {
         const auto& midiDevices = isInputDevice ? midiInputs : midiOutputs;
         for (const auto& d : midiDevices)
@@ -279,9 +287,13 @@ namespace trackDeck
             auto& d = *midiDevices[i];
             if (!currentlyPluggedInDevices.contains(d.deviceInfo))
             {
+#if 0
                 if (isInputDevice ? d.inDevice : d.outDevice)
                     closeDevice(isInputDevice, i);
+
                 midiDevices.remove(i);
+#endif
+
             }
         }
     }
