@@ -1,61 +1,81 @@
-set(VERBOSE)
+# Enable verbose output for debugging
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 cmake_minimum_required(VERSION 3.15)
 
-# JUCE Setup
+# Project setup
+project(trackDeck VERSION 1.0.0 LANGUAGES CXX)
+
+# JUCE and Tracktion Engine setup
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(JUCE_ENABLE_LV2 FALSE)
 set(JUCE_ENABLE_UNITY FALSE)
 
-# Add JUCE modules
-add_subdirectory(modules/juce)
+# Fetch JUCE and Tracktion Engine
+include(FetchContent)
+FetchContent_Declare(
+		juce
+		GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+		GIT_TAG 7.0.12
+		SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/juce
+)
+FetchContent_Declare(
+		tracktion_engine
+		GIT_REPOSITORY https://github.com/Tracktion/tracktion_engine.git
+		GIT_TAG 3.0.2
+		SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/tracktion_engine
+)
+FetchContent_MakeAvailable(juce tracktion_engine)
 
-# Include Melatonin Inspector only for Debug builds
+# Include Melatonin Inspector for Debug builds
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-	include(FetchContent)
-	FetchContent_Declare(melatonin_inspector
+	FetchContent_Declare(
+			melatonin_inspector
 			GIT_REPOSITORY https://github.com/sudara/melatonin_inspector.git
 			GIT_TAG origin/main
-			SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/melatonin_inspector)
+			SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/melatonin_inspector
+	)
 	FetchContent_MakeAvailable(melatonin_inspector)
 endif()
 
-set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Source/Assets")
-
-# Define the destination directory in the build folder
+# Define asset directories
+set(ASSETS_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Assets")
 set(ASSETS_DEST_DEBUG "${CMAKE_BINARY_DIR}/trackDeck_artefacts/Debug/Standalone/Assets")
 set(ASSETS_DEST_RELEASE "${CMAKE_BINARY_DIR}/trackDeck_artefacts/Release/Standalone/Assets")
 
-# Message to verify source directory
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+# Copy assets to build directory
+file(MAKE_DIRECTORY ${ASSETS_DEST_DEBUG} ${ASSETS_DEST_RELEASE})
+file(COPY ${ASSETS_SOURCE_DIR}/ DESTINATION ${ASSETS_DEST_DEBUG})
+file(COPY ${ASSETS_SOURCE_DIR}/ DESTINATION ${ASSETS_DEST_RELEASE})
 
-# Get the current Git commit hash (avoid errors if not in Git repo)
+# Get Git commit hash (with error handling)
 execute_process(
 		COMMAND git rev-parse --short HEAD
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		OUTPUT_VARIABLE GIT_COMMIT_HASH
 		OUTPUT_STRIP_TRAILING_WHITESPACE
+		RESULT_VARIABLE GIT_HASH_RESULT
 		ERROR_QUIET
 )
+if(NOT GIT_HASH_RESULT EQUAL 0)
+	set(GIT_COMMIT_HASH "unknown")
+endif()
 
-# Get the latest Git tag (avoid errors if not in Git repo)
+# Get latest Git tag (with error handling)
 execute_process(
 		COMMAND git describe --tags --abbrev=0
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		OUTPUT_VARIABLE GIT_TAG
 		OUTPUT_STRIP_TRAILING_WHITESPACE
+		RESULT_VARIABLE GIT_TAG_RESULT
 		ERROR_QUIET
 )
+if(NOT GIT_TAG_RESULT EQUAL 0)
+	set(GIT_TAG "unknown")
+endif()
 
-# Check the hostname and set AAX_SDK_PATH if needed
-execute_process(
-		COMMAND uname -n
-		OUTPUT_VARIABLE HOSTNAME
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-# Create a single variable for shared JUCE modules
+# Define JUCE modules
 set(JUCE_MODULES
 		juce::juce_audio_basics
 		juce::juce_audio_devices
@@ -69,64 +89,71 @@ set(JUCE_MODULES
 		juce::juce_gui_basics
 		juce::juce_gui_extra
 		juce::juce_opengl
+		juce::juce_audio_plugin_client # Required for plugin hosting
 		juce::juce_recommended_config_flags
 		juce::juce_recommended_lto_flags
 		juce::juce_recommended_warning_flags
 )
 
-# ==============================================================================
-# APPLICATION: trackDeck (iOS GUI App)
-# ==============================================================================
-project(trackDeckApp VERSION 1.0)
-
-juce_add_gui_app(
-		trackDeckAPP
-		PRODUCT_NAME "trackDeck"
-		COMPANY_NAME "enabled.io"
-		BUNDLE_ID "io.enabled.apps.trackDeck"
-		TARGETED_DEVICE_FAMILY "2" # 1 = iPhone, 2 = iPad, "1,2" = Universal
-		IPHONE_SCREEN_ORIENTATION "Landscape" # or "Landscape", "PortraitAndLandscape"
-		MICROPHONE_PERMISSION_ENABLED TRUE
-		DOCUMENT_BROWSER_ENABLED FALSE # Optional iOS-specific setting
-		FILE_SHARING_ENABLED FALSE     # Optional iOS-specific setting
-		REQUIRES_FULL_SCREEN TRUE      # Optional: Full-screen app
-		IPAD_SCREEN_ORIENTATIONS "LandscapeLeft;LandscapeRight" # Specific to iPad
+# Define Tracktion Engine modules
+set(TRACKTION_MODULES
+		tracktion::tracktion_engine
 )
 
-# Automatically add all application source files
-file(GLOB_RECURSE APP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h)
+# Add binary data for assets
+juce_add_binary_data(Assets
+		SOURCES
+		${ASSETS_SOURCE_DIR}/back.svg
+		${ASSETS_SOURCE_DIR}/Conthrax-SemiBold.otf
+		${ASSETS_SOURCE_DIR}/cuttlefish.jpg
+		${ASSETS_SOURCE_DIR}/shadow.png
+		${ASSETS_SOURCE_DIR}/playcircle.svg
+		${ASSETS_SOURCE_DIR}/stopcircle.svg
+		${ASSETS_SOURCE_DIR}/shift.svg
+		${ASSETS_SOURCE_DIR}/button.svg
+)
 
-target_sources(trackDeckAPP PRIVATE ${APP_SOURCE_FILES})
+# Option to enable plugin hosting in the app
+option(ENABLE_PLUGIN_HOSTING "Enable plugin hosting in the app" ON)
 
-# Link JUCE modules
-target_link_libraries(trackDeckAPP PRIVATE ${JUCE_MODULES})
+# ==============================================================================
+# Shared Code Library
+# ==============================================================================
+add_library(trackDeck_SharedCode STATIC)
+file(GLOB SHARED_SOURCE_FILES CONFIGURE_DEPENDS
+		"${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h"
+)
+target_sources(trackDeck_SharedCode PRIVATE ${SHARED_SOURCE_FILES})
+target_link_libraries(trackDeck_SharedCode PUBLIC ${JUCE_MODULES} ${TRACKTION_MODULES} Assets)
+target_include_directories(trackDeck_SharedCode PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/Source
+		${CMAKE_CURRENT_BINARY_DIR}/Assets/JuceLibraryCode # For BinaryData.h
+)
+target_compile_definitions(trackDeck_SharedCode PUBLIC
+		JUCE_WEB_BROWSER=0
+		JUCE_USE_CURL=0
+		JUCE_VST3_CAN_REPLACE_VST2=0
+		JUCE_MODAL_LOOPS_PERMITTED=1
+		CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+		VERSION="${PROJECT_VERSION}"
+		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
+		BUILD_TAG="${GIT_TAG}"
+		PRODUCT_NAME_WITHOUT_VERSION="trackDeck"
+		$<$<CONFIG:Debug>:USE_MELATONIN_INSPECTOR>
+)
 
-# iOS-specific settings
-if(IOS)
-	# Set iOS deployment target
-	set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum iOS deployment version")
-
-	# Set architectures for iOS (arm64 for devices, arm64/x86_64 for simulator)
-	set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "iOS architectures")
-
-	# Add iOS-specific compile definitions
-	target_compile_definitions(trackDeckAPP PRIVATE
-			JUCE_IOS=1
-			JUCE_STANDALONE_APPLICATION=1
-	)
-
-	# Ensure the app is signed (required for iOS builds)
-	set_target_properties(trackDeckAPP PROPERTIES
-			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # Replace with your Apple Developer Team ID
-			XCODE_ATTRIBUTE_UIFileSharingEnabled "NO"
-			XCODE_ATTRIBUTE_UIBackgroundModes "audio"
-	)
+# Link Melatonin Inspector for Debug builds
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_link_libraries(trackDeck_SharedCode PUBLIC melatonin_inspector)
 endif()
 
-# Add this after the existing trackDeckAPP target definition to create an Xcode-specific iOS target for iPad
+# ==============================================================================
+# Application: trackDeck (GUI App)
+# ==============================================================================
 juce_add_gui_app(
-		trackDeckAPP_iOS_Xcode
+		trackDeck
 		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
 		BUNDLE_ID "io.enabled.apps.trackDeck"
@@ -139,34 +166,39 @@ juce_add_gui_app(
 		IPAD_SCREEN_ORIENTATIONS "LandscapeLeft;LandscapeRight"
 )
 
-target_sources(trackDeckAPP_iOS_Xcode PRIVATE ${APP_SOURCE_FILES})
-target_link_libraries(trackDeckAPP_iOS_Xcode PRIVATE ${JUCE_MODULES})
-
-# iOS Xcode-specific settings
-set_target_properties(trackDeckAPP_iOS_Xcode PROPERTIES
-		XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "13.0"
-		XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-		XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "YOUR_TEAM_ID" # Replace with your Apple Developer Team ID
-		CMAKE_OSX_ARCHITECTURES "arm64"
-		GENERATOR "Xcode" # Forces Xcode generator instead of Ninja
-		XCODE_ATTRIBUTE_UIFileSharingEnabled "NO"
-		XCODE_ATTRIBUTE_UIBackgroundModes "audio"
+# Add application source files
+file(GLOB APP_SOURCE_FILES CONFIGURE_DEPENDS
+		"${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h"
 )
-
-target_compile_definitions(trackDeckAPP_iOS_Xcode PRIVATE
+target_sources(trackDeck PRIVATE ${APP_SOURCE_FILES})
+target_link_libraries(trackDeck PRIVATE trackDeck_SharedCode ${JUCE_MODULES} ${TRACKTION_MODULES} Assets)
+target_compile_definitions(trackDeck PRIVATE
 		JUCE_IOS=1
 		JUCE_STANDALONE_APPLICATION=1
+		$<$<BOOL:${ENABLE_PLUGIN_HOSTING}>:JUCE_PLUGINHOST_AU=1>
+		$<$<BOOL:${ENABLE_PLUGIN_HOSTING}>:JUCE_PLUGINHOST_VST3=1>
 )
 
-# ==============================================================================
-# PLUGIN: trackDeck
-# ==============================================================================
-project(trackDeck VERSION 1.0.0)
+# Platform-specific settings
+if(IOS)
+	set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum iOS deployment version")
+	set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "iOS architectures")
+	set_target_properties(trackDeck PROPERTIES
+			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # Replace with your Apple Developer Team ID
+			XCODE_ATTRIBUTE_UIFileSharingEnabled "NO"
+			XCODE_ATTRIBUTE_UIBackgroundModes "audio"
+	)
+elseif(APPLE)
+	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
+endif()
 
-set(FORMATS Standalone AU VST3 AUv3) # AUv3 is iOS-compatible
-
+# ==============================================================================
+# Plugin: trackDeck
+# ==============================================================================
 juce_add_plugin(
-		trackDeck
+		trackDeckPlugin
 		PRODUCT_NAME "trackDeck"
 		COMPANY_NAME "enabled.io"
 		BUNDLE_ID "io.enabled.plugins.trackDeck"
@@ -178,64 +210,25 @@ juce_add_plugin(
 		COPY_PLUGIN_AFTER_BUILD ON
 		PLUGIN_MANUFACTURER_CODE ENIO
 		PLUGIN_CODE STEP
-		FORMATS ${FORMATS}
+		FORMATS Standalone AU VST3 AUv3
 )
 
-# Automatically add all plugin source files
-file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
-
-target_sources(trackDeck PRIVATE ${PLUGIN_SOURCE_FILES})
-
-# Set plugin compile definitions
-target_compile_definitions(trackDeck
-		INTERFACE
-		JUCE_WEB_BROWSER=0
-		JUCE_USE_CURL=0
-		JUCE_VST3_CAN_REPLACE_VST2=0
-		JUCE_MODAL_LOOPS_PERMITTED=1
-		CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
-		VERSION="${PROJECT_VERSION}"
-		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
-		BUILD_TAG="${GIT_TAG}"
-		PRODUCT_NAME_WITHOUT_VERSION="trackDeck"
-		# Define USE_MELATONIN_INSPECTOR for Debug builds
-		$<$<CONFIG:Debug>:USE_MELATONIN_INSPECTOR>
+target_sources(trackDeckPlugin PRIVATE ${SHARED_SOURCE_FILES})
+target_link_libraries(trackDeckPlugin PRIVATE trackDeck_SharedCode ${JUCE_MODULES} ${TRACKTION_MODULES} Assets)
+target_compile_definitions(trackDeckPlugin PRIVATE
+		JUCE_IOS=1
 )
 
-juce_add_binary_data(Assets
-		SOURCES
-		Assets/back.svg
-		Assets/Conthrax-SemiBold.otf
-		Assets/cuttlefish.jpg
-		Assets/shadow.png
-		Assets/playcircle.svg
-		Assets/stopcircle.svg
-		Assets/shift.svg
-		Assets/button.svg
-)
-
-# Link JUCE modules
-target_link_libraries(trackDeck PRIVATE ${JUCE_MODULES} Assets)
-
-# Link melatonin_inspector only for Debug builds
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-	target_link_libraries(trackDeck INTERFACE melatonin_inspector)
-endif()
-
-# iOS-specific settings for the plugin (if targeting iOS)
 if(IOS)
-	target_compile_definitions(trackDeck PRIVATE
-			JUCE_IOS=1
-	)
-	set_target_properties(trackDeck PROPERTIES
+	set_target_properties(trackDeckPlugin PROPERTIES
 			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "XXX" # !J! TODO: Work with Tom to get enabled.io Team set up
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # Replace with your Apple Developer Team ID
 	)
 endif()
 
-# Set macOS architectures for universal binary (Apple Silicon + Intel)
-if(APPLE AND NOT IOS)
-	message("Building on macOS (Darwin)")
-	target_link_options(trackDeck INTERFACE -Wl)
-	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
-endif()
+# Workaround for target_compile_features issue
+foreach(target trackDeck trackDeckPlugin trackDeck_SharedCode)
+	if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+		target_compile_options(${target} PRIVATE -std=c++17)
+	endif()
+endforeach()
