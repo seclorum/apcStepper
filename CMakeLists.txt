@@ -72,7 +72,6 @@ set(JUCE_MODULES
 		juce::juce_recommended_config_flags
 		juce::juce_recommended_lto_flags
 		juce::juce_recommended_warning_flags
-		melatonin_inspector
 )
 
 # ==============================================================================
@@ -95,7 +94,10 @@ juce_add_gui_app(
 )
 
 # Automatically add all application source files
-file(GLOB_RECURSE APP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h)
+file(GLOB_RECURSIVE APP_SOURCE_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/App/*.h
+)
 
 target_sources(trackDeckAPP PRIVATE ${APP_SOURCE_FILES})
 
@@ -125,7 +127,7 @@ if(IOS)
 	)
 endif()
 
-# Add this after the existing trackDeckAPP target definition to create an Xcode-specific iOS target for iPad
+# Add Xcode-specific iOS target for iPad
 juce_add_gui_app(
 		trackDeckAPP_iOS_Xcode
 		PRODUCT_NAME "trackDeck"
@@ -141,15 +143,15 @@ juce_add_gui_app(
 )
 
 target_sources(trackDeckAPP_iOS_Xcode PRIVATE ${APP_SOURCE_FILES})
+
 target_link_libraries(trackDeckAPP_iOS_Xcode PRIVATE ${JUCE_MODULES})
 
 # iOS Xcode-specific settings
 set_target_properties(trackDeckAPP_iOS_Xcode PROPERTIES
 		XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "13.0"
 		XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-		XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "YOUR_TEAM_ID" # Replace with your Apple Developer Team ID
+		XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # Replace with your Apple Developer Team ID
 		CMAKE_OSX_ARCHITECTURES "arm64"
-		GENERATOR "Xcode" # Forces Xcode generator instead of Ninja
 		XCODE_ATTRIBUTE_UIFileSharingEnabled "NO"
 		XCODE_ATTRIBUTE_UIBackgroundModes "audio"
 )
@@ -182,14 +184,21 @@ juce_add_plugin(
 		FORMATS ${FORMATS}
 )
 
-# Automatically add all plugin source files
-file(GLOB_RECURSE PLUGIN_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h)
+# Automatically add plugin source files
+file(GLOB_RECURSIVE PLUGIN_SOURCE_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/Plugin/*.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Source/Components/*.h
+)
+
+# Filter out any JUCE module sources to avoid duplicates
+list(FILTER PLUGIN_SOURCE_FILES EXCLUDE REGEX "modules/juce")
 
 target_sources(trackDeck PRIVATE ${PLUGIN_SOURCE_FILES})
 
 # Set plugin compile definitions
 target_compile_definitions(trackDeck
-		INTERFACE
+		PUBLIC
 		JUCE_WEB_BROWSER=0
 		JUCE_USE_CURL=0
 		JUCE_VST3_CAN_REPLACE_VST2=0
@@ -199,7 +208,6 @@ target_compile_definitions(trackDeck
 		BUILD_COMMIT_HASH="${GIT_COMMIT_HASH}"
 		BUILD_TAG="${GIT_TAG}"
 		PRODUCT_NAME_WITHOUT_VERSION="trackDeck"
-		# Define USE_MELATONIN_INSPECTOR for Debug builds
 		$<$<CONFIG:Debug>:USE_MELATONIN_INSPECTOR>
 )
 
@@ -215,27 +223,35 @@ juce_add_binary_data(Assets
 		Assets/button.svg
 )
 
-# Link JUCE modules
-target_link_libraries(trackDeck PRIVATE ${JUCE_MODULES} Assets)
+# Link JUCE modules and Assets
+target_link_libraries(trackDeck
+		PRIVATE
+		${JUCE_MODULES}
+		Assets
+		PUBLIC
+		juce::juce_recommended_config_flags
+		juce::juce_recommended_lto_flags
+		juce::juce_recommended_warning_flags
+)
 
-# iOS-specific settings for the plugin (if targeting iOS)
+# Conditionally link melatonin_inspector for Debug builds
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_link_libraries(trackDeck PRIVATE melatonin_inspector)
+endif()
+
+# iOS-specific settings for the plugin
 if(IOS)
 	target_compile_definitions(trackDeck PRIVATE
 			JUCE_IOS=1
 	)
 	set_target_properties(trackDeck PROPERTIES
 			XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "XXX" # !J! TODO: Work with Tom to get enabled.io Team set up
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "PBB4749V9S" # Replace with your Apple Developer Team ID
 	)
 endif()
 
 # Set macOS architectures for universal binary (Apple Silicon + Intel)
 if(APPLE AND NOT IOS)
 	message("Building on macOS (Darwin)")
-	target_link_options(trackDeck INTERFACE -Wl)
 	set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build for Apple Silicon and Intel")
-	# Link melatonin_inspector only for Debug builds
-	if(CMAKE_BUILD_TYPE MATCHES Debug)
-		target_link_libraries(trackDeck INTERFACE melatonin_inspector)
-	endif()
 endif()
