@@ -3,6 +3,7 @@
 //
 
 #include "StepperApplication.h"
+#include "StepperDialog.h"
 
 // StepperApplication.cpp
 // Application entry point implementation for trackDeck
@@ -21,7 +22,9 @@ namespace trackDeck
 
     void StepperApplication::initialise(const juce::String&)
     {
-        mainWindow = std::make_unique<MainWindow>("trackDeck", new StepperDialog(), *this);
+        engine = std::make_unique<tracktion::Engine>(getApplicationName());
+        auto dialog = std::make_unique<StepperDialog>(*engine);
+        mainWindow = std::make_unique<MainWindow>("trackDeck",  dialog.get(), *this);
     }
 
     void StepperApplication::shutdown()

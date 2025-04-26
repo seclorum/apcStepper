@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <juce_gui_basics/juce_gui_basics.h>
+#include <tracktion_engine/tracktion_engine.h>
 
 namespace trackDeck
 {
@@ -33,11 +33,12 @@ namespace trackDeck
             MainWindow(const juce::String& name, juce::Component* component, JUCEApplication& app);
             void closeButtonPressed() override;
 
+
         private:
             JUCEApplication& appRef;
             JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
         };
-
+        std::unique_ptr<tracktion::Engine> engine;
         std::unique_ptr<MainWindow> mainWindow;
     };
 

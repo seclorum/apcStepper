@@ -1,4 +1,8 @@
-class tdTrack : public juce::AudioProcessorEditor, 
+#include "trackDeckMainProcessor.h"
+#include "apcToggleParameterButton.h"
+#include "apcToggleButton.h"
+
+class tdTrack : public juce::AudioProcessorEditor,
                 private juce::Timer, 
                 private juce::Button::Listener,private juce::AudioProcessorParameter::Listener
 
